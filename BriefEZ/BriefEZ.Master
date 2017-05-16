@@ -1,0 +1,40 @@
+﻿<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="BriefEZ.master.vb" Inherits="BriefEZ.BriefEZ" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div style="text-align: center">
+    <div id="Header" style="background-color: #999999; height: 134px; width: 1417px;">
+    
+        <asp:Image ID="Logo1" runat="server" Height="134px" ImageAlign="Left" ImageUrl="~/Resources/Logo 1.png" Width="159px" />
+        <asp:Image ID="Logo2" runat="server" Height="134px" ImageAlign="Right" ImageUrl="~/Resources/Logo 1.png" Width="159px" />
+    
+        <br />
+        <asp:Label ID="lblBrief" runat="server" Font-Bold="True" Font-Names="Lucida Bright" Font-Size="XX-Large" ForeColor="#33CCFF" Text="Brief"></asp:Label>
+        <asp:Label ID="lblEZ" runat="server" Font-Bold="True" Font-Names="Lucida Bright" Font-Size="XX-Large" ForeColor="#333333" Text="EZ"></asp:Label>
+        <br />
+        <asp:Label ID="lblSlogan" runat="server" Font-Names="Lucida Bright" ForeColor="Black" Text="&quot;You can breathe easy with BriefEZ.&quot;"></asp:Label>
+        <br />
+        <asp:Menu ID="NavigationMenu" runat="server" Font-Names="Lucida Bright" Font-Size="X-Large" Font-Underline="True" ForeColor="#33CCFF" Orientation="Horizontal" RenderingMode="Table" Width="1097px" BackColor="#999999" BorderColor="Black" BorderStyle="Solid" BorderWidth="2px" Height="24px">
+            <Items>
+                <asp:MenuItem Text="Home" Value="Home"></asp:MenuItem>
+                <asp:MenuItem Text="About" Value="About"></asp:MenuItem>
+                <asp:MenuItem Text="Feedback" Value="Feedback"></asp:MenuItem>
+            </Items>
+        </asp:Menu>
+    
+    </div>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>
