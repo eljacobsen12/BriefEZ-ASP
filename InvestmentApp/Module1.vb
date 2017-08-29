@@ -1,10 +1,16 @@
 ﻿Imports System.Text.RegularExpressions
 Imports System.Data.OleDb
 Imports Microsoft.Office.Interop.Excel
+Imports System.IO
+Imports System.Net
 
 Module Module1
 
-    'Calculate Team Grade from Spreadsheet Row
+    '***********************************
+    '*********COMMON FUNCTIONS**********
+    '***********************************
+
+    'MARCH MADNESS: Calculate Team Grade from Spreadsheet Row
     Public Function calculateTeamGrade(ByRef dr As DataRow)
         Dim intAPRank As Integer = dr.Item(0)
         Dim intBPIRank As Integer = dr.Item(2)
@@ -35,6 +41,13 @@ Module Module1
         Return intTeamGrade
     End Function
 
+    'Calculate Implied Probability
+    Public Function getImpliedProbability(ByRef intRisk As Integer, ByRef intReturn As Integer)
+        Dim intImpliedProbability As Integer = Nothing
+        intImpliedProbability = intRisk / intReturn
+        Return intImpliedProbability
+    End Function
+
     'Convert Decimal Odds to Line Odds
     Public Function getLineOdds(ByRef intDecimalOdds As Integer)
         Dim intLineOdds As Integer
@@ -49,6 +62,26 @@ Module Module1
             End If
         End If
         Return intLineOdds
+    End Function
+
+    'Return Decimal Odds based on Line Odds
+    Public Function getDecimalOdds(ByVal odds As Integer)
+        Dim decimalOdds As Decimal = Nothing
+        If CInt(odds) > 0 Then
+            decimalOdds = CInt(odds) / 100
+        ElseIf CInt(odds) < 100 Then
+            decimalOdds = Math.Abs(CInt(odds) / 10)
+            decimalOdds = (10 / CInt(odds))
+        Else
+            decimalOdds = 1
+        End If
+        Return decimalOdds
+    End Function
+
+    'Convert Line Odds to Percentage Odds
+    Public Function lineToPercent(ByRef intLine As Integer)
+        Dim intPercent As Integer = intLine / 100
+        Return intPercent
     End Function
 
     'Convert Line Odds to Decimal Odds
@@ -101,13 +134,6 @@ Module Module1
 
         End Select
         Return intProfit
-    End Function
-
-    'Calculate Implied Probability
-    Public Function getImpliedProbability(ByRef intRisk As Integer, ByRef intReturn As Integer)
-        Dim intImpliedProbability As Integer = Nothing
-        intImpliedProbability = intRisk / intReturn
-        Return intImpliedProbability
     End Function
 
     'Returns Odds for NCAA Basketball based on Spread
@@ -404,47 +430,10 @@ Module Module1
         Return intFavorite
     End Function
 
-    'Imports an excel file, returns Dataset
-    Public Function importExcel(ByVal strPath As String)
-        Dim strSheetName As String = Nothing
-        Dim strConnection As String = Nothing
-        Dim strSQL As String = Nothing
-        Dim dsDataSet As New DataSet
-        Dim dtTablesList As DataTable = Nothing
-        Dim oleExcelCommand As OleDb.OleDbCommand = Nothing
-        Dim oleExcelConnection As OleDb.OleDbConnection = Nothing
 
-        strConnection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" & strPath & ";Extended Properties=""Excel 12.0 Xml;HDR=YES;IMEX=1"";"     'HDR=Yes: first row has column names not data; IMEX=1 treats all data as text
-
-        oleExcelConnection = New OleDb.OleDbConnection(strConnection)
-        oleExcelConnection.Open()
-
-        dtTablesList = oleExcelConnection.GetSchema("Tables")
-
-        If dtTablesList.Rows.Count > 0 Then
-            strSheetName = dtTablesList.Rows(0)("TABLE_NAME").ToString
-        End If
-
-        dtTablesList.Clear()
-        dtTablesList.Dispose()
-
-        If strSheetName <> "" Then
-            oleExcelCommand = oleExcelConnection.CreateCommand()
-            oleExcelCommand.CommandText = "Select * FROM [" & strSheetName & "]"
-            oleExcelCommand.CommandType = CommandType.Text
-            Dim dataAdapter As New OleDb.OleDbDataAdapter
-            dataAdapter.SelectCommand = oleExcelCommand
-            dataAdapter.Fill(dsDataSet)
-        End If
-        oleExcelConnection.Close()
-        Return dsDataSet
-    End Function
-
-    'Convert Line Odds to Percentage Odds
-    Public Function lineToPercent(ByRef intLine As Integer)
-        Dim intPercent As Integer = intLine / 100
-        Return intPercent
-    End Function
+    '****************************
+    '*******EVENT HANDLERS*******
+    '****************************
 
     'Handle Calculate Buttons
     Public Sub CalculateButton(ByRef strSport As String, ByRef strBetType As String)
@@ -519,6 +508,46 @@ Module Module1
                 End Select
         End Select
     End Sub
+
+    '**************************************
+    '*************EXCEL FUNCTIONS**********
+    '**************************************
+
+    'Imports an excel file, returns Dataset
+    Public Function importExcel(ByVal strPath As String)
+        Dim strSheetName As String = Nothing
+        Dim strConnection As String = Nothing
+        Dim strSQL As String = Nothing
+        Dim dsDataSet As New DataSet
+        Dim dtTablesList As DataTable = Nothing
+        Dim oleExcelCommand As OleDb.OleDbCommand = Nothing
+        Dim oleExcelConnection As OleDb.OleDbConnection = Nothing
+
+        strConnection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" & strPath & ";Extended Properties=""Excel 12.0 Xml;HDR=YES;IMEX=1"";"     'HDR=Yes: first row has column names not data; IMEX=1 treats all data as text
+
+        oleExcelConnection = New OleDb.OleDbConnection(strConnection)
+        oleExcelConnection.Open()
+
+        dtTablesList = oleExcelConnection.GetSchema("Tables")
+
+        If dtTablesList.Rows.Count > 0 Then
+            strSheetName = dtTablesList.Rows(0)("TABLE_NAME").ToString
+        End If
+
+        dtTablesList.Clear()
+        dtTablesList.Dispose()
+
+        If strSheetName <> "" Then
+            oleExcelCommand = oleExcelConnection.CreateCommand()
+            oleExcelCommand.CommandText = "Select * FROM [" & strSheetName & "]"
+            oleExcelCommand.CommandType = CommandType.Text
+            Dim dataAdapter As New OleDb.OleDbDataAdapter
+            dataAdapter.SelectCommand = oleExcelCommand
+            dataAdapter.Fill(dsDataSet)
+        End If
+        oleExcelConnection.Close()
+        Return dsDataSet
+    End Function
 
     'Returns the number of the next empty Row in Excel.Workheet
     Public Function getNextRowWS(ByRef ws As Worksheet)
@@ -610,19 +639,6 @@ Module Module1
         Return ds
     End Function
 
-    'Return Decimal Odds based on Line Odds
-    Public Function getDecimalOdds(ByVal odds As Integer)
-        Dim decimalOdds As Decimal = Nothing
-        If CInt(odds) > 0 Then
-            decimalOdds = CInt(odds) / 100
-        ElseIf CInt(odds) < 100 Then
-            decimalOdds = Math.Abs(CInt(odds) / 10)
-            decimalOdds = (10 / CInt(odds))
-        Else
-            decimalOdds = 1
-        End If
-        Return decimalOdds
-    End Function
 
 
 End Module

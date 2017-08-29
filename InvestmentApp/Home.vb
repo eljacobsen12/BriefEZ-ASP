@@ -98,13 +98,17 @@ Public Class MoneyManager
         End If
     End Sub
 
-    Private Sub ToolsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ToolsToolStripMenuItem.Click
-        ToolsForm.Show()
-    End Sub
 
     Private Sub btnBovadaLinkSpread_Click(sender As Object, e As EventArgs) Handles btnBovadaLinkSpread.Click, btnBovadaLinkMoneyline.Click, btnBovadaLinkOU.Click
         Dim webAddress As String = "https://sports.bovada.lv/"
         Process.Start(webAddress)
     End Sub
 
+    Private Sub WebScraperTestToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles WebScraperTestToolStripMenuItem.Click
+        WebScraperTEST.Show()
+    End Sub
+
+    Private Sub OtherToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OtherToolStripMenuItem.Click
+        ToolsForm.Show()
+    End Sub
 End Class

@@ -25,6 +25,8 @@ Partial Class MoneyManager
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MoneyManager))
         Me.tabsBets = New System.Windows.Forms.TabControl()
         Me.tabSpread = New System.Windows.Forms.TabPage()
+        Me.radTeam2Spread = New System.Windows.Forms.RadioButton()
+        Me.radTeam1Spread = New System.Windows.Forms.RadioButton()
         Me.btnBovadaLinkSpread = New System.Windows.Forms.Button()
         Me.txtOdds2Spread = New System.Windows.Forms.TextBox()
         Me.lblOddsSpread = New System.Windows.Forms.Label()
@@ -108,8 +110,8 @@ Partial Class MoneyManager
         Me.CompareTeamsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveBracketToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.radTeam1Spread = New System.Windows.Forms.RadioButton()
-        Me.radTeam2Spread = New System.Windows.Forms.RadioButton()
+        Me.WebScraperTestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OtherToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.tabsBets.SuspendLayout()
         Me.tabSpread.SuspendLayout()
         Me.tabMoneyline.SuspendLayout()
@@ -165,6 +167,26 @@ Partial Class MoneyManager
         Me.tabSpread.Size = New System.Drawing.Size(903, 269)
         Me.tabSpread.TabIndex = 1
         Me.tabSpread.Text = "Spread"
+        '
+        'radTeam2Spread
+        '
+        Me.radTeam2Spread.AutoSize = True
+        Me.radTeam2Spread.Location = New System.Drawing.Point(673, 198)
+        Me.radTeam2Spread.Name = "radTeam2Spread"
+        Me.radTeam2Spread.Size = New System.Drawing.Size(14, 13)
+        Me.radTeam2Spread.TabIndex = 150
+        Me.radTeam2Spread.TabStop = True
+        Me.radTeam2Spread.UseVisualStyleBackColor = True
+        '
+        'radTeam1Spread
+        '
+        Me.radTeam1Spread.AutoSize = True
+        Me.radTeam1Spread.Location = New System.Drawing.Point(673, 136)
+        Me.radTeam1Spread.Name = "radTeam1Spread"
+        Me.radTeam1Spread.Size = New System.Drawing.Size(14, 13)
+        Me.radTeam1Spread.TabIndex = 149
+        Me.radTeam1Spread.TabStop = True
+        Me.radTeam1Spread.UseVisualStyleBackColor = True
         '
         'btnBovadaLinkSpread
         '
@@ -857,45 +879,45 @@ Partial Class MoneyManager
         Me.StocksToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WatchListToolStripMenuItem, Me.PortfolioToolStripMenuItem})
         Me.StocksToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 12.0!)
         Me.StocksToolStripMenuItem.Name = "StocksToolStripMenuItem"
-        Me.StocksToolStripMenuItem.Size = New System.Drawing.Size(67, 25)
+        Me.StocksToolStripMenuItem.Size = New System.Drawing.Size(66, 25)
         Me.StocksToolStripMenuItem.Text = "Stocks"
         '
         'WatchListToolStripMenuItem
         '
         Me.WatchListToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddStockToolStripMenuItem, Me.RemoveStockToolStripMenuItem})
         Me.WatchListToolStripMenuItem.Name = "WatchListToolStripMenuItem"
-        Me.WatchListToolStripMenuItem.Size = New System.Drawing.Size(152, 26)
+        Me.WatchListToolStripMenuItem.Size = New System.Drawing.Size(151, 26)
         Me.WatchListToolStripMenuItem.Text = "Watch List"
         '
         'AddStockToolStripMenuItem
         '
         Me.AddStockToolStripMenuItem.Name = "AddStockToolStripMenuItem"
-        Me.AddStockToolStripMenuItem.Size = New System.Drawing.Size(179, 26)
+        Me.AddStockToolStripMenuItem.Size = New System.Drawing.Size(178, 26)
         Me.AddStockToolStripMenuItem.Text = "Add Stock"
         '
         'RemoveStockToolStripMenuItem
         '
         Me.RemoveStockToolStripMenuItem.Name = "RemoveStockToolStripMenuItem"
-        Me.RemoveStockToolStripMenuItem.Size = New System.Drawing.Size(179, 26)
+        Me.RemoveStockToolStripMenuItem.Size = New System.Drawing.Size(178, 26)
         Me.RemoveStockToolStripMenuItem.Text = "Remove Stock"
         '
         'PortfolioToolStripMenuItem
         '
         Me.PortfolioToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddStockToolStripMenuItem1, Me.RemoveStockToolStripMenuItem1})
         Me.PortfolioToolStripMenuItem.Name = "PortfolioToolStripMenuItem"
-        Me.PortfolioToolStripMenuItem.Size = New System.Drawing.Size(152, 26)
+        Me.PortfolioToolStripMenuItem.Size = New System.Drawing.Size(151, 26)
         Me.PortfolioToolStripMenuItem.Text = "Portfolio"
         '
         'AddStockToolStripMenuItem1
         '
         Me.AddStockToolStripMenuItem1.Name = "AddStockToolStripMenuItem1"
-        Me.AddStockToolStripMenuItem1.Size = New System.Drawing.Size(179, 26)
+        Me.AddStockToolStripMenuItem1.Size = New System.Drawing.Size(178, 26)
         Me.AddStockToolStripMenuItem1.Text = "Add Stock"
         '
         'RemoveStockToolStripMenuItem1
         '
         Me.RemoveStockToolStripMenuItem1.Name = "RemoveStockToolStripMenuItem1"
-        Me.RemoveStockToolStripMenuItem1.Size = New System.Drawing.Size(179, 26)
+        Me.RemoveStockToolStripMenuItem1.Size = New System.Drawing.Size(178, 26)
         Me.RemoveStockToolStripMenuItem1.Text = "Remove Stock"
         '
         'BetsToolStripMenuItem
@@ -923,41 +945,34 @@ Partial Class MoneyManager
         'CompareTeamsToolStripMenuItem
         '
         Me.CompareTeamsToolStripMenuItem.Name = "CompareTeamsToolStripMenuItem"
-        Me.CompareTeamsToolStripMenuItem.Size = New System.Drawing.Size(193, 26)
+        Me.CompareTeamsToolStripMenuItem.Size = New System.Drawing.Size(191, 26)
         Me.CompareTeamsToolStripMenuItem.Text = "Compare Teams"
         '
         'SaveBracketToolStripMenuItem
         '
         Me.SaveBracketToolStripMenuItem.Name = "SaveBracketToolStripMenuItem"
-        Me.SaveBracketToolStripMenuItem.Size = New System.Drawing.Size(193, 26)
+        Me.SaveBracketToolStripMenuItem.Size = New System.Drawing.Size(191, 26)
         Me.SaveBracketToolStripMenuItem.Text = "Save Bracket"
         '
         'ToolsToolStripMenuItem
         '
+        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WebScraperTestToolStripMenuItem, Me.OtherToolStripMenuItem})
         Me.ToolsToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 12.0!)
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
-        Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(59, 25)
+        Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(57, 25)
         Me.ToolsToolStripMenuItem.Text = "Tools"
         '
-        'radTeam1Spread
+        'WebScraperTestToolStripMenuItem
         '
-        Me.radTeam1Spread.AutoSize = True
-        Me.radTeam1Spread.Location = New System.Drawing.Point(673, 136)
-        Me.radTeam1Spread.Name = "radTeam1Spread"
-        Me.radTeam1Spread.Size = New System.Drawing.Size(14, 13)
-        Me.radTeam1Spread.TabIndex = 149
-        Me.radTeam1Spread.TabStop = True
-        Me.radTeam1Spread.UseVisualStyleBackColor = True
+        Me.WebScraperTestToolStripMenuItem.Name = "WebScraperTestToolStripMenuItem"
+        Me.WebScraperTestToolStripMenuItem.Size = New System.Drawing.Size(190, 26)
+        Me.WebScraperTestToolStripMenuItem.Text = "WebScraperTest"
         '
-        'radTeam2Spread
+        'OtherToolStripMenuItem
         '
-        Me.radTeam2Spread.AutoSize = True
-        Me.radTeam2Spread.Location = New System.Drawing.Point(673, 198)
-        Me.radTeam2Spread.Name = "radTeam2Spread"
-        Me.radTeam2Spread.Size = New System.Drawing.Size(14, 13)
-        Me.radTeam2Spread.TabIndex = 150
-        Me.radTeam2Spread.TabStop = True
-        Me.radTeam2Spread.UseVisualStyleBackColor = True
+        Me.OtherToolStripMenuItem.Name = "OtherToolStripMenuItem"
+        Me.OtherToolStripMenuItem.Size = New System.Drawing.Size(190, 26)
+        Me.OtherToolStripMenuItem.Text = "Other"
         '
         'MoneyManager
         '
@@ -1076,4 +1091,6 @@ Partial Class MoneyManager
     Friend WithEvents btnBovadaLinkMoneyline As Button
     Friend WithEvents radTeam2Spread As RadioButton
     Friend WithEvents radTeam1Spread As RadioButton
+    Friend WithEvents WebScraperTestToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents OtherToolStripMenuItem As ToolStripMenuItem
 End Class
