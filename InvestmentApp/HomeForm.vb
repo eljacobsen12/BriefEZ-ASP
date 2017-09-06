@@ -38,7 +38,7 @@ Public Class MoneyManager
     End Sub
 
     Private Sub CompareTeamsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CompareTeamsToolStripMenuItem.Click
-        MarchMadness.Show()
+        MarchMadnessForm.Show()
     End Sub
 
     Private Sub txtSpread1Spread_TextChanged(sender As Object, e As EventArgs) Handles txtSpread1Spread.TextChanged, txtSpread2Spread.TextChanged, txtOdds1Spread.TextChanged, txtOdds2Spread.TextChanged, txtStakeSpread.TextChanged
@@ -105,7 +105,7 @@ Public Class MoneyManager
     End Sub
 
     Private Sub WebScraperTestToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles WebScraperTestToolStripMenuItem.Click
-        WebScraperTEST.Show()
+        WebScraperForm.Show()
     End Sub
 
     Private Sub OtherToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OtherToolStripMenuItem.Click

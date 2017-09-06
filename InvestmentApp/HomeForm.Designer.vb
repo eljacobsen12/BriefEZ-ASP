@@ -965,13 +965,13 @@ Partial Class MoneyManager
         'WebScraperTestToolStripMenuItem
         '
         Me.WebScraperTestToolStripMenuItem.Name = "WebScraperTestToolStripMenuItem"
-        Me.WebScraperTestToolStripMenuItem.Size = New System.Drawing.Size(190, 26)
-        Me.WebScraperTestToolStripMenuItem.Text = "WebScraperTest"
+        Me.WebScraperTestToolStripMenuItem.Size = New System.Drawing.Size(164, 26)
+        Me.WebScraperTestToolStripMenuItem.Text = "WebScraper"
         '
         'OtherToolStripMenuItem
         '
         Me.OtherToolStripMenuItem.Name = "OtherToolStripMenuItem"
-        Me.OtherToolStripMenuItem.Size = New System.Drawing.Size(190, 26)
+        Me.OtherToolStripMenuItem.Size = New System.Drawing.Size(164, 26)
         Me.OtherToolStripMenuItem.Text = "Other"
         '
         'MoneyManager

@@ -1,7 +1,7 @@
 ﻿Imports System.Data.SqlClient
 
-Public Class MarchMadness
-    Private strDataSource As String = "E:\InvestmentApp\InvestmentApp\MarchMadnessData.xlsx"  '"C:\Users\eljac\Desktop\MyApps\InvestmentApp\InvestmentApp\MarchMadnessData.xlsx"
+Public Class MarchMadnessForm
+    Private strDataSource As String = "E:\EJ\MyPrograms\MoneyManager\Application\InvestmentApp\MarchMadnessData.xlsx"  '"C:\Users\eljac\Desktop\MyApps\InvestmentApp\InvestmentApp\MarchMadnessData.xlsx"
 
     Private Sub btnGetData_Click(sender As Object, e As EventArgs) Handles btnGetData.Click
         Dim strTeam1 As String = txtTeam1.Text

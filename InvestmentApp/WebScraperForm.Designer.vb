@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class WebScraperTEST
+Partial Class WebScraperForm
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -55,6 +55,7 @@ Partial Class WebScraperTEST
         'btnExit
         '
         Me.btnExit.BackColor = System.Drawing.Color.Azure
+        Me.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnExit.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnExit.Location = New System.Drawing.Point(550, 95)
         Me.btnExit.Name = "btnExit"
@@ -113,7 +114,7 @@ Partial Class WebScraperTEST
         '
         Me.cmbSelectSport.BackColor = System.Drawing.Color.Honeydew
         Me.cmbSelectSport.FormattingEnabled = True
-        Me.cmbSelectSport.Items.AddRange(New Object() {"NFL", "NBA", "NCAA BASKETBALL", "NCAA FOOTBALL"})
+        Me.cmbSelectSport.Items.AddRange(New Object() {"NFL", "NBA", "NCAA Basketball", "NCAA Football"})
         Me.cmbSelectSport.Location = New System.Drawing.Point(121, 40)
         Me.cmbSelectSport.Name = "cmbSelectSport"
         Me.cmbSelectSport.Size = New System.Drawing.Size(350, 28)

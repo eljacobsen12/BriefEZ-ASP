@@ -519,7 +519,7 @@ Module Module1
         Dim strConnection As String = Nothing
         Dim strSQL As String = Nothing
         Dim dsDataSet As New DataSet
-        Dim dtTablesList As DataTable = Nothing
+        Dim dtTablesList As Data.DataTable = Nothing
         Dim oleExcelCommand As OleDb.OleDbCommand = Nothing
         Dim oleExcelConnection As OleDb.OleDbConnection = Nothing
 
@@ -639,6 +639,28 @@ Module Module1
         Return ds
     End Function
 
+    Public Function UrlIsValid(ByVal url As String) As Boolean
+        Dim isValid As Boolean = False
+        If url.ToLower().StartsWith("www.") Then url = "http://" & url
+
+        Dim webResponse As HttpWebResponse = Nothing
+        Try
+            Dim webRequest As HttpWebRequest = HttpWebRequest.Create(url)
+            webResponse = DirectCast(webRequest.GetResponse(), HttpWebResponse)
+            Return True
+        Catch ex As Exception
+            Return False
+        Finally
+            If Not (webResponse Is Nothing) Then webResponse.Close()
+        End Try
+    End Function
+
+    Public Function checkURL(ByVal url As String)
+        If Not url.ToLower.StartsWith("http://") AndAlso Not url.ToLower.StartsWith("https://") Then
+            url = "http://" & url
+        End If
+        Return url
+    End Function
 
 
 End Module
