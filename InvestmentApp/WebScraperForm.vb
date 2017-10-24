@@ -7,30 +7,31 @@ Imports HtmlAgilityPack
 Public Class WebScraperForm
     Private Sub WebScraperTEST_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         cmbSelectSeason.DataSource = {"2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002"}
-        cmbSelectSport.DataSource = {"NFL", "NBA", "NCAA Football", "NCAA Basketball"}
-        cmbSelectTeam.DataSource = {} 'PULL TEAMS FROM DB TABLE
+        cmbSelectSport.DataSource = {"NFL", "NBA", "NCAA FOOTBALL", "NCAA BASKETBALL"}
+        cmbSelectTeam1.DataSource = ScrapeTeams(cmbSelectSport.Text) 'PULL TEAMS FROM DB TABLE
     End Sub
+
 
     Private Sub btnExtract_Click(sender As Object, e As EventArgs) Handles btnExtract.Click
         dgvTableDisplay.Rows.Clear()
         Select Case cmbSelectSport.Text
             Case "NFL"
-                If cmbSelectTeam.Text <> Nothing Then
+                If cmbSelectTeam1.Text <> Nothing Then
                     'ScrapeNFLTeam()
                 End If
                 ScrapeNFL(cmbSelectStat.Text)
             Case "NBA"
-                If cmbSelectTeam.Text <> Nothing Then
+                If cmbSelectTeam1.Text <> Nothing Then
                     'ScrapeNBATeam()
                 End If
                 ScrapeNBA(cmbSelectStat.Text)
             Case "NCAA Football"
-                If cmbSelectTeam.Text <> Nothing Then
+                If cmbSelectTeam1.Text <> Nothing Then
                     'ScrapeNCAAFootballTeam()
                 End If
                 ScrapeNCAAFootball(cmbSelectStat.Text)
             Case "NCAA Basketball"
-                If cmbSelectTeam.Text <> Nothing Then
+                If cmbSelectTeam1.Text <> Nothing Then
                     'ScrapeNCAABasketballTeam()
                 End If
                 ScrapeNCAABasketball(cmbSelectStat.Text)
@@ -45,14 +46,45 @@ Public Class WebScraperForm
     '**********************************************
     '**  Scrape and filter with HTMLAgilityPack  **
     '**********************************************
+    Public Function ScrapeTeams(ByRef Sport As String) As List(Of String)
+        Dim lstChildren As New List(Of String)
+        Select Case Sport
+            Case "NCAA BASKETBALL"
+                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/scoring/sort/points/year/", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                Dim children As HtmlNodeCollection = Nothing
+                For i As Integer = 1 To nodes.Count - 1
+                    children = nodes(i).ChildNodes
+                    lstChildren.Add(children.Item(1).InnerText)
+                Next
+            Case "NCAA FOOTBALL"
+                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/total/sort/totalYards/year/", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                Dim children As HtmlNodeCollection = Nothing
+                For i As Integer = 1 To nodes.Count - 1
+                    children = nodes(i).ChildNodes
+                    lstChildren.Add(children.Item(1).InnerText)
+                Next
+            Case "NBA"
+                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NBA", "http://www.espn.com/nba/statistics/team/_/stat/offense/year/", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                Dim children As HtmlNodeCollection = Nothing
+                For i As Integer = 1 To nodes.Count - 1
+                    children = nodes(i).ChildNodes
+                    If children.Item(1).InnerText <> "TEAM" Then
+                        lstChildren.Add(children.Item(1).InnerText)
+                    End If
+                Next
+            Case "NFL"
+                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/total/year/", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                Dim children As HtmlNodeCollection = Nothing
+                For i As Integer = 1 To nodes.Count - 1
+                    children = nodes(i).ChildNodes
+                    lstChildren.Add(children.Item(1).InnerText)
+                Next
+        End Select
+        Return lstChildren
+    End Function
+
     Public Sub ScrapeNCAABasketball(ByVal Tag As String, Optional ByVal Team As String = Nothing)
         Select Case Tag
-            Case "TEAMS"
-                Dim baseURI As String = checkURL("www.espn.com/mens-college-basketball/teams")
-                Dim doc As HtmlDocument = New HtmlWeb().Load(baseURI)  'Get raw HTML of page
-                Dim teams As HtmlNodeCollection = doc.DocumentNode.SelectNodes("//div")    'Get collection of table elements
-
-                lblTableName.Text = teams.Nodes.First.InnerText
             Case "TEAM SCHEDULE"
                 '******** GET TEAM ID *********
                 Dim teamID As Integer
@@ -504,6 +536,19 @@ Public Class WebScraperForm
             Case "NFL"
                 cmbSelectStat.DataSource = {"TEAM STATS - TOTAL YARDS OFF", "TEAM STATS - TOTAL YARDS DEF", "TEAM STATS - DOWNS OWN", "TEAM STATS - DOWNS OPP", "TEAM STATS - PASSING YARDS OFF", "TEAM STATS - PASSING YARDS DEF", "TEAM STATS - RUSHING YARDS OFF", "TEAM STATS - RUSHING YARDS DEF", "TEAM STATS - RECEIVING OFF", "TEAM STATS - RECEIVING DEF", "TEAM STATS - RETURNING OWN", "TEAM STATS - RETURNING OPP", "TEAM STATS - KICKING OWN", "TEAM STATS - KICKING OPP", "TEAM STATS- PUNTING OWN", "TEAM STATS- PUNTING OPP", "TEAM STATS - DEFENSE OWN", "TEAM STATS - DEFENSE OPP", "TEAM STATS - GIVE/TAKE", "TEAM SCHEDULE", "TEAM STATS", "TEAM ROSTER"}
         End Select
+    End Sub
+
+    Private Sub cmbSelectSport_TextChanged(sender As Object, e As EventArgs) Handles cmbSelectSport.TextChanged
+        cmbSelectTeam1.DataSource = ScrapeTeams(cmbSelectSport.Text) 'PULL TEAMS FROM DB TABLE
+    End Sub
+
+    Private Sub cmbSelectTeam1_TextChanged(sender As Object, e As EventArgs) Handles cmbSelectTeam1.TextChanged
+        If cmbSelectTeam1.Text <> "ALL" Then
+            cmbSelectTeam2.Enabled = True
+            cmbSelectTeam2.DataSource = ScrapeTeams(cmbSelectSport.Text) 'PULL TEAMS FROM DB TABLE
+        Else
+            cmbSelectTeam2.Enabled = False
+        End If
     End Sub
 
 End Class

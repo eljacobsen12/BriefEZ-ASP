@@ -25,6 +25,7 @@ Partial Class MoneyManager
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MoneyManager))
         Me.tabsBets = New System.Windows.Forms.TabControl()
         Me.tabSpread = New System.Windows.Forms.TabPage()
+        Me.btnDKLinkSpread = New System.Windows.Forms.Button()
         Me.radTeam2Spread = New System.Windows.Forms.RadioButton()
         Me.radTeam1Spread = New System.Windows.Forms.RadioButton()
         Me.btnBovadaLinkSpread = New System.Windows.Forms.Button()
@@ -47,6 +48,7 @@ Partial Class MoneyManager
         Me.lblTeamSpread = New System.Windows.Forms.Label()
         Me.txtTeam1Spread = New System.Windows.Forms.TextBox()
         Me.tabMoneyline = New System.Windows.Forms.TabPage()
+        Me.btnDKLinkMoneyline = New System.Windows.Forms.Button()
         Me.btnBovadaLinkMoneyline = New System.Windows.Forms.Button()
         Me.btnCommitMoneyline = New System.Windows.Forms.Button()
         Me.lblWinLossMoneyline = New System.Windows.Forms.Label()
@@ -66,6 +68,7 @@ Partial Class MoneyManager
         Me.lblTeamMoneyline = New System.Windows.Forms.Label()
         Me.txtTeam1Moneyline = New System.Windows.Forms.TextBox()
         Me.tabOverUnder = New System.Windows.Forms.TabPage()
+        Me.btnDKLinkOU = New System.Windows.Forms.Button()
         Me.btnBovadaLinkOU = New System.Windows.Forms.Button()
         Me.txtLine2OU = New System.Windows.Forms.TextBox()
         Me.lblLineOU = New System.Windows.Forms.Label()
@@ -140,6 +143,7 @@ Partial Class MoneyManager
         '
         Me.tabSpread.BackColor = System.Drawing.Color.WhiteSmoke
         Me.tabSpread.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.tabSpread.Controls.Add(Me.btnDKLinkSpread)
         Me.tabSpread.Controls.Add(Me.radTeam2Spread)
         Me.tabSpread.Controls.Add(Me.radTeam1Spread)
         Me.tabSpread.Controls.Add(Me.btnBovadaLinkSpread)
@@ -168,12 +172,27 @@ Partial Class MoneyManager
         Me.tabSpread.TabIndex = 1
         Me.tabSpread.Text = "Spread"
         '
+        'btnDKLinkSpread
+        '
+        Me.btnDKLinkSpread.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.btnDKLinkSpread.BackColor = System.Drawing.SystemColors.Control
+        Me.btnDKLinkSpread.BackgroundImage = CType(resources.GetObject("btnDKLinkSpread.BackgroundImage"), System.Drawing.Image)
+        Me.btnDKLinkSpread.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
+        Me.btnDKLinkSpread.Enabled = False
+        Me.btnDKLinkSpread.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnDKLinkSpread.Location = New System.Drawing.Point(769, 22)
+        Me.btnDKLinkSpread.Name = "btnDKLinkSpread"
+        Me.btnDKLinkSpread.Size = New System.Drawing.Size(65, 40)
+        Me.btnDKLinkSpread.TabIndex = 151
+        Me.btnDKLinkSpread.UseVisualStyleBackColor = False
+        Me.btnDKLinkSpread.Visible = False
+        '
         'radTeam2Spread
         '
         Me.radTeam2Spread.AutoSize = True
-        Me.radTeam2Spread.Location = New System.Drawing.Point(673, 198)
+        Me.radTeam2Spread.Location = New System.Drawing.Point(686, 211)
         Me.radTeam2Spread.Name = "radTeam2Spread"
-        Me.radTeam2Spread.Size = New System.Drawing.Size(14, 13)
+        Me.radTeam2Spread.Size = New System.Drawing.Size(17, 16)
         Me.radTeam2Spread.TabIndex = 150
         Me.radTeam2Spread.TabStop = True
         Me.radTeam2Spread.UseVisualStyleBackColor = True
@@ -181,9 +200,9 @@ Partial Class MoneyManager
         'radTeam1Spread
         '
         Me.radTeam1Spread.AutoSize = True
-        Me.radTeam1Spread.Location = New System.Drawing.Point(673, 136)
+        Me.radTeam1Spread.Location = New System.Drawing.Point(686, 149)
         Me.radTeam1Spread.Name = "radTeam1Spread"
-        Me.radTeam1Spread.Size = New System.Drawing.Size(14, 13)
+        Me.radTeam1Spread.Size = New System.Drawing.Size(17, 16)
         Me.radTeam1Spread.TabIndex = 149
         Me.radTeam1Spread.TabStop = True
         Me.radTeam1Spread.UseVisualStyleBackColor = True
@@ -202,9 +221,9 @@ Partial Class MoneyManager
         'txtOdds2Spread
         '
         Me.txtOdds2Spread.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtOdds2Spread.Location = New System.Drawing.Point(396, 180)
+        Me.txtOdds2Spread.Location = New System.Drawing.Point(404, 189)
         Me.txtOdds2Spread.Name = "txtOdds2Spread"
-        Me.txtOdds2Spread.Size = New System.Drawing.Size(100, 44)
+        Me.txtOdds2Spread.Size = New System.Drawing.Size(100, 53)
         Me.txtOdds2Spread.TabIndex = 110
         '
         'lblOddsSpread
@@ -213,16 +232,16 @@ Partial Class MoneyManager
         Me.lblOddsSpread.Font = New System.Drawing.Font("Times New Roman", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblOddsSpread.Location = New System.Drawing.Point(399, 90)
         Me.lblOddsSpread.Name = "lblOddsSpread"
-        Me.lblOddsSpread.Size = New System.Drawing.Size(97, 23)
+        Me.lblOddsSpread.Size = New System.Drawing.Size(128, 31)
         Me.lblOddsSpread.TabIndex = 111
         Me.lblOddsSpread.Text = "Odds (+/-)"
         '
         'txtOdds1Spread
         '
         Me.txtOdds1Spread.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtOdds1Spread.Location = New System.Drawing.Point(396, 118)
+        Me.txtOdds1Spread.Location = New System.Drawing.Point(404, 127)
         Me.txtOdds1Spread.Name = "txtOdds1Spread"
-        Me.txtOdds1Spread.Size = New System.Drawing.Size(100, 44)
+        Me.txtOdds1Spread.Size = New System.Drawing.Size(100, 53)
         Me.txtOdds1Spread.TabIndex = 109
         '
         'lblWinLossSpread
@@ -231,7 +250,7 @@ Partial Class MoneyManager
         Me.lblWinLossSpread.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblWinLossSpread.Location = New System.Drawing.Point(265, 21)
         Me.lblWinLossSpread.Name = "lblWinLossSpread"
-        Me.lblWinLossSpread.Size = New System.Drawing.Size(154, 36)
+        Me.lblWinLossSpread.Size = New System.Drawing.Size(193, 45)
         Me.lblWinLossSpread.TabIndex = 108
         Me.lblWinLossSpread.Text = "Win/Loss:"
         '
@@ -240,9 +259,9 @@ Partial Class MoneyManager
         Me.cmbWinLossSpread.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbWinLossSpread.FormattingEnabled = True
         Me.cmbWinLossSpread.Items.AddRange(New Object() {"Win", "Loss"})
-        Me.cmbWinLossSpread.Location = New System.Drawing.Point(425, 19)
+        Me.cmbWinLossSpread.Location = New System.Drawing.Point(464, 19)
         Me.cmbWinLossSpread.Name = "cmbWinLossSpread"
-        Me.cmbWinLossSpread.Size = New System.Drawing.Size(158, 44)
+        Me.cmbWinLossSpread.Size = New System.Drawing.Size(158, 54)
         Me.cmbWinLossSpread.TabIndex = 107
         '
         'lblSelectionSpread
@@ -251,16 +270,16 @@ Partial Class MoneyManager
         Me.lblSelectionSpread.Font = New System.Drawing.Font("Times New Roman", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSelectionSpread.Location = New System.Drawing.Point(637, 92)
         Me.lblSelectionSpread.Name = "lblSelectionSpread"
-        Me.lblSelectionSpread.Size = New System.Drawing.Size(87, 23)
+        Me.lblSelectionSpread.Size = New System.Drawing.Size(116, 31)
         Me.lblSelectionSpread.TabIndex = 106
         Me.lblSelectionSpread.Text = "Selection"
         '
         'btnCommitSpread
         '
         Me.btnCommitSpread.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCommitSpread.Location = New System.Drawing.Point(726, 139)
+        Me.btnCommitSpread.Location = New System.Drawing.Point(724, 157)
         Me.btnCommitSpread.Name = "btnCommitSpread"
-        Me.btnCommitSpread.Size = New System.Drawing.Size(157, 62)
+        Me.btnCommitSpread.Size = New System.Drawing.Size(171, 62)
         Me.btnCommitSpread.TabIndex = 9
         Me.btnCommitSpread.Text = "Commit"
         Me.btnCommitSpread.UseVisualStyleBackColor = True
@@ -269,9 +288,9 @@ Partial Class MoneyManager
         '
         Me.txtProfit2Spread.Enabled = False
         Me.txtProfit2Spread.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtProfit2Spread.Location = New System.Drawing.Point(517, 180)
+        Me.txtProfit2Spread.Location = New System.Drawing.Point(525, 189)
         Me.txtProfit2Spread.Name = "txtProfit2Spread"
-        Me.txtProfit2Spread.Size = New System.Drawing.Size(100, 44)
+        Me.txtProfit2Spread.Size = New System.Drawing.Size(100, 53)
         Me.txtProfit2Spread.TabIndex = 89
         '
         'lblProfitSpread
@@ -280,7 +299,7 @@ Partial Class MoneyManager
         Me.lblProfitSpread.Font = New System.Drawing.Font("Times New Roman", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblProfitSpread.Location = New System.Drawing.Point(538, 90)
         Me.lblProfitSpread.Name = "lblProfitSpread"
-        Me.lblProfitSpread.Size = New System.Drawing.Size(59, 23)
+        Me.lblProfitSpread.Size = New System.Drawing.Size(75, 31)
         Me.lblProfitSpread.TabIndex = 88
         Me.lblProfitSpread.Text = "Profit"
         '
@@ -290,7 +309,7 @@ Partial Class MoneyManager
         Me.lblStakeSpread.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblStakeSpread.Location = New System.Drawing.Point(17, 21)
         Me.lblStakeSpread.Name = "lblStakeSpread"
-        Me.lblStakeSpread.Size = New System.Drawing.Size(102, 36)
+        Me.lblStakeSpread.Size = New System.Drawing.Size(129, 45)
         Me.lblStakeSpread.TabIndex = 76
         Me.lblStakeSpread.Text = "Stake:"
         '
@@ -298,25 +317,25 @@ Partial Class MoneyManager
         '
         Me.txtProfit1Spread.Enabled = False
         Me.txtProfit1Spread.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtProfit1Spread.Location = New System.Drawing.Point(517, 118)
+        Me.txtProfit1Spread.Location = New System.Drawing.Point(525, 127)
         Me.txtProfit1Spread.Name = "txtProfit1Spread"
-        Me.txtProfit1Spread.Size = New System.Drawing.Size(100, 44)
+        Me.txtProfit1Spread.Size = New System.Drawing.Size(100, 53)
         Me.txtProfit1Spread.TabIndex = 87
         '
         'txtStakeSpread
         '
         Me.txtStakeSpread.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtStakeSpread.Location = New System.Drawing.Point(125, 19)
+        Me.txtStakeSpread.Location = New System.Drawing.Point(152, 19)
         Me.txtStakeSpread.Name = "txtStakeSpread"
-        Me.txtStakeSpread.Size = New System.Drawing.Size(103, 44)
+        Me.txtStakeSpread.Size = New System.Drawing.Size(103, 53)
         Me.txtStakeSpread.TabIndex = 1
         '
         'txtSpread2Spread
         '
         Me.txtSpread2Spread.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtSpread2Spread.Location = New System.Drawing.Point(271, 180)
+        Me.txtSpread2Spread.Location = New System.Drawing.Point(279, 189)
         Me.txtSpread2Spread.Name = "txtSpread2Spread"
-        Me.txtSpread2Spread.Size = New System.Drawing.Size(100, 44)
+        Me.txtSpread2Spread.Size = New System.Drawing.Size(100, 53)
         Me.txtSpread2Spread.TabIndex = 6
         '
         'lblSpreadSpread
@@ -325,24 +344,24 @@ Partial Class MoneyManager
         Me.lblSpreadSpread.Font = New System.Drawing.Font("Times New Roman", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSpreadSpread.Location = New System.Drawing.Point(267, 90)
         Me.lblSpreadSpread.Name = "lblSpreadSpread"
-        Me.lblSpreadSpread.Size = New System.Drawing.Size(110, 23)
+        Me.lblSpreadSpread.Size = New System.Drawing.Size(147, 31)
         Me.lblSpreadSpread.TabIndex = 82
         Me.lblSpreadSpread.Text = "Spread (+/-)"
         '
         'txtSpread1Spread
         '
         Me.txtSpread1Spread.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtSpread1Spread.Location = New System.Drawing.Point(271, 118)
+        Me.txtSpread1Spread.Location = New System.Drawing.Point(279, 127)
         Me.txtSpread1Spread.Name = "txtSpread1Spread"
-        Me.txtSpread1Spread.Size = New System.Drawing.Size(100, 44)
+        Me.txtSpread1Spread.Size = New System.Drawing.Size(100, 53)
         Me.txtSpread1Spread.TabIndex = 3
         '
         'txtTeam2Spread
         '
         Me.txtTeam2Spread.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTeam2Spread.Location = New System.Drawing.Point(17, 180)
+        Me.txtTeam2Spread.Location = New System.Drawing.Point(25, 189)
         Me.txtTeam2Spread.Name = "txtTeam2Spread"
-        Me.txtTeam2Spread.Size = New System.Drawing.Size(211, 44)
+        Me.txtTeam2Spread.Size = New System.Drawing.Size(211, 53)
         Me.txtTeam2Spread.TabIndex = 5
         '
         'lblTeamSpread
@@ -351,21 +370,22 @@ Partial Class MoneyManager
         Me.lblTeamSpread.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTeamSpread.Location = New System.Drawing.Point(73, 79)
         Me.lblTeamSpread.Name = "lblTeamSpread"
-        Me.lblTeamSpread.Size = New System.Drawing.Size(90, 36)
+        Me.lblTeamSpread.Size = New System.Drawing.Size(115, 45)
         Me.lblTeamSpread.TabIndex = 78
         Me.lblTeamSpread.Text = "Team"
         '
         'txtTeam1Spread
         '
         Me.txtTeam1Spread.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTeam1Spread.Location = New System.Drawing.Point(17, 118)
+        Me.txtTeam1Spread.Location = New System.Drawing.Point(25, 127)
         Me.txtTeam1Spread.Name = "txtTeam1Spread"
-        Me.txtTeam1Spread.Size = New System.Drawing.Size(211, 44)
+        Me.txtTeam1Spread.Size = New System.Drawing.Size(211, 53)
         Me.txtTeam1Spread.TabIndex = 2
         '
         'tabMoneyline
         '
         Me.tabMoneyline.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.tabMoneyline.Controls.Add(Me.btnDKLinkMoneyline)
         Me.tabMoneyline.Controls.Add(Me.btnBovadaLinkMoneyline)
         Me.tabMoneyline.Controls.Add(Me.btnCommitMoneyline)
         Me.tabMoneyline.Controls.Add(Me.lblWinLossMoneyline)
@@ -390,6 +410,21 @@ Partial Class MoneyManager
         Me.tabMoneyline.TabIndex = 3
         Me.tabMoneyline.Text = "Moneyline"
         '
+        'btnDKLinkMoneyline
+        '
+        Me.btnDKLinkMoneyline.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.btnDKLinkMoneyline.BackColor = System.Drawing.SystemColors.Control
+        Me.btnDKLinkMoneyline.BackgroundImage = CType(resources.GetObject("btnDKLinkMoneyline.BackgroundImage"), System.Drawing.Image)
+        Me.btnDKLinkMoneyline.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
+        Me.btnDKLinkMoneyline.Enabled = False
+        Me.btnDKLinkMoneyline.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnDKLinkMoneyline.Location = New System.Drawing.Point(769, 22)
+        Me.btnDKLinkMoneyline.Name = "btnDKLinkMoneyline"
+        Me.btnDKLinkMoneyline.Size = New System.Drawing.Size(65, 40)
+        Me.btnDKLinkMoneyline.TabIndex = 152
+        Me.btnDKLinkMoneyline.UseVisualStyleBackColor = False
+        Me.btnDKLinkMoneyline.Visible = False
+        '
         'btnBovadaLinkMoneyline
         '
         Me.btnBovadaLinkMoneyline.BackColor = System.Drawing.SystemColors.Control
@@ -404,9 +439,9 @@ Partial Class MoneyManager
         'btnCommitMoneyline
         '
         Me.btnCommitMoneyline.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCommitMoneyline.Location = New System.Drawing.Point(662, 136)
+        Me.btnCommitMoneyline.Location = New System.Drawing.Point(653, 150)
         Me.btnCommitMoneyline.Name = "btnCommitMoneyline"
-        Me.btnCommitMoneyline.Size = New System.Drawing.Size(157, 62)
+        Me.btnCommitMoneyline.Size = New System.Drawing.Size(172, 62)
         Me.btnCommitMoneyline.TabIndex = 126
         Me.btnCommitMoneyline.Text = "Commit"
         Me.btnCommitMoneyline.UseVisualStyleBackColor = True
@@ -417,7 +452,7 @@ Partial Class MoneyManager
         Me.lblWinLossMoneyline.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblWinLossMoneyline.Location = New System.Drawing.Point(266, 22)
         Me.lblWinLossMoneyline.Name = "lblWinLossMoneyline"
-        Me.lblWinLossMoneyline.Size = New System.Drawing.Size(154, 36)
+        Me.lblWinLossMoneyline.Size = New System.Drawing.Size(193, 45)
         Me.lblWinLossMoneyline.TabIndex = 125
         Me.lblWinLossMoneyline.Text = "Win/Loss:"
         '
@@ -426,9 +461,9 @@ Partial Class MoneyManager
         Me.cmbWinLossMoneyline.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbWinLossMoneyline.FormattingEnabled = True
         Me.cmbWinLossMoneyline.Items.AddRange(New Object() {"Win", "Loss"})
-        Me.cmbWinLossMoneyline.Location = New System.Drawing.Point(426, 20)
+        Me.cmbWinLossMoneyline.Location = New System.Drawing.Point(465, 22)
         Me.cmbWinLossMoneyline.Name = "cmbWinLossMoneyline"
-        Me.cmbWinLossMoneyline.Size = New System.Drawing.Size(158, 44)
+        Me.cmbWinLossMoneyline.Size = New System.Drawing.Size(158, 54)
         Me.cmbWinLossMoneyline.TabIndex = 124
         '
         'lblSelectionMoneyline
@@ -437,7 +472,7 @@ Partial Class MoneyManager
         Me.lblSelectionMoneyline.Font = New System.Drawing.Font("Times New Roman", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSelectionMoneyline.Location = New System.Drawing.Point(521, 93)
         Me.lblSelectionMoneyline.Name = "lblSelectionMoneyline"
-        Me.lblSelectionMoneyline.Size = New System.Drawing.Size(87, 23)
+        Me.lblSelectionMoneyline.Size = New System.Drawing.Size(116, 31)
         Me.lblSelectionMoneyline.TabIndex = 123
         Me.lblSelectionMoneyline.Text = "Selection"
         '
@@ -445,9 +480,9 @@ Partial Class MoneyManager
         '
         Me.chkTeam2Moneyline.AutoSize = True
         Me.chkTeam2Moneyline.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTeam2Moneyline.Location = New System.Drawing.Point(560, 198)
+        Me.chkTeam2Moneyline.Location = New System.Drawing.Point(566, 204)
         Me.chkTeam2Moneyline.Name = "chkTeam2Moneyline"
-        Me.chkTeam2Moneyline.Size = New System.Drawing.Size(15, 14)
+        Me.chkTeam2Moneyline.Size = New System.Drawing.Size(18, 17)
         Me.chkTeam2Moneyline.TabIndex = 122
         Me.chkTeam2Moneyline.UseVisualStyleBackColor = True
         '
@@ -455,9 +490,9 @@ Partial Class MoneyManager
         '
         Me.chkTeam1Moneyline.AutoSize = True
         Me.chkTeam1Moneyline.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTeam1Moneyline.Location = New System.Drawing.Point(560, 136)
+        Me.chkTeam1Moneyline.Location = New System.Drawing.Point(566, 142)
         Me.chkTeam1Moneyline.Name = "chkTeam1Moneyline"
-        Me.chkTeam1Moneyline.Size = New System.Drawing.Size(15, 14)
+        Me.chkTeam1Moneyline.Size = New System.Drawing.Size(18, 17)
         Me.chkTeam1Moneyline.TabIndex = 121
         Me.chkTeam1Moneyline.UseVisualStyleBackColor = True
         '
@@ -465,9 +500,9 @@ Partial Class MoneyManager
         '
         Me.txtProfit2Moneyline.Enabled = False
         Me.txtProfit2Moneyline.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtProfit2Moneyline.Location = New System.Drawing.Point(401, 181)
+        Me.txtProfit2Moneyline.Location = New System.Drawing.Point(407, 187)
         Me.txtProfit2Moneyline.Name = "txtProfit2Moneyline"
-        Me.txtProfit2Moneyline.Size = New System.Drawing.Size(100, 44)
+        Me.txtProfit2Moneyline.Size = New System.Drawing.Size(100, 53)
         Me.txtProfit2Moneyline.TabIndex = 120
         '
         'lblProfitMoneyline
@@ -476,7 +511,7 @@ Partial Class MoneyManager
         Me.lblProfitMoneyline.Font = New System.Drawing.Font("Times New Roman", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblProfitMoneyline.Location = New System.Drawing.Point(422, 91)
         Me.lblProfitMoneyline.Name = "lblProfitMoneyline"
-        Me.lblProfitMoneyline.Size = New System.Drawing.Size(59, 23)
+        Me.lblProfitMoneyline.Size = New System.Drawing.Size(75, 31)
         Me.lblProfitMoneyline.TabIndex = 119
         Me.lblProfitMoneyline.Text = "Profit"
         '
@@ -486,7 +521,7 @@ Partial Class MoneyManager
         Me.lblStakeMoneyline.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblStakeMoneyline.Location = New System.Drawing.Point(18, 22)
         Me.lblStakeMoneyline.Name = "lblStakeMoneyline"
-        Me.lblStakeMoneyline.Size = New System.Drawing.Size(102, 36)
+        Me.lblStakeMoneyline.Size = New System.Drawing.Size(129, 45)
         Me.lblStakeMoneyline.TabIndex = 115
         Me.lblStakeMoneyline.Text = "Stake:"
         '
@@ -494,25 +529,25 @@ Partial Class MoneyManager
         '
         Me.txtProfit1Moneyline.Enabled = False
         Me.txtProfit1Moneyline.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtProfit1Moneyline.Location = New System.Drawing.Point(401, 119)
+        Me.txtProfit1Moneyline.Location = New System.Drawing.Point(407, 125)
         Me.txtProfit1Moneyline.Name = "txtProfit1Moneyline"
-        Me.txtProfit1Moneyline.Size = New System.Drawing.Size(100, 44)
+        Me.txtProfit1Moneyline.Size = New System.Drawing.Size(100, 53)
         Me.txtProfit1Moneyline.TabIndex = 118
         '
         'txtStakeMoneyline
         '
         Me.txtStakeMoneyline.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtStakeMoneyline.Location = New System.Drawing.Point(126, 20)
+        Me.txtStakeMoneyline.Location = New System.Drawing.Point(153, 19)
         Me.txtStakeMoneyline.Name = "txtStakeMoneyline"
-        Me.txtStakeMoneyline.Size = New System.Drawing.Size(103, 44)
+        Me.txtStakeMoneyline.Size = New System.Drawing.Size(103, 53)
         Me.txtStakeMoneyline.TabIndex = 109
         '
         'txtLine2Moneyline
         '
         Me.txtLine2Moneyline.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtLine2Moneyline.Location = New System.Drawing.Point(272, 181)
+        Me.txtLine2Moneyline.Location = New System.Drawing.Point(278, 187)
         Me.txtLine2Moneyline.Name = "txtLine2Moneyline"
-        Me.txtLine2Moneyline.Size = New System.Drawing.Size(100, 44)
+        Me.txtLine2Moneyline.Size = New System.Drawing.Size(100, 53)
         Me.txtLine2Moneyline.TabIndex = 113
         '
         'lblLineMoneyline
@@ -521,24 +556,24 @@ Partial Class MoneyManager
         Me.lblLineMoneyline.Font = New System.Drawing.Font("Times New Roman", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblLineMoneyline.Location = New System.Drawing.Point(276, 91)
         Me.lblLineMoneyline.Name = "lblLineMoneyline"
-        Me.lblLineMoneyline.Size = New System.Drawing.Size(91, 23)
+        Me.lblLineMoneyline.Size = New System.Drawing.Size(120, 31)
         Me.lblLineMoneyline.TabIndex = 117
         Me.lblLineMoneyline.Text = "Line (+/-)"
         '
         'txtLine1Moneyline
         '
         Me.txtLine1Moneyline.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtLine1Moneyline.Location = New System.Drawing.Point(272, 119)
+        Me.txtLine1Moneyline.Location = New System.Drawing.Point(278, 125)
         Me.txtLine1Moneyline.Name = "txtLine1Moneyline"
-        Me.txtLine1Moneyline.Size = New System.Drawing.Size(100, 44)
+        Me.txtLine1Moneyline.Size = New System.Drawing.Size(100, 53)
         Me.txtLine1Moneyline.TabIndex = 111
         '
         'txtTeam2Moneyline
         '
         Me.txtTeam2Moneyline.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTeam2Moneyline.Location = New System.Drawing.Point(18, 181)
+        Me.txtTeam2Moneyline.Location = New System.Drawing.Point(24, 187)
         Me.txtTeam2Moneyline.Name = "txtTeam2Moneyline"
-        Me.txtTeam2Moneyline.Size = New System.Drawing.Size(211, 44)
+        Me.txtTeam2Moneyline.Size = New System.Drawing.Size(211, 53)
         Me.txtTeam2Moneyline.TabIndex = 112
         '
         'lblTeamMoneyline
@@ -547,21 +582,22 @@ Partial Class MoneyManager
         Me.lblTeamMoneyline.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTeamMoneyline.Location = New System.Drawing.Point(74, 80)
         Me.lblTeamMoneyline.Name = "lblTeamMoneyline"
-        Me.lblTeamMoneyline.Size = New System.Drawing.Size(90, 36)
+        Me.lblTeamMoneyline.Size = New System.Drawing.Size(115, 45)
         Me.lblTeamMoneyline.TabIndex = 116
         Me.lblTeamMoneyline.Text = "Team"
         '
         'txtTeam1Moneyline
         '
         Me.txtTeam1Moneyline.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTeam1Moneyline.Location = New System.Drawing.Point(18, 119)
+        Me.txtTeam1Moneyline.Location = New System.Drawing.Point(24, 125)
         Me.txtTeam1Moneyline.Name = "txtTeam1Moneyline"
-        Me.txtTeam1Moneyline.Size = New System.Drawing.Size(211, 44)
+        Me.txtTeam1Moneyline.Size = New System.Drawing.Size(211, 53)
         Me.txtTeam1Moneyline.TabIndex = 110
         '
         'tabOverUnder
         '
         Me.tabOverUnder.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.tabOverUnder.Controls.Add(Me.btnDKLinkOU)
         Me.tabOverUnder.Controls.Add(Me.btnBovadaLinkOU)
         Me.tabOverUnder.Controls.Add(Me.txtLine2OU)
         Me.tabOverUnder.Controls.Add(Me.lblLineOU)
@@ -589,6 +625,21 @@ Partial Class MoneyManager
         Me.tabOverUnder.TabIndex = 4
         Me.tabOverUnder.Text = "Over/Under"
         '
+        'btnDKLinkOU
+        '
+        Me.btnDKLinkOU.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.btnDKLinkOU.BackColor = System.Drawing.SystemColors.Control
+        Me.btnDKLinkOU.BackgroundImage = CType(resources.GetObject("btnDKLinkOU.BackgroundImage"), System.Drawing.Image)
+        Me.btnDKLinkOU.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
+        Me.btnDKLinkOU.Enabled = False
+        Me.btnDKLinkOU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnDKLinkOU.Location = New System.Drawing.Point(769, 22)
+        Me.btnDKLinkOU.Name = "btnDKLinkOU"
+        Me.btnDKLinkOU.Size = New System.Drawing.Size(65, 40)
+        Me.btnDKLinkOU.TabIndex = 152
+        Me.btnDKLinkOU.UseVisualStyleBackColor = False
+        Me.btnDKLinkOU.Visible = False
+        '
         'btnBovadaLinkOU
         '
         Me.btnBovadaLinkOU.BackColor = System.Drawing.SystemColors.Control
@@ -603,35 +654,35 @@ Partial Class MoneyManager
         'txtLine2OU
         '
         Me.txtLine2OU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtLine2OU.Location = New System.Drawing.Point(388, 181)
+        Me.txtLine2OU.Location = New System.Drawing.Point(398, 188)
         Me.txtLine2OU.Name = "txtLine2OU"
-        Me.txtLine2OU.Size = New System.Drawing.Size(100, 44)
+        Me.txtLine2OU.Size = New System.Drawing.Size(100, 53)
         Me.txtLine2OU.TabIndex = 145
         '
         'lblLineOU
         '
         Me.lblLineOU.AutoSize = True
         Me.lblLineOU.Font = New System.Drawing.Font("Times New Roman", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLineOU.Location = New System.Drawing.Point(391, 91)
+        Me.lblLineOU.Location = New System.Drawing.Point(390, 91)
         Me.lblLineOU.Name = "lblLineOU"
-        Me.lblLineOU.Size = New System.Drawing.Size(91, 23)
+        Me.lblLineOU.Size = New System.Drawing.Size(120, 31)
         Me.lblLineOU.TabIndex = 146
         Me.lblLineOU.Text = "Line (+/-)"
         '
         'txtLine1OU
         '
         Me.txtLine1OU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtLine1OU.Location = New System.Drawing.Point(388, 119)
+        Me.txtLine1OU.Location = New System.Drawing.Point(398, 126)
         Me.txtLine1OU.Name = "txtLine1OU"
-        Me.txtLine1OU.Size = New System.Drawing.Size(100, 44)
+        Me.txtLine1OU.Size = New System.Drawing.Size(100, 53)
         Me.txtLine1OU.TabIndex = 144
         '
         'btnCommitOU
         '
         Me.btnCommitOU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCommitOU.Location = New System.Drawing.Point(722, 136)
+        Me.btnCommitOU.Location = New System.Drawing.Point(715, 154)
         Me.btnCommitOU.Name = "btnCommitOU"
-        Me.btnCommitOU.Size = New System.Drawing.Size(157, 62)
+        Me.btnCommitOU.Size = New System.Drawing.Size(178, 62)
         Me.btnCommitOU.TabIndex = 143
         Me.btnCommitOU.Text = "Commit"
         Me.btnCommitOU.UseVisualStyleBackColor = True
@@ -642,7 +693,7 @@ Partial Class MoneyManager
         Me.lblWinLossOU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblWinLossOU.Location = New System.Drawing.Point(266, 22)
         Me.lblWinLossOU.Name = "lblWinLossOU"
-        Me.lblWinLossOU.Size = New System.Drawing.Size(154, 36)
+        Me.lblWinLossOU.Size = New System.Drawing.Size(193, 45)
         Me.lblWinLossOU.TabIndex = 142
         Me.lblWinLossOU.Text = "Win/Loss:"
         '
@@ -651,9 +702,9 @@ Partial Class MoneyManager
         Me.cmbWinLossOU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbWinLossOU.FormattingEnabled = True
         Me.cmbWinLossOU.Items.AddRange(New Object() {"Win", "Loss"})
-        Me.cmbWinLossOU.Location = New System.Drawing.Point(426, 20)
+        Me.cmbWinLossOU.Location = New System.Drawing.Point(465, 19)
         Me.cmbWinLossOU.Name = "cmbWinLossOU"
-        Me.cmbWinLossOU.Size = New System.Drawing.Size(158, 44)
+        Me.cmbWinLossOU.Size = New System.Drawing.Size(158, 54)
         Me.cmbWinLossOU.TabIndex = 141
         '
         'lblSelectionOU
@@ -662,7 +713,7 @@ Partial Class MoneyManager
         Me.lblSelectionOU.Font = New System.Drawing.Font("Times New Roman", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSelectionOU.Location = New System.Drawing.Point(624, 93)
         Me.lblSelectionOU.Name = "lblSelectionOU"
-        Me.lblSelectionOU.Size = New System.Drawing.Size(87, 23)
+        Me.lblSelectionOU.Size = New System.Drawing.Size(116, 31)
         Me.lblSelectionOU.TabIndex = 140
         Me.lblSelectionOU.Text = "Selection"
         '
@@ -670,9 +721,9 @@ Partial Class MoneyManager
         '
         Me.chkTeam2OU.AutoSize = True
         Me.chkTeam2OU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTeam2OU.Location = New System.Drawing.Point(663, 198)
+        Me.chkTeam2OU.Location = New System.Drawing.Point(671, 207)
         Me.chkTeam2OU.Name = "chkTeam2OU"
-        Me.chkTeam2OU.Size = New System.Drawing.Size(15, 14)
+        Me.chkTeam2OU.Size = New System.Drawing.Size(18, 17)
         Me.chkTeam2OU.TabIndex = 139
         Me.chkTeam2OU.UseVisualStyleBackColor = True
         '
@@ -680,9 +731,9 @@ Partial Class MoneyManager
         '
         Me.chkTeam1OU.AutoSize = True
         Me.chkTeam1OU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTeam1OU.Location = New System.Drawing.Point(663, 136)
+        Me.chkTeam1OU.Location = New System.Drawing.Point(671, 145)
         Me.chkTeam1OU.Name = "chkTeam1OU"
-        Me.chkTeam1OU.Size = New System.Drawing.Size(15, 14)
+        Me.chkTeam1OU.Size = New System.Drawing.Size(18, 17)
         Me.chkTeam1OU.TabIndex = 138
         Me.chkTeam1OU.UseVisualStyleBackColor = True
         '
@@ -690,9 +741,9 @@ Partial Class MoneyManager
         '
         Me.txtProfit2OU.Enabled = False
         Me.txtProfit2OU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtProfit2OU.Location = New System.Drawing.Point(504, 181)
+        Me.txtProfit2OU.Location = New System.Drawing.Point(514, 188)
         Me.txtProfit2OU.Name = "txtProfit2OU"
-        Me.txtProfit2OU.Size = New System.Drawing.Size(100, 44)
+        Me.txtProfit2OU.Size = New System.Drawing.Size(100, 53)
         Me.txtProfit2OU.TabIndex = 137
         '
         'lblProfitOU
@@ -701,7 +752,7 @@ Partial Class MoneyManager
         Me.lblProfitOU.Font = New System.Drawing.Font("Times New Roman", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblProfitOU.Location = New System.Drawing.Point(525, 91)
         Me.lblProfitOU.Name = "lblProfitOU"
-        Me.lblProfitOU.Size = New System.Drawing.Size(59, 23)
+        Me.lblProfitOU.Size = New System.Drawing.Size(75, 31)
         Me.lblProfitOU.TabIndex = 136
         Me.lblProfitOU.Text = "Profit"
         '
@@ -711,7 +762,7 @@ Partial Class MoneyManager
         Me.lblStakeOU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblStakeOU.Location = New System.Drawing.Point(18, 22)
         Me.lblStakeOU.Name = "lblStakeOU"
-        Me.lblStakeOU.Size = New System.Drawing.Size(102, 36)
+        Me.lblStakeOU.Size = New System.Drawing.Size(129, 45)
         Me.lblStakeOU.TabIndex = 132
         Me.lblStakeOU.Text = "Stake:"
         '
@@ -719,69 +770,69 @@ Partial Class MoneyManager
         '
         Me.txtProfit1OU.Enabled = False
         Me.txtProfit1OU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtProfit1OU.Location = New System.Drawing.Point(504, 119)
+        Me.txtProfit1OU.Location = New System.Drawing.Point(514, 126)
         Me.txtProfit1OU.Name = "txtProfit1OU"
-        Me.txtProfit1OU.Size = New System.Drawing.Size(100, 44)
+        Me.txtProfit1OU.Size = New System.Drawing.Size(100, 53)
         Me.txtProfit1OU.TabIndex = 135
         '
         'txtStakeOU
         '
         Me.txtStakeOU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtStakeOU.Location = New System.Drawing.Point(126, 20)
+        Me.txtStakeOU.Location = New System.Drawing.Point(153, 19)
         Me.txtStakeOU.Name = "txtStakeOU"
-        Me.txtStakeOU.Size = New System.Drawing.Size(103, 44)
+        Me.txtStakeOU.Size = New System.Drawing.Size(103, 53)
         Me.txtStakeOU.TabIndex = 126
         '
         'txtOverUnder2OU
         '
         Me.txtOverUnder2OU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtOverUnder2OU.Location = New System.Drawing.Point(272, 181)
+        Me.txtOverUnder2OU.Location = New System.Drawing.Point(255, 190)
         Me.txtOverUnder2OU.Name = "txtOverUnder2OU"
-        Me.txtOverUnder2OU.Size = New System.Drawing.Size(100, 44)
+        Me.txtOverUnder2OU.Size = New System.Drawing.Size(100, 53)
         Me.txtOverUnder2OU.TabIndex = 130
         '
         'lblOverUnderOU
         '
         Me.lblOverUnderOU.AutoSize = True
         Me.lblOverUnderOU.Font = New System.Drawing.Font("Times New Roman", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblOverUnderOU.Location = New System.Drawing.Point(268, 91)
+        Me.lblOverUnderOU.Location = New System.Drawing.Point(234, 91)
         Me.lblOverUnderOU.Name = "lblOverUnderOU"
-        Me.lblOverUnderOU.Size = New System.Drawing.Size(108, 23)
+        Me.lblOverUnderOU.Size = New System.Drawing.Size(142, 31)
         Me.lblOverUnderOU.TabIndex = 134
         Me.lblOverUnderOU.Text = "Over/Under"
         '
         'txtOverUnder1OU
         '
         Me.txtOverUnder1OU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtOverUnder1OU.Location = New System.Drawing.Point(272, 119)
+        Me.txtOverUnder1OU.Location = New System.Drawing.Point(255, 128)
         Me.txtOverUnder1OU.Name = "txtOverUnder1OU"
-        Me.txtOverUnder1OU.Size = New System.Drawing.Size(100, 44)
+        Me.txtOverUnder1OU.Size = New System.Drawing.Size(100, 53)
         Me.txtOverUnder1OU.TabIndex = 128
         '
         'txtTeam2OU
         '
         Me.txtTeam2OU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTeam2OU.Location = New System.Drawing.Point(18, 181)
+        Me.txtTeam2OU.Location = New System.Drawing.Point(9, 190)
         Me.txtTeam2OU.Name = "txtTeam2OU"
-        Me.txtTeam2OU.Size = New System.Drawing.Size(211, 44)
+        Me.txtTeam2OU.Size = New System.Drawing.Size(211, 53)
         Me.txtTeam2OU.TabIndex = 129
         '
         'lblTeamOU
         '
         Me.lblTeamOU.AutoSize = True
         Me.lblTeamOU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTeamOU.Location = New System.Drawing.Point(74, 80)
+        Me.lblTeamOU.Location = New System.Drawing.Point(57, 80)
         Me.lblTeamOU.Name = "lblTeamOU"
-        Me.lblTeamOU.Size = New System.Drawing.Size(90, 36)
+        Me.lblTeamOU.Size = New System.Drawing.Size(115, 45)
         Me.lblTeamOU.TabIndex = 133
         Me.lblTeamOU.Text = "Team"
         '
         'txtTeam1OU
         '
         Me.txtTeam1OU.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTeam1OU.Location = New System.Drawing.Point(18, 119)
+        Me.txtTeam1OU.Location = New System.Drawing.Point(9, 128)
         Me.txtTeam1OU.Name = "txtTeam1OU"
-        Me.txtTeam1OU.Size = New System.Drawing.Size(211, 44)
+        Me.txtTeam1OU.Size = New System.Drawing.Size(211, 53)
         Me.txtTeam1OU.TabIndex = 127
         '
         'tabParlay
@@ -826,7 +877,7 @@ Partial Class MoneyManager
         Me.lblSport.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSport.Location = New System.Drawing.Point(12, 42)
         Me.lblSport.Name = "lblSport"
-        Me.lblSport.Size = New System.Drawing.Size(103, 36)
+        Me.lblSport.Size = New System.Drawing.Size(127, 45)
         Me.lblSport.TabIndex = 98
         Me.lblSport.Text = "Sport:"
         '
@@ -834,10 +885,10 @@ Partial Class MoneyManager
         '
         Me.cmbSelectSport.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbSelectSport.FormattingEnabled = True
-        Me.cmbSelectSport.Items.AddRange(New Object() {"NCAA Basketball", "NCAA Football", "NBA Basketball", "NFL Football"})
-        Me.cmbSelectSport.Location = New System.Drawing.Point(121, 40)
+        Me.cmbSelectSport.Items.AddRange(New Object() {"NCAA BASKETBALL", "NCAA FOOTBALL", "NBA BASKETBALL", "NFL FOOTBALL"})
+        Me.cmbSelectSport.Location = New System.Drawing.Point(145, 40)
         Me.cmbSelectSport.Name = "cmbSelectSport"
-        Me.cmbSelectSport.Size = New System.Drawing.Size(478, 44)
+        Me.cmbSelectSport.Size = New System.Drawing.Size(478, 54)
         Me.cmbSelectSport.TabIndex = 70
         '
         'lblNet
@@ -846,24 +897,25 @@ Partial Class MoneyManager
         Me.lblNet.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblNet.Location = New System.Drawing.Point(699, 42)
         Me.lblNet.Name = "lblNet"
-        Me.lblNet.Size = New System.Drawing.Size(74, 36)
+        Me.lblNet.Size = New System.Drawing.Size(93, 45)
         Me.lblNet.TabIndex = 75
         Me.lblNet.Text = "Net:"
         '
         'txtBank
         '
         Me.txtBank.Font = New System.Drawing.Font("Times New Roman", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtBank.Location = New System.Drawing.Point(779, 40)
+        Me.txtBank.Location = New System.Drawing.Point(798, 41)
         Me.txtBank.Name = "txtBank"
-        Me.txtBank.Size = New System.Drawing.Size(142, 44)
+        Me.txtBank.Size = New System.Drawing.Size(119, 53)
         Me.txtBank.TabIndex = 73
         '
         'MenuStrip
         '
+        Me.MenuStrip.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.StocksToolStripMenuItem, Me.BetsToolStripMenuItem, Me.MarchMadnessToolStripMenuItem1, Me.ToolsToolStripMenuItem})
         Me.MenuStrip.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip.Name = "MenuStrip"
-        Me.MenuStrip.Size = New System.Drawing.Size(934, 29)
+        Me.MenuStrip.Size = New System.Drawing.Size(934, 36)
         Me.MenuStrip.TabIndex = 99
         Me.MenuStrip.Text = "Menu"
         '
@@ -871,7 +923,7 @@ Partial Class MoneyManager
         '
         Me.FileToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 12.0!)
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
-        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(46, 25)
+        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(54, 32)
         Me.FileToolStripMenuItem.Text = "File"
         '
         'StocksToolStripMenuItem
@@ -879,45 +931,45 @@ Partial Class MoneyManager
         Me.StocksToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WatchListToolStripMenuItem, Me.PortfolioToolStripMenuItem})
         Me.StocksToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 12.0!)
         Me.StocksToolStripMenuItem.Name = "StocksToolStripMenuItem"
-        Me.StocksToolStripMenuItem.Size = New System.Drawing.Size(66, 25)
+        Me.StocksToolStripMenuItem.Size = New System.Drawing.Size(80, 32)
         Me.StocksToolStripMenuItem.Text = "Stocks"
         '
         'WatchListToolStripMenuItem
         '
         Me.WatchListToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddStockToolStripMenuItem, Me.RemoveStockToolStripMenuItem})
         Me.WatchListToolStripMenuItem.Name = "WatchListToolStripMenuItem"
-        Me.WatchListToolStripMenuItem.Size = New System.Drawing.Size(151, 26)
+        Me.WatchListToolStripMenuItem.Size = New System.Drawing.Size(179, 32)
         Me.WatchListToolStripMenuItem.Text = "Watch List"
         '
         'AddStockToolStripMenuItem
         '
         Me.AddStockToolStripMenuItem.Name = "AddStockToolStripMenuItem"
-        Me.AddStockToolStripMenuItem.Size = New System.Drawing.Size(178, 26)
+        Me.AddStockToolStripMenuItem.Size = New System.Drawing.Size(213, 32)
         Me.AddStockToolStripMenuItem.Text = "Add Stock"
         '
         'RemoveStockToolStripMenuItem
         '
         Me.RemoveStockToolStripMenuItem.Name = "RemoveStockToolStripMenuItem"
-        Me.RemoveStockToolStripMenuItem.Size = New System.Drawing.Size(178, 26)
+        Me.RemoveStockToolStripMenuItem.Size = New System.Drawing.Size(213, 32)
         Me.RemoveStockToolStripMenuItem.Text = "Remove Stock"
         '
         'PortfolioToolStripMenuItem
         '
         Me.PortfolioToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddStockToolStripMenuItem1, Me.RemoveStockToolStripMenuItem1})
         Me.PortfolioToolStripMenuItem.Name = "PortfolioToolStripMenuItem"
-        Me.PortfolioToolStripMenuItem.Size = New System.Drawing.Size(151, 26)
+        Me.PortfolioToolStripMenuItem.Size = New System.Drawing.Size(179, 32)
         Me.PortfolioToolStripMenuItem.Text = "Portfolio"
         '
         'AddStockToolStripMenuItem1
         '
         Me.AddStockToolStripMenuItem1.Name = "AddStockToolStripMenuItem1"
-        Me.AddStockToolStripMenuItem1.Size = New System.Drawing.Size(178, 26)
+        Me.AddStockToolStripMenuItem1.Size = New System.Drawing.Size(213, 32)
         Me.AddStockToolStripMenuItem1.Text = "Add Stock"
         '
         'RemoveStockToolStripMenuItem1
         '
         Me.RemoveStockToolStripMenuItem1.Name = "RemoveStockToolStripMenuItem1"
-        Me.RemoveStockToolStripMenuItem1.Size = New System.Drawing.Size(178, 26)
+        Me.RemoveStockToolStripMenuItem1.Size = New System.Drawing.Size(213, 32)
         Me.RemoveStockToolStripMenuItem1.Text = "Remove Stock"
         '
         'BetsToolStripMenuItem
@@ -925,13 +977,13 @@ Partial Class MoneyManager
         Me.BetsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddBetToolStripMenuItem})
         Me.BetsToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 12.0!)
         Me.BetsToolStripMenuItem.Name = "BetsToolStripMenuItem"
-        Me.BetsToolStripMenuItem.Size = New System.Drawing.Size(51, 25)
+        Me.BetsToolStripMenuItem.Size = New System.Drawing.Size(60, 32)
         Me.BetsToolStripMenuItem.Text = "Bets"
         '
         'AddBetToolStripMenuItem
         '
         Me.AddBetToolStripMenuItem.Name = "AddBetToolStripMenuItem"
-        Me.AddBetToolStripMenuItem.Size = New System.Drawing.Size(134, 26)
+        Me.AddBetToolStripMenuItem.Size = New System.Drawing.Size(160, 32)
         Me.AddBetToolStripMenuItem.Text = "Add Bet"
         '
         'MarchMadnessToolStripMenuItem1
@@ -939,19 +991,19 @@ Partial Class MoneyManager
         Me.MarchMadnessToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CompareTeamsToolStripMenuItem, Me.SaveBracketToolStripMenuItem})
         Me.MarchMadnessToolStripMenuItem1.Font = New System.Drawing.Font("Segoe UI", 12.0!)
         Me.MarchMadnessToolStripMenuItem1.Name = "MarchMadnessToolStripMenuItem1"
-        Me.MarchMadnessToolStripMenuItem1.Size = New System.Drawing.Size(132, 25)
+        Me.MarchMadnessToolStripMenuItem1.Size = New System.Drawing.Size(161, 32)
         Me.MarchMadnessToolStripMenuItem1.Text = "March Madness"
         '
         'CompareTeamsToolStripMenuItem
         '
         Me.CompareTeamsToolStripMenuItem.Name = "CompareTeamsToolStripMenuItem"
-        Me.CompareTeamsToolStripMenuItem.Size = New System.Drawing.Size(191, 26)
+        Me.CompareTeamsToolStripMenuItem.Size = New System.Drawing.Size(228, 32)
         Me.CompareTeamsToolStripMenuItem.Text = "Compare Teams"
         '
         'SaveBracketToolStripMenuItem
         '
         Me.SaveBracketToolStripMenuItem.Name = "SaveBracketToolStripMenuItem"
-        Me.SaveBracketToolStripMenuItem.Size = New System.Drawing.Size(191, 26)
+        Me.SaveBracketToolStripMenuItem.Size = New System.Drawing.Size(228, 32)
         Me.SaveBracketToolStripMenuItem.Text = "Save Bracket"
         '
         'ToolsToolStripMenuItem
@@ -959,24 +1011,24 @@ Partial Class MoneyManager
         Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WebScraperTestToolStripMenuItem, Me.OtherToolStripMenuItem})
         Me.ToolsToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 12.0!)
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
-        Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(57, 25)
+        Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(69, 32)
         Me.ToolsToolStripMenuItem.Text = "Tools"
         '
         'WebScraperTestToolStripMenuItem
         '
         Me.WebScraperTestToolStripMenuItem.Name = "WebScraperTestToolStripMenuItem"
-        Me.WebScraperTestToolStripMenuItem.Size = New System.Drawing.Size(164, 26)
+        Me.WebScraperTestToolStripMenuItem.Size = New System.Drawing.Size(196, 32)
         Me.WebScraperTestToolStripMenuItem.Text = "WebScraper"
         '
         'OtherToolStripMenuItem
         '
         Me.OtherToolStripMenuItem.Name = "OtherToolStripMenuItem"
-        Me.OtherToolStripMenuItem.Size = New System.Drawing.Size(164, 26)
+        Me.OtherToolStripMenuItem.Size = New System.Drawing.Size(196, 32)
         Me.OtherToolStripMenuItem.Text = "Other"
         '
         'MoneyManager
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightGray
         Me.ClientSize = New System.Drawing.Size(934, 443)
@@ -1093,4 +1145,7 @@ Partial Class MoneyManager
     Friend WithEvents radTeam1Spread As RadioButton
     Friend WithEvents WebScraperTestToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents OtherToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents btnDKLinkSpread As Button
+    Friend WithEvents btnDKLinkMoneyline As Button
+    Friend WithEvents btnDKLinkOU As Button
 End Class

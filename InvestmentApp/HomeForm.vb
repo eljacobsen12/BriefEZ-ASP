@@ -17,7 +17,14 @@ Public Class MoneyManager
     '*************************************
 
     Private Sub MoneyManager_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        cmbSelectSport.SelectedText = "NCAA Basketball"
+        cmbSelectSport.SelectedText = "NCAA BASKETBALL"
+        If cmbSelectSport.SelectedText.ToString <> "NCAA BASKETBALL" Then
+            MarchMadnessToolStripMenuItem1.Visible = False
+            MarchMadnessToolStripMenuItem1.Enabled = False
+        ElseIf cmbSelectSport.SelectedText.ToString = "NFL FOOTBALL" Or cmbSelectSport.SelectedText.ToString = "NBA BASKETBALL" Then
+            btnDKLinkSpread.Visible = True
+            btnDKLinkSpread.Enabled = True
+        End If
     End Sub
 
 
@@ -63,14 +70,14 @@ Public Class MoneyManager
             Else
                 Dim myExcel As Microsoft.Office.Interop.Excel.Worksheet = Nothing
                 Select Case cmbSelectSport.SelectedText
-                    Case "NCAA Basketball"
-                        myExcel = getExcelSheet("NCAA Basketball", tabsBets.SelectedTab.Text)
-                    Case "NCAA Football"
-                        myExcel = getExcelSheet("NCAA Football", tabsBets.SelectedTab.Text)
-                    Case "NBA Basketball"
-                        myExcel = getExcelSheet("NBA Basketball", tabsBets.SelectedTab.Text)
-                    Case "NFL Football"
-                        myExcel = getExcelSheet("NFL Football", tabsBets.SelectedTab.Text)
+                    Case "NCAA BASKETBALL"
+                        myExcel = getExcelSheet("NCAA BASKETBALL", tabsBets.SelectedTab.Text)
+                    Case "NCAA FOOTBALL"
+                        myExcel = getExcelSheet("NCAA FOOTBALL", tabsBets.SelectedTab.Text)
+                    Case "NBA BASKETBALL"
+                        myExcel = getExcelSheet("NBA BASKETBALL", tabsBets.SelectedTab.Text)
+                    Case "NFL FOOTBALL"
+                        myExcel = getExcelSheet("NFL FOOTBALL", tabsBets.SelectedTab.Text)
                 End Select
                 Dim rowNum As Integer = getNextRowWS(myExcel)
                 myExcel.Cells(rowNum, 2) = Date.Today
@@ -101,6 +108,11 @@ Public Class MoneyManager
 
     Private Sub btnBovadaLinkSpread_Click(sender As Object, e As EventArgs) Handles btnBovadaLinkSpread.Click, btnBovadaLinkMoneyline.Click, btnBovadaLinkOU.Click
         Dim webAddress As String = "https://sports.bovada.lv/"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub btnDKLinkSpread_Click(sender As Object, e As EventArgs) Handles btnDKLinkSpread.Click, btnDKLinkMoneyline.Click, btnDKLinkOU.Click
+        Dim webAddress As String = "https://www.draftkings.com/"
         Process.Start(webAddress)
     End Sub
 

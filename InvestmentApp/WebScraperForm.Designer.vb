@@ -24,8 +24,6 @@ Partial Class WebScraperForm
     Private Sub InitializeComponent()
         Me.btnExtract = New System.Windows.Forms.Button()
         Me.btnExit = New System.Windows.Forms.Button()
-        Me.txtURL = New System.Windows.Forms.TextBox()
-        Me.lblURL = New System.Windows.Forms.Label()
         Me.lblSelectSport = New System.Windows.Forms.Label()
         Me.dgvTableDisplay = New System.Windows.Forms.DataGridView()
         Me.lblTableName = New System.Windows.Forms.Label()
@@ -34,10 +32,12 @@ Partial Class WebScraperForm
         Me.lblSelectStat = New System.Windows.Forms.Label()
         Me.cmbSelectSeason = New System.Windows.Forms.ComboBox()
         Me.lblSelectSeason = New System.Windows.Forms.Label()
-        Me.cmbSelectTeam = New System.Windows.Forms.ComboBox()
-        Me.lblSelectTeam = New System.Windows.Forms.Label()
+        Me.cmbSelectTeam1 = New System.Windows.Forms.ComboBox()
+        Me.lblSelectTeam1 = New System.Windows.Forms.Label()
         Me.btnUpdateDB = New System.Windows.Forms.Button()
         Me.btnToExcel = New System.Windows.Forms.Button()
+        Me.cmbSelectTeam2 = New System.Windows.Forms.ComboBox()
+        Me.lblSelectTeam2 = New System.Windows.Forms.Label()
         CType(Me.dgvTableDisplay, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -45,9 +45,9 @@ Partial Class WebScraperForm
         '
         Me.btnExtract.BackColor = System.Drawing.Color.Azure
         Me.btnExtract.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnExtract.Location = New System.Drawing.Point(550, 49)
+        Me.btnExtract.Location = New System.Drawing.Point(549, 31)
         Me.btnExtract.Name = "btnExtract"
-        Me.btnExtract.Size = New System.Drawing.Size(137, 41)
+        Me.btnExtract.Size = New System.Drawing.Size(137, 47)
         Me.btnExtract.TabIndex = 2
         Me.btnExtract.Text = "Extract"
         Me.btnExtract.UseVisualStyleBackColor = False
@@ -57,85 +57,66 @@ Partial Class WebScraperForm
         Me.btnExit.BackColor = System.Drawing.Color.Azure
         Me.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnExit.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnExit.Location = New System.Drawing.Point(550, 95)
+        Me.btnExit.Location = New System.Drawing.Point(549, 91)
         Me.btnExit.Name = "btnExit"
-        Me.btnExit.Size = New System.Drawing.Size(137, 41)
+        Me.btnExit.Size = New System.Drawing.Size(137, 47)
         Me.btnExit.TabIndex = 3
         Me.btnExit.Text = "Exit"
         Me.btnExit.UseVisualStyleBackColor = False
-        '
-        'txtURL
-        '
-        Me.txtURL.BackColor = System.Drawing.Color.Honeydew
-        Me.txtURL.Font = New System.Drawing.Font("Modern No. 20", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtURL.Location = New System.Drawing.Point(618, 22)
-        Me.txtURL.Name = "txtURL"
-        Me.txtURL.Size = New System.Drawing.Size(69, 21)
-        Me.txtURL.TabIndex = 5
-        '
-        'lblURL
-        '
-        Me.lblURL.AutoSize = True
-        Me.lblURL.Font = New System.Drawing.Font("Modern No. 20", 18.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblURL.Location = New System.Drawing.Point(545, 18)
-        Me.lblURL.Name = "lblURL"
-        Me.lblURL.Size = New System.Drawing.Size(74, 25)
-        Me.lblURL.TabIndex = 4
-        Me.lblURL.Text = "URL :"
         '
         'lblSelectSport
         '
         Me.lblSelectSport.AutoSize = True
         Me.lblSelectSport.Font = New System.Drawing.Font("Modern No. 20", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSelectSport.Location = New System.Drawing.Point(29, 42)
+        Me.lblSelectSport.Location = New System.Drawing.Point(29, 47)
         Me.lblSelectSport.Name = "lblSelectSport"
-        Me.lblSelectSport.Size = New System.Drawing.Size(88, 25)
+        Me.lblSelectSport.Size = New System.Drawing.Size(107, 31)
         Me.lblSelectSport.TabIndex = 7
         Me.lblSelectSport.Text = "SPORT"
         '
         'dgvTableDisplay
         '
         Me.dgvTableDisplay.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvTableDisplay.Location = New System.Drawing.Point(18, 206)
+        Me.dgvTableDisplay.Location = New System.Drawing.Point(19, 289)
         Me.dgvTableDisplay.Name = "dgvTableDisplay"
-        Me.dgvTableDisplay.Size = New System.Drawing.Size(711, 346)
+        Me.dgvTableDisplay.Size = New System.Drawing.Size(711, 406)
         Me.dgvTableDisplay.TabIndex = 8
         '
         'lblTableName
         '
         Me.lblTableName.AutoSize = True
         Me.lblTableName.Font = New System.Drawing.Font("Modern No. 20", 20.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTableName.Location = New System.Drawing.Point(200, 174)
+        Me.lblTableName.Location = New System.Drawing.Point(200, 239)
         Me.lblTableName.Name = "lblTableName"
-        Me.lblTableName.Size = New System.Drawing.Size(0, 29)
+        Me.lblTableName.Size = New System.Drawing.Size(0, 35)
         Me.lblTableName.TabIndex = 9
         '
         'cmbSelectSport
         '
         Me.cmbSelectSport.BackColor = System.Drawing.Color.Honeydew
         Me.cmbSelectSport.FormattingEnabled = True
-        Me.cmbSelectSport.Items.AddRange(New Object() {"NFL", "NBA", "NCAA Basketball", "NCAA Football"})
-        Me.cmbSelectSport.Location = New System.Drawing.Point(121, 40)
+        Me.cmbSelectSport.Items.AddRange(New Object() {"NFL", "NBA", "NCAA BASKETBALL", "NCAA FOOTBALL"})
+        Me.cmbSelectSport.Location = New System.Drawing.Point(157, 46)
         Me.cmbSelectSport.Name = "cmbSelectSport"
-        Me.cmbSelectSport.Size = New System.Drawing.Size(350, 28)
+        Me.cmbSelectSport.Size = New System.Drawing.Size(350, 33)
         Me.cmbSelectSport.TabIndex = 10
         '
         'cmbSelectStat
         '
         Me.cmbSelectStat.BackColor = System.Drawing.Color.Honeydew
         Me.cmbSelectStat.FormattingEnabled = True
-        Me.cmbSelectStat.Location = New System.Drawing.Point(121, 108)
+        Me.cmbSelectStat.Location = New System.Drawing.Point(157, 163)
         Me.cmbSelectStat.Name = "cmbSelectStat"
-        Me.cmbSelectStat.Size = New System.Drawing.Size(350, 28)
+        Me.cmbSelectStat.Size = New System.Drawing.Size(350, 33)
         Me.cmbSelectStat.TabIndex = 12
         '
         'lblSelectStat
         '
         Me.lblSelectStat.AutoSize = True
         Me.lblSelectStat.Font = New System.Drawing.Font("Modern No. 20", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSelectStat.Location = New System.Drawing.Point(45, 110)
+        Me.lblSelectStat.Location = New System.Drawing.Point(45, 164)
         Me.lblSelectStat.Name = "lblSelectStat"
-        Me.lblSelectStat.Size = New System.Drawing.Size(72, 25)
+        Me.lblSelectStat.Size = New System.Drawing.Size(87, 31)
         Me.lblSelectStat.TabIndex = 11
         Me.lblSelectStat.Text = "STAT"
         '
@@ -143,9 +124,9 @@ Partial Class WebScraperForm
         '
         Me.cmbSelectSeason.BackColor = System.Drawing.Color.Honeydew
         Me.cmbSelectSeason.FormattingEnabled = True
-        Me.cmbSelectSeason.Location = New System.Drawing.Point(120, 6)
+        Me.cmbSelectSeason.Location = New System.Drawing.Point(157, 7)
         Me.cmbSelectSeason.Name = "cmbSelectSeason"
-        Me.cmbSelectSeason.Size = New System.Drawing.Size(350, 28)
+        Me.cmbSelectSeason.Size = New System.Drawing.Size(350, 33)
         Me.cmbSelectSeason.TabIndex = 14
         '
         'lblSelectSeason
@@ -154,36 +135,36 @@ Partial Class WebScraperForm
         Me.lblSelectSeason.Font = New System.Drawing.Font("Modern No. 20", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSelectSeason.Location = New System.Drawing.Point(13, 9)
         Me.lblSelectSeason.Name = "lblSelectSeason"
-        Me.lblSelectSeason.Size = New System.Drawing.Size(104, 25)
+        Me.lblSelectSeason.Size = New System.Drawing.Size(128, 31)
         Me.lblSelectSeason.TabIndex = 13
         Me.lblSelectSeason.Text = "SEASON"
         '
-        'cmbSelectTeam
+        'cmbSelectTeam1
         '
-        Me.cmbSelectTeam.BackColor = System.Drawing.Color.Honeydew
-        Me.cmbSelectTeam.FormattingEnabled = True
-        Me.cmbSelectTeam.Location = New System.Drawing.Point(121, 74)
-        Me.cmbSelectTeam.Name = "cmbSelectTeam"
-        Me.cmbSelectTeam.Size = New System.Drawing.Size(350, 28)
-        Me.cmbSelectTeam.TabIndex = 16
+        Me.cmbSelectTeam1.BackColor = System.Drawing.Color.Honeydew
+        Me.cmbSelectTeam1.FormattingEnabled = True
+        Me.cmbSelectTeam1.Location = New System.Drawing.Point(157, 85)
+        Me.cmbSelectTeam1.Name = "cmbSelectTeam1"
+        Me.cmbSelectTeam1.Size = New System.Drawing.Size(350, 33)
+        Me.cmbSelectTeam1.TabIndex = 16
         '
-        'lblSelectTeam
+        'lblSelectTeam1
         '
-        Me.lblSelectTeam.AutoSize = True
-        Me.lblSelectTeam.Font = New System.Drawing.Font("Modern No. 20", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSelectTeam.Location = New System.Drawing.Point(37, 76)
-        Me.lblSelectTeam.Name = "lblSelectTeam"
-        Me.lblSelectTeam.Size = New System.Drawing.Size(82, 25)
-        Me.lblSelectTeam.TabIndex = 15
-        Me.lblSelectTeam.Text = "TEAM"
+        Me.lblSelectTeam1.AutoSize = True
+        Me.lblSelectTeam1.Font = New System.Drawing.Font("Modern No. 20", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSelectTeam1.Location = New System.Drawing.Point(27, 85)
+        Me.lblSelectTeam1.Name = "lblSelectTeam1"
+        Me.lblSelectTeam1.Size = New System.Drawing.Size(114, 31)
+        Me.lblSelectTeam1.TabIndex = 15
+        Me.lblSelectTeam1.Text = "TEAM1"
         '
         'btnUpdateDB
         '
         Me.btnUpdateDB.BackColor = System.Drawing.Color.Azure
         Me.btnUpdateDB.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnUpdateDB.Location = New System.Drawing.Point(120, 558)
+        Me.btnUpdateDB.Location = New System.Drawing.Point(138, 709)
         Me.btnUpdateDB.Name = "btnUpdateDB"
-        Me.btnUpdateDB.Size = New System.Drawing.Size(157, 41)
+        Me.btnUpdateDB.Size = New System.Drawing.Size(157, 47)
         Me.btnUpdateDB.TabIndex = 17
         Me.btnUpdateDB.Text = "Update DB"
         Me.btnUpdateDB.UseVisualStyleBackColor = False
@@ -192,25 +173,47 @@ Partial Class WebScraperForm
         '
         Me.btnToExcel.BackColor = System.Drawing.Color.Azure
         Me.btnToExcel.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnToExcel.Location = New System.Drawing.Point(440, 558)
+        Me.btnToExcel.Location = New System.Drawing.Point(458, 709)
         Me.btnToExcel.Name = "btnToExcel"
-        Me.btnToExcel.Size = New System.Drawing.Size(157, 41)
+        Me.btnToExcel.Size = New System.Drawing.Size(157, 47)
         Me.btnToExcel.TabIndex = 18
         Me.btnToExcel.Text = "To Excel"
         Me.btnToExcel.UseVisualStyleBackColor = False
         '
-        'WebScraperTEST
+        'cmbSelectTeam2
+        '
+        Me.cmbSelectTeam2.BackColor = System.Drawing.Color.Honeydew
+        Me.cmbSelectTeam2.Enabled = False
+        Me.cmbSelectTeam2.FormattingEnabled = True
+        Me.cmbSelectTeam2.Location = New System.Drawing.Point(157, 124)
+        Me.cmbSelectTeam2.Name = "cmbSelectTeam2"
+        Me.cmbSelectTeam2.Size = New System.Drawing.Size(350, 33)
+        Me.cmbSelectTeam2.TabIndex = 20
+        '
+        'lblSelectTeam2
+        '
+        Me.lblSelectTeam2.AutoSize = True
+        Me.lblSelectTeam2.Font = New System.Drawing.Font("Modern No. 20", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSelectTeam2.Location = New System.Drawing.Point(27, 124)
+        Me.lblSelectTeam2.Name = "lblSelectTeam2"
+        Me.lblSelectTeam2.Size = New System.Drawing.Size(114, 31)
+        Me.lblSelectTeam2.TabIndex = 19
+        Me.lblSelectTeam2.Text = "TEAM2"
+        '
+        'WebScraperForm
         '
         Me.AcceptButton = Me.btnExtract
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(12.0!, 25.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.PaleTurquoise
         Me.CancelButton = Me.btnExit
-        Me.ClientSize = New System.Drawing.Size(740, 607)
+        Me.ClientSize = New System.Drawing.Size(740, 774)
+        Me.Controls.Add(Me.cmbSelectTeam2)
+        Me.Controls.Add(Me.lblSelectTeam2)
         Me.Controls.Add(Me.btnToExcel)
         Me.Controls.Add(Me.btnUpdateDB)
-        Me.Controls.Add(Me.cmbSelectTeam)
-        Me.Controls.Add(Me.lblSelectTeam)
+        Me.Controls.Add(Me.cmbSelectTeam1)
+        Me.Controls.Add(Me.lblSelectTeam1)
         Me.Controls.Add(Me.cmbSelectSeason)
         Me.Controls.Add(Me.lblSelectSeason)
         Me.Controls.Add(Me.cmbSelectStat)
@@ -219,13 +222,11 @@ Partial Class WebScraperForm
         Me.Controls.Add(Me.lblTableName)
         Me.Controls.Add(Me.dgvTableDisplay)
         Me.Controls.Add(Me.lblSelectSport)
-        Me.Controls.Add(Me.txtURL)
-        Me.Controls.Add(Me.lblURL)
         Me.Controls.Add(Me.btnExit)
         Me.Controls.Add(Me.btnExtract)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.Name = "WebScraperTEST"
+        Me.Name = "WebScraperForm"
         Me.Text = "WebScraperTEST"
         CType(Me.dgvTableDisplay, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -234,8 +235,6 @@ Partial Class WebScraperForm
     End Sub
     Friend WithEvents btnExtract As Button
     Friend WithEvents btnExit As Button
-    Friend WithEvents txtURL As TextBox
-    Friend WithEvents lblURL As Label
     Friend WithEvents lblSelectSport As Label
     Friend WithEvents dgvTableDisplay As DataGridView
     Friend WithEvents lblTableName As Label
@@ -244,8 +243,10 @@ Partial Class WebScraperForm
     Friend WithEvents lblSelectStat As Label
     Friend WithEvents cmbSelectSeason As ComboBox
     Friend WithEvents lblSelectSeason As Label
-    Friend WithEvents cmbSelectTeam As ComboBox
-    Friend WithEvents lblSelectTeam As Label
+    Friend WithEvents cmbSelectTeam1 As ComboBox
+    Friend WithEvents lblSelectTeam1 As Label
     Friend WithEvents btnUpdateDB As Button
     Friend WithEvents btnToExcel As Button
+    Friend WithEvents cmbSelectTeam2 As ComboBox
+    Friend WithEvents lblSelectTeam2 As Label
 End Class
