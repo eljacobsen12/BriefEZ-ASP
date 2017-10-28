@@ -639,6 +639,52 @@ Module Module1
         Return ds
     End Function
 
+    'Returns a Dataset from a DataGridView
+    Public Function DataGridViewToDataset(ByVal dgv As DataGridView)
+        Dim ds As New DataSet
+        Try
+            ds.Tables.Add("Main")
+            Dim col As DataColumn
+            For Each dgvCol As DataGridViewColumn In dgv.Columns
+                col = New DataColumn(dgvCol.Name)
+                ds.Tables("Main").Columns.Add(col)
+            Next
+            Dim row As DataRow
+            Dim colCount As Integer = dgv.Columns.Count - 1
+            For i As Integer = 0 To dgv.Rows.Count - 1
+                row = ds.Tables("Main").Rows.Add
+                For Each column As DataGridViewColumn In dgv.Columns
+                    row.Item(column.Index) = dgv.Rows.Item(0).Cells(column.Index).Value
+                Next
+            Next
+            Return ds
+        Catch ex As Exception
+            MessageBox.Show("Error converting from DataGridView:" & ex.InnerException.ToString, "Error converting from DataGridView", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return Nothing
+        End Try
+    End Function
+
+    'Imports DataGridView to given SQL Table
+    Public Sub ImportTableToDB(ByVal dgv As DataGridView, ByVal tableName As String)
+        Dim connection As New Data.SqlClient.SqlConnection
+        connection.ConnectionString = "Server= EJserver; Database= MMMDB; integrated security=true"
+        Dim command As New Data.SqlClient.SqlCommand
+        command.CommandText = "INSERT INTO <table> (Col1, Col2, Col3, Col4) VALUES (@NAME, @PROPERTY, @VALUE, @DATE)"
+        command.Parameters.Add("@ServerName", SqlDbType.VarChar)
+        command.Parameters.Add("Property", SqlDbType.VarChar)
+        command.Parameters.Add("Value", SqlDbType.VarChar)
+        command.Parameters.Add("CaptureDate", SqlDbType.DateTime)
+
+        For i As Integer = 0 To dgv.Rows.Count - 1
+            command.Parameters(0).Value = dgv.Rows(i).Cells(0).Value
+            command.Parameters(1).Value = dgv.Rows(i).Cells(1).Value
+            command.Parameters(2).Value = dgv.Rows(i).Cells(2).Value
+            command.Parameters(3).Value = dgv.Rows(i).Cells(3).Value
+            command.ExecuteNonQuery()
+        Next
+    End Sub
+
+    'Checks if URL is valid
     Public Function UrlIsValid(ByVal url As String) As Boolean
         Dim isValid As Boolean = False
         If url.ToLower().StartsWith("www.") Then url = "http://" & url
