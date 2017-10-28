@@ -362,6 +362,7 @@ Public Class WebScraperForm
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Total Yards Offense"   'Set Table Name
                 '****** CENTER LABEL *******
                 StatsToTable(nodes, dgvTableDisplay)
+                Dim datatable1 As DataTable = StatsToDataTable(nodes)
 
             Case "TEAM STATS - TOTAL YARDS DEF"
                 Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/total/position/defense/year/", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
@@ -526,31 +527,32 @@ Public Class WebScraperForm
         Next
     End Sub
 
-    'Public Sub StatsToDataSet(ByVal StatNodes As HtmlNodeCollection, ByVal dt As DataTable, ByVal NumberOfCols As Integer)
-    '    dt.Columns.cou = StatNodes(1).ChildNodes.Count     'Set columns
-    '    Dim rowStart As Integer = 0
-    '    If StatNodes(0).ChildNodes.Count <> Table.ColumnCount Then
-    '        rowStart = 1
-    '    End If
-    '    For i As Integer = 0 To NumberOfCols
-    '        Table.Columns(i).Name = StatNodes(rowStart).ChildNodes(i).InnerText
-    '    Next
+    Public Function StatsToDataTable(ByVal StatNodes As HtmlNodeCollection)
+        Dim dt As New DataTable
+        Dim colCount As Integer = StatNodes(1).ChildNodes.Count - 1
+        For i As Integer = 0 To colCount   'Set columns
+            Dim dataCol As New DataColumn
+            dataCol.ColumnName = StatNodes(0).ChildNodes(i).InnerText
+            dt.Columns.Add(dataCol)
+        Next
 
-    '    For i As Integer = 0 To StatNodes.Count - 1
-    '        If StatNodes(i).ChildNodes.Count = Table.ColumnCount Then
-    '            If StatNodes(i).FirstChild.InnerText <> "PER GAME" AndAlso StatNodes(i).FirstChild.InnerText <> "DATE" AndAlso StatNodes(i).FirstChild.InnerText <> "RK" Then     'Add data from nodes to rows
-    '                Dim rowNum As Integer = Table.Rows.Add()
-    '                For x As Integer = 0 To NumberOfCols
-    '                    If Not StatNodes(i).ChildNodes(x).InnerText = "&nbsp;" Then
-    '                        Table.Item(x, rowNum).Value = StatNodes(i).ChildNodes(x).InnerText
-    '                    Else
-    '                        Table.Item(x, rowNum).Value = ""
-    '                    End If
-    '                Next
-    '            End If
-    '        End If
-    '    Next
-    'End Sub
+        For i As Integer = 0 To StatNodes.Count - 1
+            If StatNodes(i).ChildNodes.Count = dt.Columns.Count Then
+                If StatNodes(i).FirstChild.InnerText <> "PER GAME" AndAlso StatNodes(i).FirstChild.InnerText <> "DATE" AndAlso StatNodes(i).FirstChild.InnerText <> "RK" Then     'Add data from nodes to rows
+                    Dim rowNum As Integer = dt.Rows.Count + 1
+                    For x As Integer = 0 To colCount
+                        Dim newRow As DataRow = dt.Rows.Add
+                        If Not StatNodes(i).ChildNodes(x).InnerText = "&nbsp;" Then
+                            newRow.Item(x) = StatNodes(i).ChildNodes(x).InnerText
+                        Else
+                            newRow.Item(x) = ""
+                        End If
+                    Next
+                End If
+            End If
+        Next
+        Return dt
+    End Function
 
     Private Sub cmbSelectSport_SelectedValueChanged(sender As Object, e As EventArgs) Handles cmbSelectSport.SelectedValueChanged
         Select Case cmbSelectSport.Text
