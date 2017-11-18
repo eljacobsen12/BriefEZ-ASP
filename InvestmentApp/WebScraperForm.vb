@@ -3,6 +3,7 @@ Imports System.Net
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports HtmlAgilityPack
+Imports MySql
 
 Public Class WebScraperForm
     Private Sub WebScraperTEST_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -553,6 +554,20 @@ Public Class WebScraperForm
         Next
         Return dt
     End Function
+
+    Public Sub insertTableToDB(ByVal dt As DataTable)
+        Dim dbConnectionString As String = getDBconnection(cmbSelectSport.SelectedText.ToString)
+        Using con As New MySql.Data.MySqlClient.MySqlConnection(dbConnectionString)
+            con.Open()
+            For Each row As DataRow In dt.Rows
+                Using cmd = con.CreateCommand()
+                    cmd.CommandType = CommandType.Text
+                    cmd.CommandText = "INSERT INTO " & "????"
+                End Using
+            Next
+
+        End Using
+    End Sub
 
     Private Sub cmbSelectSport_SelectedValueChanged(sender As Object, e As EventArgs) Handles cmbSelectSport.SelectedValueChanged
         Select Case cmbSelectSport.Text

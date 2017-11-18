@@ -3,6 +3,8 @@ Imports System.Data.OleDb
 Imports Microsoft.Office.Interop.Excel
 Imports System.IO
 Imports System.Net
+Imports HtmlAgilityPack
+Imports System.Data.SqlClient
 
 Module Module1
 
@@ -519,7 +521,7 @@ Module Module1
         Dim strConnection As String = Nothing
         Dim strSQL As String = Nothing
         Dim dsDataSet As New DataSet
-        Dim dtTablesList As Data.DataTable = Nothing
+        Dim dtTablesList As Data.datatable = Nothing
         Dim oleExcelCommand As OleDb.OleDbCommand = Nothing
         Dim oleExcelConnection As OleDb.OleDbConnection = Nothing
 
@@ -684,6 +686,163 @@ Module Module1
         Next
     End Sub
 
+    Public Function getDBconnection(ByVal db As String)
+        Dim dbConnectionString As String = Nothing
+        Select Case db
+            Case "ncaafb"
+                dbConnectionString = "Server=EJPC1;Uid=EJadmin;Pwd=Look@me3times;Database=ncaafb;"
+            Case "ncaab"
+                dbConnectionString = "Server=EJPC1;Uid=EJadmin;Pwd=Look@me3times;Database=ncaab;"
+            Case "nfl"
+                dbConnectionString = "Server=EJPC1;Uid=EJadmin;Pwd=Look@me3times;Database=nfl;"
+            Case "nba"
+                dbConnectionString = "Server=EJPC1;Uid=EJadmin;Pwd=Look@me3times;Database=nba;"
+        End Select
+        Return dbConnectionString
+    End Function
+
+    Public Function getDBcommand(ByVal db As String, ByVal tbl As String)
+        Dim dbCommandString As String = Nothing
+        Select Case db
+            Case "ncaafb"
+                Select Case tbl
+                    Case "ncaafbconference"
+                        dbCommandString = "INSERT INTO ncaafbconference ('"
+                    Case "ncaafbstat-defense"
+
+                    Case "ncaafbstat-downs"
+                    Case "ncaafbstat-kicking"
+                    Case "ncaafbstat-passingdef"
+                    Case "ncaafbstat-passingoff"
+                    Case "ncaafbstat-punting"
+                    Case "ncaafbstat-receiving"
+                    Case "ncaafbstat-returning"
+                    Case "ncaafbstat-rushingdef"
+                    Case "ncaafbstat-rushingoff"
+                    Case "ncaafbstat-totalyardsdef"
+                    Case "ncaafbstat-totalyardsoff"
+                    Case "ncaafburl"
+
+                End Select
+            Case "ncaab"
+                Select Case tbl
+                    Case "marchmadnessmatchup"
+                    Case "marchmadnessseeding"
+                    Case "matchup"
+                    Case "ncaabconference"
+                    Case "ncaabstat-3point"
+                    Case "ncaabstat-assists"
+                    Case "ncaabstat-blocks"
+                    Case "ncaabstat-fieldgoals"
+                    Case "ncaabstat-freethrows"
+                    Case "ncaabstat-rebounds"
+                    Case "ncaabstat-scoring"
+                    Case "ncaabstat-scoringpg"
+                    Case "ncaabstat-steals"
+                    Case "ncaabteam"
+                    Case "ncaaburl"
+
+                End Select
+            Case "nfl"
+                Select Case tbl
+                    Case "nflconference"
+                    Case "nflstat-defdowns"
+                    Case "nflstat-defenseopp"
+                    Case "nflstat-defenseown"
+                    Case "nflstat-give/take"
+                    Case "nflstat-kickingopp"
+                    Case "nflstat-kickingown"
+                    Case "nflstat-offdowns"
+                    Case "nflstat-passingdef"
+                    Case "nflstat-passingoff"
+                    Case "nflstat-puntingopp"
+                    Case "nflstat-puntingown"
+                    Case "nflstat-receivingdef"
+                    Case "nflstat-receivingoff"
+                    Case "nflstat-returnsopp"
+                    Case "nflstat-returnsown"
+                    Case "nflstat-rushingdef"
+                    Case "nflstat-rushingoff"
+                    Case "nflstat-totaldef"
+                    Case "nflstat-totaloff"
+                    Case "nflteam"
+                    Case "nflurl"
+
+                End Select
+            Case "nba"
+                Select Case tbl
+                    Case "nbaconference"
+                    Case "nbastat-defense"
+                    Case "nbastat-differential"
+                    Case "nbastat-miscellaneous"
+                    Case "nbastat-rebounds"
+                    Case "nbastat-scoring"
+                    Case "nbateam"
+                    Case "nbaurl"
+
+                End Select
+                dbCommandString = "Server=EJPC1;Uid=EJadmin;Pwd=Look@me3times;Database=nba;"
+        End Select
+        Return dbCommandString
+    End Function
+
+    Public Sub CopyTableToDB(ByVal DT As Data.DataTable, ByVal DB As String, ByVal DBT As String)
+        Dim connectionString As String = GetConnectionString(DB, DBT)
+
+        ' Open a connection to the AdventureWorks database.
+        Using connection As SqlConnection = New SqlConnection(connectionString)
+            connection.Open()
+
+            ' Perform an initial count on the destination table.
+            Dim commandRowCount As New SqlCommand("SELECT COUNT(*) FROM @TableName;", connection)
+            commandRowCount.Parameters.AddWithValue("@TableName", DB)
+            Dim countStart As Long = System.Convert.ToInt32(commandRowCount.ExecuteScalar())
+            Console.WriteLine("Starting row count = {0}", countStart)
+
+            ' Note that the column positions in the source DataTable match the column positions in the destination table, so there is no NEED TO MAP COLUMNS!!!
+            Using bulkCopy As SqlBulkCopy = New SqlBulkCopy(connection)
+                bulkCopy.DestinationTableName = DBT
+
+                Try
+                    ' Write from the source to the destination.
+                    bulkCopy.WriteToServer(DT)
+
+                Catch ex As Exception
+                    Console.WriteLine(ex.Message)
+                End Try
+            End Using
+
+            ' Perform a final count on the destination table
+            ' to see how many rows were added.
+            Dim countEnd As Long = System.Convert.ToInt32(commandRowCount.ExecuteScalar())
+            Console.WriteLine("Ending row count = {0}", countEnd)
+            Console.WriteLine("{0} rows were added.", countEnd - countStart)
+
+            Console.WriteLine("Press Enter to finish.")
+            Console.ReadLine()
+        End Using
+    End Sub
+
+    'Get the connection string from a Config file
+    Private Function GetConnectionString(ByVal DBName As String, ByVal DBTName As String) As String
+        ' To avoid storing the connection string in your code, 
+        ' you can retrieve it from a configuration file. 
+        Select Case DBName
+            Case "ncaafb"
+                Return "Data Source=(local);" & "Integrated Security=true;" & "Initial Catalog=AdventureWorks;"
+            Case "ncaab"
+                Return "Data Source=(local);" & "Integrated Security=true;" & "Initial Catalog=AdventureWorks;"
+            Case "nfl"
+                Return "Data Source=(local);" & "Integrated Security=true;" & "Initial Catalog=AdventureWorks;"
+            Case "nba"
+                Return "Data Source=(local);" & "Integrated Security=true;" & "Initial Catalog=AdventureWorks;"
+            Case "mlb"
+                Return "Data Source=(local);" & "Integrated Security=true;" & "Initial Catalog=AdventureWorks;"
+            Case Else
+                Return Nothing
+        End Select
+    End Function
+
     'Checks if URL is valid
     Public Function UrlIsValid(ByVal url As String) As Boolean
         Dim isValid As Boolean = False
@@ -708,5 +867,73 @@ Module Module1
         Return url
     End Function
 
+    Private Function getColumnMappings(ByVal sport As String, ByVal table As String)
+        Select Case sport
+            Case "ncaafb"
+                ' Return array of column mapping value pairs
+            Case "ncaab"
+
+            Case "nfl"
+
+            Case "nba"
+
+            Case "mlb
+"
+        End Select
+        Dim ColMappings As IColumnMappingCollection = Nothing
+
+        ColMappings.Add("", "")
+        Return ColMappings
+    End Function
+
+    ' Insert DataTable into Database Table
+    Public Sub insertDataTable(ByVal ToDB As String, ByVal ToTable As String, ByVal FromTable As DataTable)
+        Dim strConnection As String = GetConnectionString(ToDB, ToTable)        'Function needs to be completed
+
+        ' Open a connection to the MMMDB
+        Using sourceConnection As SqlConnection = New SqlConnection(strConnection)
+            sourceConnection.Open()
+
+            ' Perform an intial count on the destination table
+            Dim commandRowCount As New SqlCommand("SELECT COUNT(*) FROM <insertDB>;", sourceConnection)
+            Dim countStart As Long = System.Convert.ToInt32(commandRowCount.ExecuteScalar())
+
+            ' Get data from the source table as a SqlDataReader
+            Dim commandSourceData As SqlCommand = New SqlCommand("SELECT <columns>, <columns> FROM <table>;", sourceConnection)
+            Dim reader As SqlDataReader = commandSourceData.ExecuteReader
+
+            ' Set up the bulk copy object
+            Using bulkCopy As SqlBulkCopy = New SqlBulkCopy(strConnection)
+                bulkCopy.DestinationTableName = ToTable
+
+                Dim colMappings As IColumnMappingCollection = getColumnMappings()
+
+                ' Set up the column mappings by name.
+                Dim mapID As New SqlBulkCopyColumnMapping("", "")
+                bulkCopy.ColumnMappings.Add(mapID)
+
+                Dim mapName As New SqlBulkCopyColumnMapping("", "")
+                bulkCopy.ColumnMappings.Add(mapName)
+
+                Dim mapNumber As New SqlBulkCopyColumnMapping("", "")
+                bulkCopy.ColumnMappings.Add(mapNumber)
+
+                ' Write from the source to the destination
+                Try
+                    bulkCopy.WriteToServer(reader)
+                Catch ex As Exception
+                    MsgBox(ex.Message)
+                Finally
+                    ' Close the SqlDataReader. The SqlBulkCopy object is automatically closed at the end of the Using block.
+                    reader.Close()
+                End Try
+            End Using
+
+            ' Perform a final count on the destination table to see how many rows were added.
+            Dim countEnd As Long = System.Convert.ToInt32(commandRowCount.ExecuteScalar())
+            MsgBox("Ending row count = {0}", countEnd)
+            MsgBox("{0} rows were added.", countEnd - countStart)
+        End Using
+    End Sub
 
 End Module
