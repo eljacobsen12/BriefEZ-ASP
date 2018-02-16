@@ -5,6 +5,7 @@ Imports System.IO
 Imports System.Net
 Imports HtmlAgilityPack
 Imports System.Data.SqlClient
+Imports MySql.Data.MySqlClient
 
 Module Module1
 
@@ -515,13 +516,62 @@ Module Module1
     '*************EXCEL FUNCTIONS**********
     '**************************************
 
+    'DataGridView to CSV; Returns Path to File
+    Public Sub DGVtoCSV(ByRef dgv As DataGridView, ByVal path As String)
+        Dim headers = (From header As DataGridViewColumn In dgv.Columns.Cast(Of DataGridViewColumn)()
+                       Select header.HeaderText).ToArray
+        Dim rows = From row As DataGridViewRow In dgv.Rows.Cast(Of DataGridViewRow)()
+                   Where Not row.IsNewRow
+                   Select Array.ConvertAll(row.Cells.Cast(Of DataGridViewCell).ToArray, Function(c) If(c.Value IsNot Nothing, c.Value.ToString, ""))
+        Using sw As New IO.StreamWriter(path)
+            sw.WriteLine(String.Join(",", headers))
+            For Each r In rows
+                sw.WriteLine(String.Join(",", r))
+            Next
+            sw.Flush()
+        End Using
+    End Sub
+
+    'DataGridView to CSV; 
+    'Public Sub DGVtoCSV2(ByVal strExportFileName As String, ByVal dgv As DataGridView, Optional ByVal blnWriteColumnHeaderNames As Boolean = True, Optional ByVal strDelimiterType As String = ",")
+    '    Dim fName As String = ""
+    '    SaveFileDialog1.InitialDirectory = "C:\"
+    '    SaveFileDialog1.Filter = "CSV files (*.csv)|*.CSV"
+    '    SaveFileDialog1.FilterIndex = 2
+    '    SaveFileDialog1.RestoreDirectory = True
+    '    If (SaveFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+    '        fName = SaveFileDialog1.FileName
+
+    '        Dim delimiter As String = ","
+    '        Dim sb As New StringBuilder()
+    '        For i As Integer = 0 To TblDataGridView.Rows.Count - 1
+    '            Dim array As String() = New String(TblDataGridView.Columns.Count - 1) {}
+    '            If i.Equals(0) Then
+    '                For j As Integer = 0 To TblDataGridView.Columns.Count - 1
+    '                    array(j) = TblDataGridView.Columns(j).HeaderText
+    '                Next
+    '                sb.AppendLine([String].Join(delimiter, array))
+    '            End If
+    '            For j As Integer = 0 To TblDataGridView.Columns.Count - 1
+    '                If Not TblDataGridView.Rows(i).IsNewRow Then
+    '                    array(j) = TblDataGridView(j, i).Value.ToString()
+    '                End If
+    '            Next
+    '            If Not TblDataGridView.Rows(i).IsNewRow Then
+    '                sb.AppendLine([String].Join(delimiter, array))
+    '            End If
+    '        Next
+    '        IO.File.WriteAllText(fName, sb.ToString(), System.Text.Encoding.Default)
+    '    End If
+    'End Sub
+
     'Imports an excel file, returns Dataset
     Public Function importExcel(ByVal strPath As String)
         Dim strSheetName As String = Nothing
         Dim strConnection As String = Nothing
         Dim strSQL As String = Nothing
         Dim dsDataSet As New DataSet
-        Dim dtTablesList As Data.datatable = Nothing
+        Dim dtTablesList As Data.DataTable = Nothing
         Dim oleExcelCommand As OleDb.OleDbCommand = Nothing
         Dim oleExcelConnection As OleDb.OleDbConnection = Nothing
 
@@ -786,58 +836,21 @@ Module Module1
         Return dbCommandString
     End Function
 
-    Public Sub CopyTableToDB(ByVal DT As Data.DataTable, ByVal DB As String, ByVal DBT As String)
-        Dim connectionString As String = GetConnectionString(DB, DBT)
-
-        ' Open a connection to the AdventureWorks database.
-        Using connection As SqlConnection = New SqlConnection(connectionString)
-            connection.Open()
-
-            ' Perform an initial count on the destination table.
-            Dim commandRowCount As New SqlCommand("SELECT COUNT(*) FROM @TableName;", connection)
-            commandRowCount.Parameters.AddWithValue("@TableName", DB)
-            Dim countStart As Long = System.Convert.ToInt32(commandRowCount.ExecuteScalar())
-            Console.WriteLine("Starting row count = {0}", countStart)
-
-            ' Note that the column positions in the source DataTable match the column positions in the destination table, so there is no NEED TO MAP COLUMNS!!!
-            Using bulkCopy As SqlBulkCopy = New SqlBulkCopy(connection)
-                bulkCopy.DestinationTableName = DBT
-
-                Try
-                    ' Write from the source to the destination.
-                    bulkCopy.WriteToServer(DT)
-
-                Catch ex As Exception
-                    Console.WriteLine(ex.Message)
-                End Try
-            End Using
-
-            ' Perform a final count on the destination table
-            ' to see how many rows were added.
-            Dim countEnd As Long = System.Convert.ToInt32(commandRowCount.ExecuteScalar())
-            Console.WriteLine("Ending row count = {0}", countEnd)
-            Console.WriteLine("{0} rows were added.", countEnd - countStart)
-
-            Console.WriteLine("Press Enter to finish.")
-            Console.ReadLine()
-        End Using
-    End Sub
-
     'Get the connection string from a Config file
-    Private Function GetConnectionString(ByVal DBName As String, ByVal DBTName As String) As String
+    Private Function GetConnectionString(ByVal DBName As String) As String
         ' To avoid storing the connection string in your code, 
         ' you can retrieve it from a configuration file. 
         Select Case DBName
             Case "ncaafb"
-                Return "Data Source=(local);" & "Integrated Security=true;" & "Initial Catalog=AdventureWorks;"
+                Return "server=192.168.0.26; user id=root; password=Look@me3times; database=ncaafb"
             Case "ncaab"
-                Return "Data Source=(local);" & "Integrated Security=true;" & "Initial Catalog=AdventureWorks;"
+                Return "server=192.168.0.26; user id=root; password=Look@me3times; database=ncaab"
             Case "nfl"
-                Return "Data Source=(local);" & "Integrated Security=true;" & "Initial Catalog=AdventureWorks;"
+                Return "server=192.168.0.26; user id=root; password=Look@me3times; database=nfl"
             Case "nba"
-                Return "Data Source=(local);" & "Integrated Security=true;" & "Initial Catalog=AdventureWorks;"
+                Return "server=192.168.0.26; user id=root; password=Look@me3times; database=nba"
             Case "mlb"
-                Return "Data Source=(local);" & "Integrated Security=true;" & "Initial Catalog=AdventureWorks;"
+                Return "server=192.168.0.26; user id=root; password=Look@me3times; database=mlb"
             Case Else
                 Return Nothing
         End Select
@@ -867,28 +880,40 @@ Module Module1
         Return url
     End Function
 
-    Private Function getColumnMappings(ByVal sport As String, ByVal table As String)
-        Select Case sport
-            Case "ncaafb"
-                ' Return array of column mapping value pairs
-            Case "ncaab"
-
-            Case "nfl"
-
-            Case "nba"
-
-            Case "mlb
-"
-        End Select
+    Private Function getColumnMappings(ByVal db As String, ByVal table As String)
+        Dim lstColMaps As New List(Of IColumnMappingCollection)
         Dim ColMappings As IColumnMappingCollection = Nothing
+
+        'lstColMaps.
 
         ColMappings.Add("", "")
         Return ColMappings
     End Function
 
+    ' DataGridView to DataTable
+    Public Function DGVtoDataTable(ByRef dgv As DataGridView)
+        Dim dt As New System.Data.DataTable
+        For Each col As DataGridViewColumn In dgv.Columns
+            dt.Columns.Add(col.Name)
+        Next
+
+        For Each row As DataGridViewRow In dgv.Rows
+            Dim dRow As DataRow = dt.NewRow()
+            For Each cell As DataGridViewCell In row.Cells
+                dRow(cell.ColumnIndex) = cell.Value
+            Next
+            dt.Rows.Add(dRow)
+        Next
+        Return dt
+    End Function
+
+    '*************************************
+    '*          SQL FUNCTIONS
+    '*************************************
+
     ' Insert DataTable into Database Table
     Public Sub insertDataTable(ByVal ToDB As String, ByVal ToTable As String, ByVal FromTable As DataTable)
-        Dim strConnection As String = GetConnectionString(ToDB, ToTable)        'Function needs to be completed
+        Dim strConnection As String = GetConnectionString(ToDB)        'Function needs to be completed
 
         ' Open a connection to the MMMDB
         Using sourceConnection As SqlConnection = New SqlConnection(strConnection)
@@ -906,7 +931,7 @@ Module Module1
             Using bulkCopy As SqlBulkCopy = New SqlBulkCopy(strConnection)
                 bulkCopy.DestinationTableName = ToTable
 
-                Dim colMappings As IColumnMappingCollection = getColumnMappings()
+                Dim colMappings As IColumnMappingCollection = getColumnMappings(vbNull, vbNull) 'FIX THIS!!!
 
                 ' Set up the column mappings by name.
                 Dim mapID As New SqlBulkCopyColumnMapping("", "")
@@ -936,4 +961,131 @@ Module Module1
         End Using
     End Sub
 
+    Public Sub ImportCSVtoMySQL(ByVal db As String, ByVal tableName As String, ByVal filepath As String)
+        Dim connStr As String = "server=192.168.0.26;user=EJadmin;database=" & db & ";port=3306;password=Look@me3times"
+        Dim conn As New MySqlConnection(connStr)
+
+        Dim bl As MySqlBulkLoader = New MySqlBulkLoader(conn)
+        bl.TableName = tableName
+        bl.FieldTerminator = ","
+        bl.LineTerminator = "\n"
+        bl.FileName = filepath
+        bl.NumberOfLinesToSkip = 1
+
+        Try
+            Console.WriteLine("Connecting to MySQL...")
+            conn.Open()
+
+            ' Upload data from file
+            Dim count As Integer = bl.Load()
+            Console.WriteLine(count + " lines uploaded.")
+
+            Dim Sql As String = GetSQLString(db, tableName)  '"SELECT Name, Age, Profession FROM Career"
+            Dim cmd As MySqlCommand = New MySqlCommand(Sql, conn)
+            Dim rdr As MySqlDataReader = cmd.ExecuteReader()
+
+            While (rdr.Read())
+                Console.WriteLine(rdr(0) + " -- " + rdr(1) + " -- " + rdr(2))
+            End While
+            rdr.Close()
+            conn.Close()
+
+        Catch ex As Exception
+            Console.WriteLine(ex.ToString())
+
+        End Try
+        Console.WriteLine("Done.")
+    End Sub
+
+    Private Function GetSQLString(ByVal db As String, ByVal dt As String)
+        ' Return the SQL Command String
+        ' "SELECT Name, Age, Profession FROM Career"
+        Select Case db
+            Case "ncaafb"
+                Select Case dt
+                    Case "teams"
+                        Return "SELECT ID, Team FROM Teams"
+                End Select
+            Case "ncaab"
+
+            Case "nfl"
+
+            Case "nba"
+
+            Case "mlb"
+
+        End Select
+
+    End Function
+
+    Public Sub AddCols(ByRef DT As System.Data.DataTable, ByVal Year As Integer, ByRef DGV As DataGridView)
+
+        ' Add StatID Column
+        Dim dcStatID As New DataColumn
+        dcStatID.DataType = GetType(Integer)
+        dcStatID.AutoIncrement = True
+        dcStatID.ColumnName = "StatID"
+        DT.Columns.Add(dcStatID)
+
+        ' Add StatID Column
+        Dim dcYear As New DataColumn
+        dcYear.DataType = GetType(Integer)
+        dcYear.ColumnName = "Year"
+        dcYear.DefaultValue = Year
+        DT.Columns.Add(dcYear)
+
+        ' Add StatID Column
+        Dim dcTeamID As New DataColumn
+        dcTeamID.DataType = GetType(Integer)
+        dcTeamID.ColumnName = "TeamID"
+        dcTeamID.AllowDBNull = True
+        DT.Columns.Add(dcTeamID)
+
+        'POPULATE TEAM ID COLUMN
+
+
+    End Sub
+
+    Public Sub GetTeamIDs(ByRef DGV As DataGridView)
+        Dim baseString As String = "http://www.espn.com/mens-college-basketball/team/_/id/"
+        Dim downloadString As String = Nothing
+        Dim sourceString As String = Nothing
+        Dim html As String = Nothing
+        Dim pattern As String = Nothing
+        Dim title As String = Nothing
+        Dim titles As New System.Data.DataTable
+        Dim colID As DataColumn = titles.Columns.Add("ID", GetType(Integer))
+        colID.Unique = True
+        titles.Columns.Add("Title", GetType(String))
+        Dim data As String = Nothing
+        Dim x, y As Integer
+
+        For i As Integer = 1 To 350
+            downloadString = baseString & i.ToString
+            Try
+                sourceString = New System.Net.WebClient().DownloadString(downloadString)
+                html = sourceString
+                pattern = "<\s*title[^>]*>(.*?)<\s*/\s*title>"
+                data = System.Text.RegularExpressions.Regex.Match(html, pattern).Value
+                x = data.IndexOf("<title>") + "<title>".Length
+                y = data.IndexOf("College Basketball") - x
+                title = data.Substring(x, y).Trim
+                If title IsNot "NCAA" Then
+                    Dim R As DataRow = titles.NewRow
+                    R("ID") = i
+                    R("Title") = title
+                    titles.Rows.Add(R)
+                End If
+            Catch ex As Exception
+
+            End Try
+        Next
+        For a As Integer = titles.Rows.Count - 1 To 0 Step -1
+            If titles.Rows(a).Item(titles.Columns.IndexOf("Title")) = "NCAA" Then
+                titles.Rows(a).Delete()
+                a -= 1
+            End If
+        Next
+        DGV.DataSource = titles
+    End Sub
 End Module

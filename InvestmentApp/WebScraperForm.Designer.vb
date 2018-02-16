@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class WebScraperForm
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,9 +20,9 @@ Partial Class WebScraperForm
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.btnExtract = New System.Windows.Forms.Button()
+        Me.btnScrape = New System.Windows.Forms.Button()
         Me.btnExit = New System.Windows.Forms.Button()
         Me.lblSelectSport = New System.Windows.Forms.Label()
         Me.dgvTableDisplay = New System.Windows.Forms.DataGridView()
@@ -38,19 +38,20 @@ Partial Class WebScraperForm
         Me.btnToExcel = New System.Windows.Forms.Button()
         Me.cmbSelectTeam2 = New System.Windows.Forms.ComboBox()
         Me.lblSelectTeam2 = New System.Windows.Forms.Label()
+        Me.btnAddCols = New System.Windows.Forms.Button()
         CType(Me.dgvTableDisplay, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'btnExtract
+        'btnScrape
         '
-        Me.btnExtract.BackColor = System.Drawing.Color.Azure
-        Me.btnExtract.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnExtract.Location = New System.Drawing.Point(549, 31)
-        Me.btnExtract.Name = "btnExtract"
-        Me.btnExtract.Size = New System.Drawing.Size(137, 47)
-        Me.btnExtract.TabIndex = 2
-        Me.btnExtract.Text = "Extract"
-        Me.btnExtract.UseVisualStyleBackColor = False
+        Me.btnScrape.BackColor = System.Drawing.Color.Azure
+        Me.btnScrape.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnScrape.Location = New System.Drawing.Point(549, 31)
+        Me.btnScrape.Name = "btnScrape"
+        Me.btnScrape.Size = New System.Drawing.Size(152, 47)
+        Me.btnScrape.TabIndex = 2
+        Me.btnScrape.Text = "Scrape"
+        Me.btnScrape.UseVisualStyleBackColor = False
         '
         'btnExit
         '
@@ -59,7 +60,7 @@ Partial Class WebScraperForm
         Me.btnExit.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnExit.Location = New System.Drawing.Point(549, 91)
         Me.btnExit.Name = "btnExit"
-        Me.btnExit.Size = New System.Drawing.Size(137, 47)
+        Me.btnExit.Size = New System.Drawing.Size(152, 47)
         Me.btnExit.TabIndex = 3
         Me.btnExit.Text = "Exit"
         Me.btnExit.UseVisualStyleBackColor = False
@@ -162,9 +163,9 @@ Partial Class WebScraperForm
         '
         Me.btnUpdateDB.BackColor = System.Drawing.Color.Azure
         Me.btnUpdateDB.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnUpdateDB.Location = New System.Drawing.Point(138, 709)
+        Me.btnUpdateDB.Location = New System.Drawing.Point(124, 709)
         Me.btnUpdateDB.Name = "btnUpdateDB"
-        Me.btnUpdateDB.Size = New System.Drawing.Size(157, 47)
+        Me.btnUpdateDB.Size = New System.Drawing.Size(175, 47)
         Me.btnUpdateDB.TabIndex = 17
         Me.btnUpdateDB.Text = "Update DB"
         Me.btnUpdateDB.UseVisualStyleBackColor = False
@@ -173,9 +174,9 @@ Partial Class WebScraperForm
         '
         Me.btnToExcel.BackColor = System.Drawing.Color.Azure
         Me.btnToExcel.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnToExcel.Location = New System.Drawing.Point(458, 709)
+        Me.btnToExcel.Location = New System.Drawing.Point(430, 709)
         Me.btnToExcel.Name = "btnToExcel"
-        Me.btnToExcel.Size = New System.Drawing.Size(157, 47)
+        Me.btnToExcel.Size = New System.Drawing.Size(185, 47)
         Me.btnToExcel.TabIndex = 18
         Me.btnToExcel.Text = "To Excel"
         Me.btnToExcel.UseVisualStyleBackColor = False
@@ -200,14 +201,27 @@ Partial Class WebScraperForm
         Me.lblSelectTeam2.TabIndex = 19
         Me.lblSelectTeam2.Text = "TEAM2"
         '
+        'btnAddCols
+        '
+        Me.btnAddCols.BackColor = System.Drawing.Color.Azure
+        Me.btnAddCols.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnAddCols.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAddCols.Location = New System.Drawing.Point(549, 149)
+        Me.btnAddCols.Name = "btnAddCols"
+        Me.btnAddCols.Size = New System.Drawing.Size(152, 47)
+        Me.btnAddCols.TabIndex = 21
+        Me.btnAddCols.Text = "Add Cols"
+        Me.btnAddCols.UseVisualStyleBackColor = False
+        '
         'WebScraperForm
         '
-        Me.AcceptButton = Me.btnExtract
+        Me.AcceptButton = Me.btnScrape
         Me.AutoScaleDimensions = New System.Drawing.SizeF(12.0!, 25.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.PaleTurquoise
         Me.CancelButton = Me.btnExit
         Me.ClientSize = New System.Drawing.Size(740, 774)
+        Me.Controls.Add(Me.btnAddCols)
         Me.Controls.Add(Me.cmbSelectTeam2)
         Me.Controls.Add(Me.lblSelectTeam2)
         Me.Controls.Add(Me.btnToExcel)
@@ -223,7 +237,7 @@ Partial Class WebScraperForm
         Me.Controls.Add(Me.dgvTableDisplay)
         Me.Controls.Add(Me.lblSelectSport)
         Me.Controls.Add(Me.btnExit)
-        Me.Controls.Add(Me.btnExtract)
+        Me.Controls.Add(Me.btnScrape)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.Name = "WebScraperForm"
@@ -233,7 +247,7 @@ Partial Class WebScraperForm
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents btnExtract As Button
+    Friend WithEvents btnScrape As Button
     Friend WithEvents btnExit As Button
     Friend WithEvents lblSelectSport As Label
     Friend WithEvents dgvTableDisplay As DataGridView
@@ -249,4 +263,5 @@ Partial Class WebScraperForm
     Friend WithEvents btnToExcel As Button
     Friend WithEvents cmbSelectTeam2 As ComboBox
     Friend WithEvents lblSelectTeam2 As Label
+    Friend WithEvents btnAddCols As Button
 End Class
