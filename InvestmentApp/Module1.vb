@@ -516,6 +516,12 @@ Module Module1
     '*************EXCEL FUNCTIONS**********
     '**************************************
 
+    'Loop through all tables and export to CSV
+    Public Sub TablesToCSV(ByRef btnSport As ComboBox, ByRef btnStat As ComboBox, ByRef btnSeason As ComboBox)
+
+
+    End Sub
+
     'DataGridView to CSV; Returns Path to File
     Public Sub DGVtoCSV(ByRef dgv As DataGridView, ByVal path As String)
         Dim headers = (From header As DataGridViewColumn In dgv.Columns.Cast(Of DataGridViewColumn)()
@@ -531,39 +537,6 @@ Module Module1
             sw.Flush()
         End Using
     End Sub
-
-    'DataGridView to CSV; 
-    'Public Sub DGVtoCSV2(ByVal strExportFileName As String, ByVal dgv As DataGridView, Optional ByVal blnWriteColumnHeaderNames As Boolean = True, Optional ByVal strDelimiterType As String = ",")
-    '    Dim fName As String = ""
-    '    SaveFileDialog1.InitialDirectory = "C:\"
-    '    SaveFileDialog1.Filter = "CSV files (*.csv)|*.CSV"
-    '    SaveFileDialog1.FilterIndex = 2
-    '    SaveFileDialog1.RestoreDirectory = True
-    '    If (SaveFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-    '        fName = SaveFileDialog1.FileName
-
-    '        Dim delimiter As String = ","
-    '        Dim sb As New StringBuilder()
-    '        For i As Integer = 0 To TblDataGridView.Rows.Count - 1
-    '            Dim array As String() = New String(TblDataGridView.Columns.Count - 1) {}
-    '            If i.Equals(0) Then
-    '                For j As Integer = 0 To TblDataGridView.Columns.Count - 1
-    '                    array(j) = TblDataGridView.Columns(j).HeaderText
-    '                Next
-    '                sb.AppendLine([String].Join(delimiter, array))
-    '            End If
-    '            For j As Integer = 0 To TblDataGridView.Columns.Count - 1
-    '                If Not TblDataGridView.Rows(i).IsNewRow Then
-    '                    array(j) = TblDataGridView(j, i).Value.ToString()
-    '                End If
-    '            Next
-    '            If Not TblDataGridView.Rows(i).IsNewRow Then
-    '                sb.AppendLine([String].Join(delimiter, array))
-    '            End If
-    '        Next
-    '        IO.File.WriteAllText(fName, sb.ToString(), System.Text.Encoding.Default)
-    '    End If
-    'End Sub
 
     'Imports an excel file, returns Dataset
     Public Function importExcel(ByVal strPath As String)
@@ -1015,7 +988,7 @@ Module Module1
             Case "mlb"
 
         End Select
-
+        Return Nothing
     End Function
 
     Public Sub AddCols(ByRef DT As System.Data.DataTable, ByVal Year As Integer, ByRef DGV As DataGridView)
@@ -1087,5 +1060,9 @@ Module Module1
             End If
         Next
         DGV.DataSource = titles
+    End Sub
+
+    Public Sub UploadTablesToDB()
+
     End Sub
 End Module

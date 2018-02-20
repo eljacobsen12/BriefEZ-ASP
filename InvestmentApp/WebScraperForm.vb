@@ -7,37 +7,52 @@ Imports MySql
 
 Public Class WebScraperForm
     Private Sub WebScraperTEST_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        cmbSelectSeason.DataSource = {"2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002"}
-        cmbSelectSport.DataSource = {"NFL", "NBA", "NCAA FOOTBALL", "NCAA BASKETBALL"}
+        cmbSelectSport.DataSource = GetDatasource("Sports")
+        Select Case cmbSelectSport.Text
+            Case "NCAA BASKETBALL"
+                cmbSelectSeason.DataSource = GetDatasource("YearsNCAAB")
+            Case "NCAA FOOTBALL"
+                cmbSelectSeason.DataSource = GetDatasource("YearsNCAAF")
+            Case "NBA"
+                cmbSelectSeason.DataSource = GetDatasource("YearsNBA")
+            Case "NFL"
+                cmbSelectSeason.DataSource = GetDatasource("YearsNFL")
+        End Select
         cmbSelectTeam1.DataSource = ScrapeTeams(cmbSelectSport.Text) 'PULL TEAMS FROM DB TABLE
     End Sub
 
+    '   Populate comboboxes on form based on selected sport
+    Private Sub cmbSelectSport_SelectedValueChanged(sender As Object, e As EventArgs) Handles cmbSelectSport.SelectedValueChanged
+        Select Case cmbSelectSport.Text
+            Case "NCAA BASKETBALL"
+                cmbSelectStat.DataSource = GetDatasource("StatsNCAAB")
+            Case "NCAA FOOTBALL"
+                cmbSelectStat.DataSource = GetDatasource("StatsNCAAF")
+            Case "NBA"
+                cmbSelectStat.DataSource = GetDatasource("StatsNBA")
+            Case "NFL"
+                cmbSelectStat.DataSource = GetDatasource("StatsNFL")
+        End Select
+    End Sub
 
     Private Sub btnExtract_Click(sender As Object, e As EventArgs) Handles btnScrape.Click
-        Try
-            dgvTableDisplay.Rows.Clear()
-        Finally
-
+        'Try
+        '    dgvTableDisplay.Rows.Clear()
+        'Finally
+        If cmbSelectTeam1.Text <> Nothing Then
             Select Case cmbSelectSport.Text
                 Case "NFL"
-                    If cmbSelectTeam1.Text <> Nothing Then
-                        ScrapeNFL(cmbSelectStat.Text)
-                    End If
+                    ScrapeNFL(cmbSelectStat.Text)
                 Case "NBA"
-                    If cmbSelectTeam1.Text <> Nothing Then
-                        ScrapeNBA(cmbSelectStat.Text)
-                    End If
+                    ScrapeNBA(cmbSelectStat.Text)
                 Case "NCAA FOOTBALL"
-                    If cmbSelectTeam1.Text <> Nothing Then
-                        ScrapeNCAAFootball(cmbSelectStat.Text)
-                    End If
+                    ScrapeNCAAFootball(cmbSelectStat.Text)
                 Case "NCAA BASKETBALL"
-                    If cmbSelectTeam1.Text <> Nothing Then
-                        ScrapeNCAABasketball(cmbSelectStat.Text)
-                    End If
+                    ScrapeNCAABasketball(cmbSelectStat.Text)
             End Select
-            dgvTableDisplay.AutoResizeColumns()
-        End Try
+        End If
+        dgvTableDisplay.AutoResizeColumns()
+        'End Try
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
@@ -445,7 +460,8 @@ Public Class WebScraperForm
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Downs Offense"   'Set Table Name
                 '****** CENTER LABEL *******
                 If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
+                    Dim dt As DataTable = StatsToDataTable(nodes)
+                    dgvTableDisplay.DataSource = dt
                 End If
 
             Case "TEAM STATS - PASSING YARDS OFF"
@@ -543,10 +559,28 @@ Public Class WebScraperForm
         Dim colCount As Integer = StatNodes(1).ChildNodes.Count - 1
         Table.ColumnCount = colCount + 1     'Set columns
         Dim rowStart As Integer = 0
+        Dim colspans As List(Of String) = Nothing
+        Dim colHeaders As List(Of String) = Nothing
+        Dim colspan As String
         If StatNodes(0).ChildNodes.Count <> Table.ColumnCount Then
+            'Check for column headers
+            For Each node As HtmlNode In StatNodes(0).ChildNodes
+                colspan = node.Attributes(0).Value
+                colspans.Add(colspan)
+                colHeaders.Add(node.Name)
+            Next
             rowStart = 1
         End If
         For i As Integer = 0 To colCount
+            If colspans IsNot Nothing Then
+                Dim count As Integer = 0
+                For Each col In colspans
+                    count += CType(col, Integer)
+                    If i <= count Then
+
+                    End If
+                Next
+            End If
             Table.Columns(i).Name = StatNodes(rowStart).ChildNodes(i).InnerText
         Next
 
@@ -566,8 +600,42 @@ Public Class WebScraperForm
         Next
     End Sub
 
-    '   Nodes collection to DataTable for importing to database
+    '   From Nodes to DataGridView
     Public Function StatsToDataTable(ByVal StatNodes As HtmlNodeCollection)
+        Dim Table As New DataTable
+        Dim colCount As Integer = StatNodes(1).ChildNodes.Count - 1
+        For i = 0 To colCount
+            Table.Columns.Add()
+        Next
+        Dim rowStart As Integer = 0
+        If StatNodes(0).ChildNodes.Count <> colCount + 1 Then
+            rowStart = 1
+        End If
+        For i As Integer = 0 To colCount
+            Table.Columns(i).ColumnName = StatNodes(rowStart).ChildNodes(i).InnerText
+        Next
+
+        For i As Integer = 0 To StatNodes.Count - 1
+            If StatNodes(i).ChildNodes.Count = Table.Columns.Count Then
+                If StatNodes(i).FirstChild.InnerText <> "PER GAME" AndAlso StatNodes(i).FirstChild.InnerText <> "DATE" AndAlso StatNodes(i).FirstChild.InnerText <> "RK" Then     'Add data from nodes to rows
+                    Table.Rows.Add()
+                    Dim rowNum As Integer = Table.Rows.Count - 1
+                    For x As Integer = 0 To colCount
+                        If Not StatNodes(i).ChildNodes(x).InnerText = "&nbsp;" Then
+                            Table.Rows(rowNum).Item(x) = StatNodes(i).ChildNodes(x).InnerText
+                            'Table.Item(x, rowNum).Value = StatNodes(i).ChildNodes(x).InnerText
+                        Else
+                            Table.Rows(rowNum).Item(x) = ""
+                        End If
+                    Next
+                End If
+            End If
+        Next
+        Return Table
+    End Function
+
+    '   Nodes collection to DataTable for importing to database
+    Public Function StatsToDataTable2(ByVal StatNodes As HtmlNodeCollection)
         Dim dt As New DataTable
         Dim colCount As Integer = StatNodes(1).ChildNodes.Count - 1
         For i As Integer = 0 To colCount   'Set columns
@@ -593,66 +661,6 @@ Public Class WebScraperForm
         Next
         Return dt
     End Function
-
-    '   Populate comboboxes on form based on selected sport
-    Private Sub cmbSelectSport_SelectedValueChanged(sender As Object, e As EventArgs) Handles cmbSelectSport.SelectedValueChanged
-        Select Case cmbSelectSport.Text
-            Case "NCAA BASKETBALL"
-                cmbSelectStat.DataSource = {"TEAM SCHEDULE",
-                                            "TEAM STATS",
-                                            "TEAM ROSTER",
-                                            "TEAM STATS - SCORING",
-                                            "TEAM STATS - REBOUNDS",
-                                            "TEAM STATS - FIELD GOALS",
-                                            "TEAM STATS - FREE-THROWS",
-                                            "TEAM STATS - 3-POINTS",
-                                            "TEAM STATS - ASSISTS",
-                                            "TEAM STATS - STEALS",
-                                            "TEAM STATS - BLOCKS"}
-            Case "NCAA FOOTBALL"
-                cmbSelectStat.DataSource = {"TEAM SCHEDULE",
-                                            "TEAM STATS",
-                                            "TEAM ROSTER",
-                                            "TEAM STATS - TOTAL YARDS OFF",
-                                            "TEAM STATS - TOTAL YARDS DEF",
-                                            "TEAM STATS - DOWNS",
-                                            "TEAM STATS - PASSING YARDS OFF",
-                                            "TEAM STATS - PASSING YARDS DEF",
-                                            "TEAM STATS - RUSHING YARDS OFF",
-                                            "TEAM STATS - RUSHING YARDS DEF",
-                                            "TEAM STATS - RECEIVING",
-                                            "TEAM STATS - RETURNING",
-                                            "TEAM STATS - KICKING",
-                                            "TEAM STATS - PUNTING",
-                                            "TEAM STATS - DEFENSE"}
-            Case "NBA"
-                cmbSelectStat.DataSource = {"TEAM SCHEDULE",
-                                            "TEAM STATS - REGULAR",
-                                            "TEAM STATS - POSTSEASON",
-                                            "TEAM ROSTER",
-                                            "TEAM STATS - OFFENSE",
-                                            "TEAM STATS - DEFENSE",
-                                            "TEAM STATS - DIFFERENTIAL",
-                                            "TEAM STATS - REBOUNDS",
-                                            "TEAM STATS - MISCELLANEOUS"
-                                            }
-            Case "NFL"
-                cmbSelectStat.DataSource = {"TEAM SCHEDULE",
-                                            "TEAM STATS",
-                                            "TEAM ROSTER",
-                                            "TEAM STATS - TOTAL YARDS OFF",
-                                            "TEAM STATS - DOWNS OFF",
-                                            "TEAM STATS - PASSING YARDS OFF",
-                                            "TEAM STATS - RUSHING YARDS OFF",
-                                            "TEAM STATS - RECEIVING OFF",
-                                            "TEAM STATS - RETURNING OWN",
-                                            "TEAM STATS - KICKING OWN",
-                                            "TEAM STATS - PUNTING OWN",
-                                            "TEAM STATS - DEFENSE OWN",
-                                            "TEAM STATS - GIVE/TAKE"
-                                            }
-        End Select
-    End Sub
 
     '   Populate Teams combobox on form
     Private Sub cmbSelectSport_TextChanged(sender As Object, e As EventArgs) Handles cmbSelectSport.TextChanged

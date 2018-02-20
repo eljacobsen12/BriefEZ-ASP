@@ -78,6 +78,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataSources.vb" />
     <Compile Include="HomeForm.vb">
       <SubType>Form</SubType>
     </Compile>
