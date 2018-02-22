@@ -460,8 +460,7 @@ Public Class WebScraperForm
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Downs Offense"   'Set Table Name
                 '****** CENTER LABEL *******
                 If nodes IsNot Nothing Then
-                    Dim dt As DataTable = StatsToDataTable(nodes)
-                    dgvTableDisplay.DataSource = dt
+                    StatsToTable(nodes, dgvTableDisplay)
                 End If
 
             Case "TEAM STATS - PASSING YARDS OFF"
@@ -559,29 +558,31 @@ Public Class WebScraperForm
         Dim colCount As Integer = StatNodes(1).ChildNodes.Count - 1
         Table.ColumnCount = colCount + 1     'Set columns
         Dim rowStart As Integer = 0
-        Dim colspans As List(Of String) = Nothing
-        Dim colHeaders As List(Of String) = Nothing
-        Dim colspan As String
+        Dim colspans As New List(Of Integer)
+        Dim colHeaders As New List(Of String)
+        Dim colspan As Integer = 0
         If StatNodes(0).ChildNodes.Count <> Table.ColumnCount Then
             'Check for column headers
             For Each node As HtmlNode In StatNodes(0).ChildNodes
-                colspan = node.Attributes(0).Value
+                colspan += CType(node.Attributes(0).Value, Integer)
                 colspans.Add(colspan)
-                colHeaders.Add(node.Name)
+                colHeaders.Add(node.InnerText)
             Next
             rowStart = 1
         End If
         For i As Integer = 0 To colCount
             If colspans IsNot Nothing Then
-                Dim count As Integer = 0
-                For Each col In colspans
-                    count += CType(col, Integer)
-                    If i <= count Then
-
+                For Each value In colspans
+                    If value <> "&nbsp;" Then
+                        If i < value Then
+                            Table.Columns(i).Name = colHeaders(colspans.IndexOf(value)) & "-" & StatNodes(rowStart).ChildNodes(i).InnerText
+                            Exit For
+                        End If
                     End If
                 Next
+            Else
+                Table.Columns(i).Name = StatNodes(rowStart).ChildNodes(i).InnerText
             End If
-            Table.Columns(i).Name = StatNodes(rowStart).ChildNodes(i).InnerText
         Next
 
         For i As Integer = 0 To StatNodes.Count - 1
