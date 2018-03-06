@@ -13,6 +13,15 @@ Module Module1
     '*********COMMON FUNCTIONS**********
     '***********************************
 
+    'Return String in Proper Case with no spaces
+    Public Function GetProperString(ByVal str As String)
+        Dim strProper As String = StrConv(str, VbStrConv.Lowercase)
+        strProper = strProper.Replace("/", "_per_")
+        strProper = strProper.Replace(" ", "_")
+        strProper = strProper.Replace("-", "_")
+        Return strProper
+    End Function
+
     'MARCH MADNESS: Calculate Team Grade from Spreadsheet Row
     Public Function calculateTeamGrade(ByRef dr As DataRow)
         Dim intAPRank As Integer = dr.Item(0)
@@ -538,6 +547,23 @@ Module Module1
         End Using
     End Sub
 
+    ' Datatable to CSV
+    Public Sub DatatableToCSV(ByRef table As System.Data.DataTable, ByVal path As String)
+        Dim headers = (From header As Data.DataColumn In table.Columns.Cast(Of DataColumn)()
+                       Select header.ColumnName).ToArray
+        Dim rows = From row As DataRow In table.Rows.Cast(Of DataRow)()
+                   Where Not row.RowState = DataRowState.Detached
+                   Select Array.ConvertAll(row.ItemArray.Cast(Of String).ToArray, Function(c) If(c IsNot Nothing, c.ToString, ""))
+        Using sw As New IO.StreamWriter(path)
+            sw.WriteLine(String.Join(",", headers))
+            For Each r In rows
+                sw.WriteLine(String.Join(",", r))
+            Next
+            sw.Flush()
+        End Using
+    End Sub
+
+
     'Imports an excel file, returns Dataset
     Public Function importExcel(ByVal strPath As String)
         Dim strSheetName As String = Nothing
@@ -688,26 +714,6 @@ Module Module1
             Return Nothing
         End Try
     End Function
-
-    'Imports DataGridView to given SQL Table
-    Public Sub ImportTableToDB(ByVal dgv As DataGridView, ByVal tableName As String)
-        Dim connection As New Data.SqlClient.SqlConnection
-        connection.ConnectionString = "Server= EJserver; Database= MMMDB; integrated security=true"
-        Dim command As New Data.SqlClient.SqlCommand
-        command.CommandText = "INSERT INTO <table> (Col1, Col2, Col3, Col4) VALUES (@NAME, @PROPERTY, @VALUE, @DATE)"
-        command.Parameters.Add("@ServerName", SqlDbType.VarChar)
-        command.Parameters.Add("Property", SqlDbType.VarChar)
-        command.Parameters.Add("Value", SqlDbType.VarChar)
-        command.Parameters.Add("CaptureDate", SqlDbType.DateTime)
-
-        For i As Integer = 0 To dgv.Rows.Count - 1
-            command.Parameters(0).Value = dgv.Rows(i).Cells(0).Value
-            command.Parameters(1).Value = dgv.Rows(i).Cells(1).Value
-            command.Parameters(2).Value = dgv.Rows(i).Cells(2).Value
-            command.Parameters(3).Value = dgv.Rows(i).Cells(3).Value
-            command.ExecuteNonQuery()
-        Next
-    End Sub
 
     Public Function getDBconnection(ByVal db As String)
         Dim dbConnectionString As String = Nothing
@@ -880,9 +886,152 @@ Module Module1
         Return dt
     End Function
 
+    '   From Nodes to DataGridView
+    Public Sub StatsToTable(ByVal StatNodes As HtmlNodeCollection, ByVal Table As DataGridView)
+        Dim colCount As Integer = StatNodes(1).ChildNodes.Count - 1
+        Table.ColumnCount = colCount + 1     'Set columns
+        Dim rowStart As Integer = 0
+        Dim colspans As New List(Of Integer)
+        Dim colHeaders As New List(Of String)
+        Dim colspan As Integer = 0
+        If StatNodes(0).ChildNodes.Count <> Table.ColumnCount Then
+            'Check for column headers
+            For Each node As HtmlNode In StatNodes(0).ChildNodes
+                colspan += CType(node.Attributes(0).Value, Integer)
+                colspans.Add(colspan)
+                colHeaders.Add(node.InnerText)
+            Next
+            rowStart = 1
+        End If
+        For i As Integer = 0 To colCount
+            If colspans.Count <> 0 Then
+                For Each value In colspans
+                    If i < value Then
+                        If colHeaders(colspans.IndexOf(value)) <> "&nbsp;" Then
+                            Table.Columns(i).Name = GetProperString(colHeaders(colspans.IndexOf(value)) & "-" & GetProperString(StatNodes(rowStart).ChildNodes(i).InnerText))
+                            Exit For
+                        Else
+                            Table.Columns(i).Name = GetProperString(StatNodes(rowStart).ChildNodes(i).InnerText)
+                            Exit For
+                        End If
+                    End If
+                Next
+            Else
+                Table.Columns(i).Name = GetProperString(StatNodes(rowStart).ChildNodes(i).InnerText)
+            End If
+        Next
+
+        For i As Integer = 0 To StatNodes.Count - 1
+            If StatNodes(i).ChildNodes.Count = Table.ColumnCount Then
+                If StatNodes(i).FirstChild.InnerText <> "PER GAME" AndAlso StatNodes(i).FirstChild.InnerText <> "DATE" AndAlso StatNodes(i).FirstChild.InnerText <> "RK" Then     'Add data from nodes to rows
+                    Dim rowNum As Integer = Table.Rows.Add()
+                    For x As Integer = 0 To colCount
+                        If Not StatNodes(i).ChildNodes(x).InnerText = "&nbsp;" Then
+                            Table.Item(x, rowNum).Value = StatNodes(i).ChildNodes(x).InnerText
+                        Else
+                            Table.Item(x, rowNum).Value = ""
+                        End If
+                    Next
+                End If
+            End If
+        Next
+    End Sub
+
+    '   Nodes collection to DataTable for importing to database
+    Public Function StatsToDataTable(ByVal StatNodes As HtmlNodeCollection, ByVal TableName As String) As System.Data.DataTable
+        Dim Table As New System.Data.DataTable
+        Dim colCount As Integer = StatNodes(1).ChildNodes.Count - 1
+        For i = 0 To colCount
+            Table.Columns.Add()
+        Next
+        Dim rowStart As Integer = 0
+        If StatNodes(0).ChildNodes.Count <> colCount + 1 Then
+            rowStart = 1
+        End If
+        Dim colspans As New List(Of Integer)
+        Dim colHeaders As New List(Of String)
+        Dim colspan As Integer = 0
+        If StatNodes(0).ChildNodes.Count <> Table.Columns.Count Then
+            'Check for column headers
+            For Each node As HtmlNode In StatNodes(0).ChildNodes
+                If node.Attributes.Count > 0 Then
+                    colspan += CType(node.Attributes(0).Value, Integer)
+                    colspans.Add(colspan)
+                    colHeaders.Add(GetProperString(TableName) & "_" & node.InnerText)
+                End If
+            Next
+            rowStart = 1
+        End If
+        For i As Integer = 0 To colCount
+            If colspans.Count <> 0 Then
+                For Each value In colspans
+                    If i < value Then
+                        If colHeaders(colspans.IndexOf(value)) <> GetProperString(TableName) & "_&nbsp;" Then
+                            Try
+                                Table.Columns(i).ColumnName = GetProperString(TableName) & "_" & GetProperString(colHeaders(colspans.IndexOf(value)) & "_" & StatNodes(rowStart).ChildNodes(i).InnerText)
+                            Catch
+                                Table.Columns(i).ColumnName = GetProperString(TableName) & "_" & GetProperString(colHeaders(colspans.IndexOf(value)) & "_" & StatNodes(rowStart).ChildNodes(i).InnerText & "1")
+                            End Try
+                            Exit For
+                        Else
+                            Table.Columns(i).ColumnName = GetProperString(TableName) & "_" & GetProperString(StatNodes(rowStart).ChildNodes(i).InnerText)
+                            Exit For
+                        End If
+                    End If
+                Next
+            Else
+                Try
+                    Table.Columns(i).ColumnName = GetProperString(TableName) & "_" & GetProperString(StatNodes(rowStart).ChildNodes(i).InnerText)
+                Catch
+                    Table.Columns(i).ColumnName = GetProperString(TableName) & "_" & GetProperString(StatNodes(rowStart).ChildNodes(i).InnerText & "1")
+                End Try
+            End If
+        Next
+
+        For i As Integer = 0 To StatNodes.Count - 1
+            If StatNodes(i).ChildNodes.Count = Table.Columns.Count Then
+                Table.Rows.Add()
+                Dim rowNum As Integer = Table.Rows.Count - 1
+                For x As Integer = 0 To colCount
+                    If Not StatNodes(i).ChildNodes(x).InnerText = "&nbsp;" Then
+                        Table.Rows(rowNum).Item(x) = StatNodes(i).ChildNodes(x).InnerText
+                    Else
+                        Table.Rows(rowNum).Item(x) = ""
+                    End If
+                Next
+            End If
+        Next
+        Return Table
+    End Function
+
+    'All Tables to CSV
+    Public Sub ScrapeTablesToCSV()
+
+    End Sub
+
     '*************************************
-    '*          SQL FUNCTIONS
+    '           SQL FUNCTIONS
     '*************************************
+
+    ' Return MySQL String
+    Public Function sqlCreateTable(ByVal dbName As String, ByVal tableName As String)
+        Dim strSQL As String = "CREATE TABLE [IF NOT EXISTS] " & GetProperString(tableName) & " (id INT(6) NOT NULL AUTO_INCREMENT, "
+        Dim cols As String() = GetDatasource(dbName.ToUpper & "-" & tableName)
+        For Each str As String In cols
+
+            If str = cols.Last Then
+                strSQL += GetProperString(tableName) & "_" & str.ToLower & " INT(6) DEFAULT NULL"
+            Else
+                If str = "team" Then
+                    strSQL += GetProperString(tableName) & "_team VARCHAR(30) DEFAULT NULL,"
+                Else
+                    strSQL += GetProperString(tableName) & "_" & str.ToLower & " INT(6) DEFAULT NULL,"
+                End If
+            End If
+        Next
+        strSQL += ");"
+        Return strSQL
+    End Function
 
     ' Insert DataTable into Database Table
     Public Sub insertDataTable(ByVal ToDB As String, ByVal ToTable As String, ByVal FromTable As DataTable)
@@ -934,57 +1083,115 @@ Module Module1
         End Using
     End Sub
 
-    Public Sub ImportCSVtoMySQL(ByVal db As String, ByVal tableName As String, ByVal filepath As String)
-        Dim connStr As String = "server=192.168.0.26;user=EJadmin;database=" & db & ";port=3306;password=Look@me3times"
+    Public Sub ImportCSVtoMySQL(ByVal db As String, ByVal csvTableName As String, ByVal filepath As String)
+        Dim connStr As String = "server=192.168.0.13;user=EJadmin;password=Look@me3;database=" & db & ";port=3306"
         Dim conn As New MySqlConnection(connStr)
 
-        Dim bl As MySqlBulkLoader = New MySqlBulkLoader(conn)
-        bl.TableName = tableName
-        bl.FieldTerminator = ","
-        bl.LineTerminator = "\n"
-        bl.FileName = filepath
-        bl.NumberOfLinesToSkip = 1
+        Dim csvLine As String, cols() As String
+        Dim sr As New StreamReader(filepath)
 
-        Try
-            Console.WriteLine("Connecting to MySQL...")
-            conn.Open()
+        csvLine = sr.ReadLine()
+        sr.Close()
+        cols = Split(csvLine, ",")
 
-            ' Upload data from file
-            Dim count As Integer = bl.Load()
-            Console.WriteLine(count + " lines uploaded.")
+        Dim rows As Int32 = 0
+        Using dbcon As New MySqlConnection(connStr)
+            dbcon.Open()
 
-            Dim Sql As String = GetSQLString(db, tableName)  '"SELECT Name, Age, Profession FROM Career"
-            Dim cmd As MySqlCommand = New MySqlCommand(Sql, conn)
-            Dim rdr As MySqlDataReader = cmd.ExecuteReader()
+            ' Create the Table and Columns
+            Dim createSql As String
+            Try
+                createSql = sqlCreateTable(db, csvTableName)
+                Dim cmd As New MySqlCommand(createSql, dbcon)
+                cmd.ExecuteNonQuery()
+                cmd.Dispose()
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            Finally
+                conn.Close()
+            End Try
 
-            While (rdr.Read())
-                Console.WriteLine(rdr(0) + " -- " + rdr(1) + " -- " + rdr(2))
-            End While
-            rdr.Close()
-            conn.Close()
+            Dim bulk = New MySqlBulkLoader(dbcon)
 
-        Catch ex As Exception
-            Console.WriteLine(ex.ToString())
+            bulk.TableName = GetProperString(csvTableName)
+            bulk.FieldTerminator = ","
+            bulk.LineTerminator = "\r\n"    ' == CR/LF
+            bulk.FileName = filepath         ' full file path name to CSV 
+            bulk.NumberOfLinesToSkip = 1    ' has a header (default)
 
-        End Try
-        Console.WriteLine("Done.")
+            bulk.Columns.Clear()
+            For Each s In cols
+                s = s.Replace("/", "_per_")
+                bulk.Columns.Add(s)         ' specify col order in file
+            Next
+            rows = bulk.Load()
+        End Using
     End Sub
 
     Private Function GetSQLString(ByVal db As String, ByVal dt As String)
         ' Return the SQL Command String
         ' "SELECT Name, Age, Profession FROM Career"
+
+        Dim str As String = "CREATE TABLE " & "Table Name PROPER" & " (id INT(6) NOT NULL AUTO_INCREMENT,otherField TEXT NOT NULL,PRIMARY KEY (id));"
+
         Select Case db
             Case "ncaafb"
                 Select Case dt
                     Case "teams"
                         Return "SELECT ID, Team FROM Teams"
+                    Case "TEAM STATS - TOTAL YARDS OFF"
+                    Case "TEAM STATS - TOTAL YARDS DEF"
+                    Case "TEAM STATS - DOWNS"
+                    Case "TEAM STATS - PASSING YARDS OFF"
+                    Case "TEAM STATS - PASSING YARDS DEF"
+                    Case "TEAM STATS - RUSHING YARDS OFF"
+                    Case "TEAM STATS - RUSHING YARDS DEF"
+                    Case "TEAM STATS - RETURNING"
+                    Case "TEAM STATS - RECEIVING"
+                    Case "TEAM STATS - KICKING"
+                    Case "TEAM STATS - PUNTING"
+                    Case "TEAM STATS - DEFENSE"
                 End Select
             Case "ncaab"
+                Select Case dt
+                    Case "teams"
+                        Return "SELECT ID, Team FROM Teams"
+                    Case "TEAM STATS - SCORING"
+                    Case "TEAM STATS - REBOUNDS"
+                    Case "TEAM STATS - FIELD GOALS"
+                    Case "TEAM STATS - FREE-THROWS"
+                    Case "TEAM STATS - 3-POINTS"
+                    Case "TEAM STATS - ASSISTS"
+                    Case "TEAM STATS - STEALS"
+                    Case "TEAM STATS - BLOCKS"
+                End Select
 
             Case "nfl"
-
+                Select Case dt
+                    Case "teams"
+                        Return "SELECT ID, Team FROM Teams"
+                    Case "TEAM STATS - TOTAL YARDS OFF"
+                        Return ""
+                    Case "TEAM STATS - DOWNS OFF"
+                    Case "TEAM STATS - PASSING YARDS OFF"
+                    Case "TEAM STATS - RUSHING YARDS OFF"
+                    Case "TEAM STATS - RECEIVING OFF"
+                    Case "TEAM STATS - RETURNING OWN"
+                    Case "TEAM STATS - KICKING OWN"
+                    Case "TEAM STATS - PUNTING OWN"
+                    Case "TEAM STATS - DEFENSE OWN"
+                    Case "TEAM STATS - GIVE-TAKE"
+                End Select
             Case "nba"
-
+                Select Case dt
+                    Case "teams"
+                        Return "SELECT ID, Team FROM Teams"
+                    Case "TEAM STATS - TOTAL YARDS OFF"
+                    Case "TEAM STATS - DOWNS OFF"
+                    Case "TEAM STATS - DIFFERENTIAL"
+                    Case "TEAM STATS - REBOUNDS"
+                    Case "TEAM STATS - MISCELLANEOUS"
+                End Select
             Case "mlb"
 
         End Select

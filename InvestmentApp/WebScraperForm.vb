@@ -42,13 +42,13 @@ Public Class WebScraperForm
         If cmbSelectTeam1.Text <> Nothing Then
             Select Case cmbSelectSport.Text
                 Case "NFL"
-                    ScrapeNFL(cmbSelectStat.Text)
+                    dgvTableDisplay.DataSource = ScrapeNFL(cmbSelectStat.Text)
                 Case "NBA"
-                    ScrapeNBA(cmbSelectStat.Text)
+                    dgvTableDisplay.DataSource = ScrapeNBA(cmbSelectStat.Text)
                 Case "NCAA FOOTBALL"
-                    ScrapeNCAAFootball(cmbSelectStat.Text)
+                    dgvTableDisplay.DataSource = ScrapeNCAAFootball(cmbSelectStat.Text)
                 Case "NCAA BASKETBALL"
-                    ScrapeNCAABasketball(cmbSelectStat.Text)
+                    dgvTableDisplay.DataSource = ScrapeNCAABasketball(cmbSelectStat.Text)
             End Select
         End If
         dgvTableDisplay.AutoResizeColumns()
@@ -76,7 +76,7 @@ Public Class WebScraperForm
                     lstChildren.Add(children.Item(1).InnerText)
                 Next
             Case "NCAA FOOTBALL"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/total/sort/totalYards/year/" & Year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAF", "http://www.espn.com/college-football/statistics/team/_/stat/total/sort/totalYards/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 Dim children As HtmlNodeCollection = Nothing
                 For i As Integer = 1 To nodes.Count - 1
                     children = nodes(i).ChildNodes
@@ -103,431 +103,207 @@ Public Class WebScraperForm
     End Function
 
 
-    Public Sub ScrapeNCAABasketball(ByVal Tag As String, Optional ByVal Team As String = Nothing)
+    Public Function ScrapeNCAABasketball(ByVal Tag As String, Optional ByVal Team As String = Nothing)
         Dim year As String = cmbSelectSeason.Text
         '******** GET TEAM ID *********
         Dim teamID As Integer
+        Dim nodes As HtmlNodeCollection = Nothing
 
         Select Case Tag
             Case "TEAM SCHEDULE"
-                Dim nodes As HtmlNodeCollection = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/mens-college-basketball/team/schedule/_/id/2166/year/2017", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
+                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/mens-college-basketball/team/schedule/_/id/2166/year/2017", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
             Case "TEAM STATS"   '***    TEST    ***
-                Dim nodes As HtmlNodeCollection = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/mens-college-basketball/team/stats/_/id/2166/year/2017", "//*[@id=""my-teams-table""]//tr")
+                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/mens-college-basketball/team/stats/_/id/2166/year/2017", "//*[@id=""my-teams-table""]//tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
             Case "TEAM ROSTER"  '***    TEST    ***
-                Dim nodes As HtmlNodeCollection = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/mens-college-basketball/team/roster/_/id/2166/davidson-wildcats", "//*[@id=""my-teams-table""]//tr")
+                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/mens-college-basketball/team/roster/_/id/2166/davidson-wildcats", "//*[@id=""my-teams-table""]//tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - SCORING"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/scoring-per-game/sort/avgPoints/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "SCORING"
+                nodes = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/scoring-per-game/sort/avgPoints/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Basketball Points"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - REBOUNDS"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/rebounds/sort/avgRebounds/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "REBOUNDS"
+                nodes = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/rebounds/sort/avgRebounds/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Basketball Rebounds"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - FIELD GOALS"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/field-goals/sort/fieldGoalPct/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "FIELD GOALS"
+                nodes = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/field-goals/sort/fieldGoalPct/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Basketball Field Goals"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - FREE-THROWS"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/free-throws/sort/freeThrowPct/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "FREE-THROWS"
+                nodes = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/free-throws/sort/freeThrowPct/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Basketball Free-Throws"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - 3-POINTS"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/3-points/sort/threePointFieldGoalPct/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "3-POINTS"
+                nodes = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/3-points/sort/threePointFieldGoalPct/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Basketball 3-Points"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - ASSISTS"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/assists/sort/avgAssists/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "ASSISTS"
+                nodes = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/assists/sort/avgAssists/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Basketball Assists"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - STEALS"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/steals/sort/avgSteals/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "STEALS"
+                nodes = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/steals/sort/avgSteals/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Basketball Steals"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - BLOCKS"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/blocks/sort/avgBlocks/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "BLOCKS"
+                nodes = ScrapeLeagueStats("NCAAB", "http://www.espn.com/mens-college-basketball/statistics/team/_/stat/blocks/sort/avgBlocks/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Basketball Blocks"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
         End Select
-        dgvTableDisplay.AutoResizeColumns()
-    End Sub
+        If nodes IsNot Nothing Then
+            Return StatsToDataTable(nodes, GetProperString(Tag))
+            dgvTableDisplay.AutoResizeColumns()
+        Else
+            Return Nothing
+        End If
+    End Function
 
-    Public Sub ScrapeNCAAFootball(ByVal Tag As String, Optional ByVal Team As String = Nothing)
+    Public Function ScrapeNCAAFootball(ByVal Tag As String, Optional ByVal Team As String = Nothing)
         Dim year As String = cmbSelectSeason.Text
         '******** GET TEAM ID *********
         Dim teamID As Integer
+        Dim nodes As HtmlNodeCollection = Nothing
 
         Select Case Tag
             Case "TEAM SCHEDULE"
-                Dim nodes As HtmlNodeCollection = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/college-football/team/schedule/_/id/58/", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
+                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/college-football/team/schedule/_/id/58/", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
             Case "TEAM STATS"
-                Dim nodes As HtmlNodeCollection = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/college-football/team/stats/_/id/58/", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
+                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/college-football/team/stats/_/id/58/", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
             Case "TEAM ROSTER"
-                Dim nodes As HtmlNodeCollection = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/college-football/team/roster/_/id/58/south-florida-bulls", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
+                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/college-football/team/roster/_/id/58/south-florida-bulls", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - TOTAL YARDS OFF"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/total/sort/totalYards/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "TOTAL YARDS OFF"
+                nodes = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/total/sort/totalYards/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Football Total Yards Offense"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - TOTAL YARDS DEF"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/total/position/defense/sort/totalYards/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "TOTAL YARDS DEF"
+                nodes = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/total/position/defense/sort/totalYards/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Football Total Yards Defense"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - DOWNS"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/downs/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "DOWNS"
+                nodes = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/downs/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Football Downs"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - PASSING YARDS OFF"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/passing/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "PASSING YARDS OFF"
+                nodes = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/passing/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Football Passing Offense"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - PASSING YARDS DEF"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/passing/position/defense/sort/passingYards/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "PASSING YARDS DEF"
+                nodes = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/passing/position/defense/sort/passingYards/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Football Passing Defense"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - RUSHING YARDS OFF"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/rushing/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "RUSHING YARDS OFF"
+                nodes = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/rushing/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Football Rushing Offense"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - RUSHING YARDS DEF"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/rushing/position/defense/sort/rushingYards/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "RUSHING YARDS DEF"
+                nodes = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/rushing/position/defense/sort/rushingYards/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Football Rushing Defense"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - RECEIVING"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/receiving/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "RECEIVING"
+                nodes = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/receiving/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Football Receiving"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - RETURNING"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/returning/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "RETURNING"
+                nodes = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/returning/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Football Returning"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - KICKING"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/kicking/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "KICKING"
+                nodes = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/kicking/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Football Kicking"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - PUNTING"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/punting/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "PUNTING"
+                nodes = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/punting/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Football Punting"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - DEFENSE"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/defense/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "DEFENSE"
+                nodes = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/defense/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NCAA Football Defense"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
         End Select
-    End Sub
+        If nodes IsNot Nothing Then
+            Return StatsToDataTable(nodes, Tag)
+        Else
+            Return Nothing
+        End If
+    End Function
 
-    Public Sub ScrapeNBA(ByVal Tag As String, Optional ByVal Team As String = Nothing) 'Add Year as a variable
+    Public Function ScrapeNBA(ByVal Tag As String, Optional ByVal Team As String = Nothing) 'Add Year as a variable
         Dim year As String = cmbSelectSeason.Text
+        Dim teamID As Integer = Nothing
+        Dim nodes As HtmlNodeCollection = Nothing
         Select Case Tag
             Case "TEAM SCHEDULE"
-                '******** GET TEAM ID *********
-                Dim teamID As Integer
-                Dim nodes As HtmlNodeCollection = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nba/team/schedule/_/name/" & teamID.ToString & "/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
+                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nba/team/schedule/_/name/" & teamID.ToString & "/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - REGULAR"   '***    TEST    ***
-                Dim teamID As Integer
-                Dim nodes As HtmlNodeCollection = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nba/team/stats/_/name/" & teamID.ToString & "/year/" & year.ToString, "//*[@id=""my-teams-table""]//tr")
+            Case "REGULAR"   '***    TEST    ***
+                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nba/team/stats/_/name/" & teamID.ToString & "/year/" & year.ToString, "//*[@id=""my-teams-table""]//tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - POSTSEASON"   '***    TEST    ***
-                Dim teamID As Integer
-                Dim nodes As HtmlNodeCollection = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nba/team/stats/_/name/" & teamID.ToString & "/year/" & year.ToString, "//*[@id=""my-teams-table""]//tr")
+            Case "POSTSEASON"   '***    TEST    ***
+                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nba/team/stats/_/name/" & teamID.ToString & "/year/" & year.ToString, "//*[@id=""my-teams-table""]//tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
             Case "TEAM ROSTER"  '***    TEST    ***
-                Dim teamID As Integer
-                Dim nodes As HtmlNodeCollection = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nba/team/roster/_/name/" & teamID.ToString, "//*[@id=""my-teams-table""]//tr")
+                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nba/team/roster/_/name/" & teamID.ToString, "//*[@id=""my-teams-table""]//tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - OFFENSE"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NBA", "http://www.espn.com/nba/statistics/team/_/stat/offense-per-game/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "OFFENSE"
+                nodes = ScrapeLeagueStats("NBA", "http://www.espn.com/nba/statistics/team/_/stat/offense-per-game/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NBA Offense"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - DEFENSE"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NBA", "http://www.espn.com/nba/statistics/team/_/stat/defense-per-game/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "DEFENSE"
+                nodes = ScrapeLeagueStats("NBA", "http://www.espn.com/nba/statistics/team/_/stat/defense-per-game/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NBA Defense"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - DIFFERENTIAL"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NBA", "http://www.espn.com/nba/statistics/team/_/stat/differential-per-game/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "DIFFERENTIAL"
+                nodes = ScrapeLeagueStats("NBA", "http://www.espn.com/nba/statistics/team/_/stat/differential-per-game/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NBA Differential"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - REBOUNDS"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NBA", "http://www.espn.com/nba/statistics/team/_/stat/rebounds-per-game/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "REBOUNDS"
+                nodes = ScrapeLeagueStats("NBA", "http://www.espn.com/nba/statistics/team/_/stat/rebounds-per-game/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NBA Rebounds"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - MISCELLANEOUS"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NBA", "http://www.espn.com/nba/statistics/team/_/stat/miscellaneous-per-game/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "MISCELLANEOUS"
+                nodes = ScrapeLeagueStats("NBA", "http://www.espn.com/nba/statistics/team/_/stat/miscellaneous-per-game/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NBA Miscellaneous"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
         End Select
+        If nodes IsNot Nothing Then
+            Return StatsToDataTable(nodes, Tag)
+        Else
+            Return Nothing
+        End If
         dgvTableDisplay.AutoResizeColumns()
-    End Sub
+    End Function
 
-    Public Sub ScrapeNFL(ByVal Tag As String, Optional ByVal Team As String = Nothing)
+    Public Function ScrapeNFL(ByVal Tag As String, Optional ByVal Team As String = Nothing) As System.Data.DataTable
         Dim year As String = cmbSelectSeason.Text
+        Dim teamID As Integer = Nothing
+        Dim nodes As HtmlNodeCollection = Nothing
         Select Case Tag
             Case "TEAM SCHEDULE"
-                '******** GET TEAM ID *********
-                Dim teamID As Integer
-                Dim nodes As HtmlNodeCollection = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nfl/team/schedule/_/name/" & teamID.ToString & "/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
+                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nfl/team/schedule/_/name/" & teamID.ToString & "/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
             Case "TEAM STATS"
-                '******** GET TEAM ID *********
-                Dim teamID As Integer
-                Dim nodes As HtmlNodeCollection = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nfl/team/stats/_/name/" & teamID.ToString & "/year/" & year.ToString & "/type/team", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
+                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nfl/team/stats/_/name/" & teamID.ToString & "/year/" & year.ToString & "/type/team", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
             Case "TEAM ROSTER"
-                '******** GET TEAM ID *********
-                Dim teamID As Integer
-                Dim nodes As HtmlNodeCollection = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nfl/team/roster/_/name/" & teamID.ToString & "/dallas-cowboys", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
+                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nfl/team/roster/_/name/" & teamID.ToString & "/dallas-cowboys", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - TOTAL YARDS OFF"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/total/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "TOTAL YARDS OFF"
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/total/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Total Yards Offense"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - DOWNS OFF"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/downs/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "DOWNS OFF"
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/downs/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Downs Offense"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - PASSING YARDS OFF"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/returning/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "PASSING YARDS OFF"
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/returning/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Passing Offense"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - RUSHING YARDS OFF"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/rushing/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "RUSHING YARDS OFF"
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/rushing/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Rushing Offense"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - RECEIVING OFF"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/receiving/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "RECEIVING OFF"
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/receiving/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Receiving Offense"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - RETURNING OWN"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/returning/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "RETURNING OWN"
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/returning/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Returning Own"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - KICKING OWN"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/kicking/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "KICKING OWN"
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/kicking/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Kicking Own"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS- PUNTING OWN"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/punting/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "PUNTING OWN"
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/punting/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Punting Own"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - DEFENSE OWN"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/defense/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "DEFENSE OWN"
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/defense/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Defense Own"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
-
-            Case "TEAM STATS - GIVE/TAKE"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/givetake/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+            Case "GIVE-TAKE"
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/givetake/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Give/Take"   'Set Table Name
-                '****** CENTER LABEL *******
-                If nodes IsNot Nothing Then
-                    StatsToTable(nodes, dgvTableDisplay)
-                End If
         End Select
-    End Sub
+        If nodes IsNot Nothing Then
+            Return StatsToDataTable(nodes, Tag)
+        Else
+            Return Nothing
+        End If
+    End Function
 
     '   League Stats: Create Nodes object of scraped data
     Public Function ScrapeLeagueStats(ByVal Sport As String, ByVal BaseURI As String, ByVal XPath As String)
@@ -535,7 +311,7 @@ Public Class WebScraperForm
         Dim nodes As HtmlNodeCollection = doc.DocumentNode.SelectNodes(XPath)
         If Sport = "NCAAB" Then
             For i As Integer = 41 To 351
-                doc = New HtmlWeb().Load(BaseURI & i.ToString)  'Get raw HTML of page
+                doc = New HtmlWeb().Load(BaseURI & "/count/" & i.ToString)  'Get raw HTML of page
                 Dim nodes2 As HtmlNodeCollection = doc.DocumentNode.SelectNodes(XPath)    'Get collection of table elements
                 For Each node As HtmlNode In nodes2
                     nodes.Add(node)
@@ -553,115 +329,6 @@ Public Class WebScraperForm
         Return nodes
     End Function
 
-    '   From Nodes to DataGridView
-    Public Sub StatsToTable(ByVal StatNodes As HtmlNodeCollection, ByVal Table As DataGridView)
-        Dim colCount As Integer = StatNodes(1).ChildNodes.Count - 1
-        Table.ColumnCount = colCount + 1     'Set columns
-        Dim rowStart As Integer = 0
-        Dim colspans As New List(Of Integer)
-        Dim colHeaders As New List(Of String)
-        Dim colspan As Integer = 0
-        If StatNodes(0).ChildNodes.Count <> Table.ColumnCount Then
-            'Check for column headers
-            For Each node As HtmlNode In StatNodes(0).ChildNodes
-                colspan += CType(node.Attributes(0).Value, Integer)
-                colspans.Add(colspan)
-                colHeaders.Add(node.InnerText)
-            Next
-            rowStart = 1
-        End If
-        For i As Integer = 0 To colCount
-            If colspans IsNot Nothing Then
-                For Each value In colspans
-                    If value <> "&nbsp;" Then
-                        If i < value Then
-                            Table.Columns(i).Name = colHeaders(colspans.IndexOf(value)) & "-" & StatNodes(rowStart).ChildNodes(i).InnerText
-                            Exit For
-                        End If
-                    End If
-                Next
-            Else
-                Table.Columns(i).Name = StatNodes(rowStart).ChildNodes(i).InnerText
-            End If
-        Next
-
-        For i As Integer = 0 To StatNodes.Count - 1
-            If StatNodes(i).ChildNodes.Count = Table.ColumnCount Then
-                If StatNodes(i).FirstChild.InnerText <> "PER GAME" AndAlso StatNodes(i).FirstChild.InnerText <> "DATE" AndAlso StatNodes(i).FirstChild.InnerText <> "RK" Then     'Add data from nodes to rows
-                    Dim rowNum As Integer = Table.Rows.Add()
-                    For x As Integer = 0 To colCount
-                        If Not StatNodes(i).ChildNodes(x).InnerText = "&nbsp;" Then
-                            Table.Item(x, rowNum).Value = StatNodes(i).ChildNodes(x).InnerText
-                        Else
-                            Table.Item(x, rowNum).Value = ""
-                        End If
-                    Next
-                End If
-            End If
-        Next
-    End Sub
-
-    '   From Nodes to DataGridView
-    Public Function StatsToDataTable(ByVal StatNodes As HtmlNodeCollection)
-        Dim Table As New DataTable
-        Dim colCount As Integer = StatNodes(1).ChildNodes.Count - 1
-        For i = 0 To colCount
-            Table.Columns.Add()
-        Next
-        Dim rowStart As Integer = 0
-        If StatNodes(0).ChildNodes.Count <> colCount + 1 Then
-            rowStart = 1
-        End If
-        For i As Integer = 0 To colCount
-            Table.Columns(i).ColumnName = StatNodes(rowStart).ChildNodes(i).InnerText
-        Next
-
-        For i As Integer = 0 To StatNodes.Count - 1
-            If StatNodes(i).ChildNodes.Count = Table.Columns.Count Then
-                If StatNodes(i).FirstChild.InnerText <> "PER GAME" AndAlso StatNodes(i).FirstChild.InnerText <> "DATE" AndAlso StatNodes(i).FirstChild.InnerText <> "RK" Then     'Add data from nodes to rows
-                    Table.Rows.Add()
-                    Dim rowNum As Integer = Table.Rows.Count - 1
-                    For x As Integer = 0 To colCount
-                        If Not StatNodes(i).ChildNodes(x).InnerText = "&nbsp;" Then
-                            Table.Rows(rowNum).Item(x) = StatNodes(i).ChildNodes(x).InnerText
-                            'Table.Item(x, rowNum).Value = StatNodes(i).ChildNodes(x).InnerText
-                        Else
-                            Table.Rows(rowNum).Item(x) = ""
-                        End If
-                    Next
-                End If
-            End If
-        Next
-        Return Table
-    End Function
-
-    '   Nodes collection to DataTable for importing to database
-    Public Function StatsToDataTable2(ByVal StatNodes As HtmlNodeCollection)
-        Dim dt As New DataTable
-        Dim colCount As Integer = StatNodes(1).ChildNodes.Count - 1
-        For i As Integer = 0 To colCount   'Set columns
-            Dim dataCol As New DataColumn
-            dataCol.ColumnName = StatNodes(0).ChildNodes(i).InnerText
-            dt.Columns.Add(dataCol)
-        Next
-
-        For i As Integer = 0 To StatNodes.Count - 1
-            If StatNodes(i).ChildNodes.Count = dt.Columns.Count Then
-                If StatNodes(i).FirstChild.InnerText <> "PER GAME" AndAlso StatNodes(i).FirstChild.InnerText <> "DATE" AndAlso StatNodes(i).FirstChild.InnerText <> "RK" Then     'Add data from nodes to rows
-                    Dim rowNum As Integer = dt.Rows.Count + 1
-                    For x As Integer = 0 To colCount
-                        Dim newRow As DataRow = dt.Rows.Add
-                        If Not StatNodes(i).ChildNodes(x).InnerText = "&nbsp;" Then
-                            newRow.Item(x) = StatNodes(i).ChildNodes(x).InnerText
-                        Else
-                            newRow.Item(x) = ""
-                        End If
-                    Next
-                End If
-            End If
-        Next
-        Return dt
-    End Function
 
     '   Populate Teams combobox on form
     Private Sub cmbSelectSport_TextChanged(sender As Object, e As EventArgs) Handles cmbSelectSport.TextChanged
@@ -678,36 +345,112 @@ Public Class WebScraperForm
         End If
     End Sub
 
-    Private Sub btnUpdateDB_Click(sender As Object, e As EventArgs) Handles btnUpdateDB.Click
-        'ImportTableToDB(dt)
-    End Sub
-
     Private Sub btnAddCols_Click(sender As Object, e As EventArgs) Handles btnAddCols.Click
         GetTeamIDs(dgvTableDisplay)
     End Sub
 
     Private Sub btnToExcel_Click(sender As Object, e As EventArgs) Handles btnToExcel.Click
-        'Dim dt As System.Data.DataTable = DGVtoDataTable(dgvTableDisplay)
         Dim db As String = Nothing
         Dim table As String = Nothing
         Dim year As String = Nothing
-        Select Case cmbSelectSport.Text
-            Case "NCAA BASKETBALL"
-                db = "NCAAB"
-            Case "NCAA FOOTBALL"
-                db = "NCAAFB"
-            Case "NBA"
-                db = "NBA"
-            Case "NFL"
-                db = "NFL"
+        ' Single Table to Excel
+        Dim sport As String = cmbSelectSport.Text
+
+        Select Case sport.ToLower
+            Case "ncaa_basketball"
+                db = "ncaab"
+            Case "ncaa_football"
+                db = "ncaaf"
+            Case "nba"
+                db = "nba"
+            Case "nfl"
+                db = "nfl"
         End Select
         table = cmbSelectStat.Text
-        year = cmbSelectSeason.Text
+        Year = cmbSelectSeason.Text
         If db <> Nothing AndAlso table <> Nothing AndAlso year <> Nothing Then
-            Dim filename As String = year & "." & db & "." & table
+            Dim filename As String = year & "_" & db & "_" & table
             Dim path As String = "Z:\EJ\MyPrograms\MoneyManager\CSVs\" & db & "\" & filename & ".txt"
-            DGVtoCSV(dgvTableDisplay, path)
-            'ImportCSVtoMySQL("", "", path) '<<<<<<<<<< FINISH; use getSQLString()
+            Dim dt As DataTable
+            Select Case db
+                Case "ncaab"
+                    dt = ScrapeNCAABasketball(table)
+                Case "ncaaf"
+                    dt = ScrapeNCAAFootball(table)
+                Case "nba"
+                    dt = ScrapeNBA(table)
+                Case "nfl"
+                    dt = ScrapeNFL(table)
+            End Select
+            Dim newColumn As New System.Data.DataColumn(GetProperString(table) & "_year", GetType(System.String))
+            newColumn.DefaultValue = CInt(year)
+            dt.Columns.Add(newColumn)
+            DatatableToCSV(dt, path)
+            'DGVtoCSV(dgvTableDisplay, path)
+            'ImportCSVtoMySQL(db, table, path)
         End If
     End Sub
+
+    Private Sub btnUpdateDB_Click(sender As Object, e As EventArgs) Handles btnUpdateDB.Click
+        Dim dt As System.Data.DataTable = Nothing
+        Dim db As String = Nothing
+        Dim table As String = Nothing
+        Dim year As String = Nothing
+        Dim count As Integer = 0
+        Dim file As System.IO.StreamWriter = Nothing
+        file = My.Computer.FileSystem.OpenTextFileWriter("Z:\EJ\MyPrograms\MoneyManager\Columns.txt", True)
+
+        For Each db In GetDatasource("Sports")
+            db.ToLower()
+            Select Case GetProperString(db)
+                Case "ncaa_basketball"
+                    db = "ncaab"
+                Case "ncaa_football"
+                    db = "ncaaf"
+                Case "nfl"
+                    db = "nfl"
+                Case "nba"
+                    db = "nba"
+            End Select
+            For Each year In GetDatasource("Years" & db.ToUpper)
+                For Each table In GetDatasource("Stats" & db.ToUpper)
+                    If db <> Nothing AndAlso table <> Nothing AndAlso year <> Nothing Then
+                        Dim filename As String = year & "_" & db & "_" & GetProperString(table)
+                        Dim path As String = "Z:\EJ\MyPrograms\MoneyManager\CSVs\" & db & "\" & filename & ".txt"
+                        Select Case db
+                            Case "ncaab"
+                                dt = ScrapeNCAABasketball(table)
+                            Case "ncaaf"
+                                dt = ScrapeNCAAFootball(table)
+                            Case "nfl"
+                                dt = ScrapeNFL(table)
+                            Case "nba"
+                                dt = ScrapeNBA(table)
+                        End Select
+                        Dim newColumn As New System.Data.DataColumn(GetProperString(table) & "_year", GetType(System.String))     'Add Year Column to DataTable
+                        newColumn.DefaultValue = CInt(year)
+                        dt.Columns.Add(newColumn)
+                        DatatableToCSV(dt, path)
+                        'DGVtoCSV(dgvTableDisplay, path)
+                        'ImportCSVtoMySQL(db, table, path)
+                        '   Write Columns to TXT File
+                        'Dim stream As System.IO.StreamWriter
+                        'stream = My.Computer.FileSystem.OpenTextFileWriter("Z:\EJ\MyPrograms\MoneyManager\CSVs\TableColumns.txt", True)
+                        'Dim columns As String = ""
+                        'For Each col As DataColumn In dt.Columns
+                        '    If dt.Columns.IndexOf(col) <> dt.Columns.Count Then
+                        '        columns &= Chr(34) & col.ColumnName & Chr(34) & ","
+                        '    Else
+                        '        columns &= Chr(34) & col.ColumnName & Chr(34)
+                        '    End If
+                        'Next
+                        'stream.WriteLineAsync(columns)
+                        'stream.Close()
+                    End If
+                Next
+            Next
+        Next
+        file.Close()
+    End Sub
+
 End Class
