@@ -524,11 +524,19 @@ Module Module1
     '**************************************
     '*************EXCEL FUNCTIONS**********
     '**************************************
-
-    'Loop through all tables and export to CSV
-    Public Sub TablesToCSV(ByRef btnSport As ComboBox, ByRef btnStat As ComboBox, ByRef btnSeason As ComboBox)
-
-
+    Public Sub ExportTableColumnsToCSV(ByRef dt As System.Data.DataTable)
+        Dim stream As System.IO.StreamWriter
+        stream = My.Computer.FileSystem.OpenTextFileWriter("Z:\EJ\MyPrograms\MoneyManager\CSVs\TableColumns.txt", True)
+        Dim columns As String = ""
+        For Each col As DataColumn In dt.Columns
+            If dt.Columns.IndexOf(col) <> dt.Columns.Count Then
+                columns &= Chr(34) & col.ColumnName & Chr(34) & ","
+            Else
+                columns &= Chr(34) & col.ColumnName & Chr(34)
+            End If
+        Next
+        stream.WriteLineAsync(columns)
+        stream.Close()
     End Sub
 
     'DataGridView to CSV; Returns Path to File
@@ -968,22 +976,22 @@ Module Module1
                     If i < value Then
                         If colHeaders(colspans.IndexOf(value)) <> GetProperString(TableName) & "_&nbsp;" Then
                             Try
-                                Table.Columns(i).ColumnName = GetProperString(TableName) & "_" & GetProperString(colHeaders(colspans.IndexOf(value)) & "_" & StatNodes(rowStart).ChildNodes(i).InnerText)
+                                Table.Columns(i).ColumnName = (GetProperString(TableName) & "_" & colspans.IndexOf(value) & "_" & StatNodes(rowStart).ChildNodes(i).InnerText).ToString.ToLower
                             Catch
-                                Table.Columns(i).ColumnName = GetProperString(TableName) & "_" & GetProperString(colHeaders(colspans.IndexOf(value)) & "_" & StatNodes(rowStart).ChildNodes(i).InnerText & "1")
+                                Table.Columns(i).ColumnName = (GetProperString(TableName) & "_" & colspans.IndexOf(value) & "_" & StatNodes(rowStart).ChildNodes(i).InnerText & "1").ToString.ToLower
                             End Try
                             Exit For
                         Else
-                            Table.Columns(i).ColumnName = GetProperString(TableName) & "_" & GetProperString(StatNodes(rowStart).ChildNodes(i).InnerText)
+                            Table.Columns(i).ColumnName = (GetProperString(TableName) & "_" & StatNodes(rowStart).ChildNodes(i).InnerText).ToString.ToLower
                             Exit For
                         End If
                     End If
                 Next
             Else
                 Try
-                    Table.Columns(i).ColumnName = GetProperString(TableName) & "_" & GetProperString(StatNodes(rowStart).ChildNodes(i).InnerText)
+                    Table.Columns(i).ColumnName = (GetProperString(TableName) & "_" & GetProperString(StatNodes(rowStart).ChildNodes(i).InnerText)).ToString.ToLower
                 Catch
-                    Table.Columns(i).ColumnName = GetProperString(TableName) & "_" & GetProperString(StatNodes(rowStart).ChildNodes(i).InnerText & "1")
+                    Table.Columns(i).ColumnName = (GetProperString(TableName) & "_" & GetProperString(StatNodes(rowStart).ChildNodes(i).InnerText & "1")).ToString.ToLower
                 End Try
             End If
         Next
@@ -994,7 +1002,7 @@ Module Module1
                 Dim rowNum As Integer = Table.Rows.Count - 1
                 For x As Integer = 0 To colCount
                     If Not StatNodes(i).ChildNodes(x).InnerText = "&nbsp;" Then
-                        Table.Rows(rowNum).Item(x) = StatNodes(i).ChildNodes(x).InnerText
+                        Table.Rows(rowNum).Item(x) = (StatNodes(i).ChildNodes(x).InnerText).ToLower
                     Else
                         Table.Rows(rowNum).Item(x) = ""
                     End If

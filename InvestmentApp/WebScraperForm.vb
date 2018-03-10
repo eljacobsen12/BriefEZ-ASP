@@ -430,22 +430,11 @@ Public Class WebScraperForm
                         Dim newColumn As New System.Data.DataColumn(GetProperString(table) & "_year", GetType(System.String))     'Add Year Column to DataTable
                         newColumn.DefaultValue = CInt(year)
                         dt.Columns.Add(newColumn)
-                        DatatableToCSV(dt, path)
+                        'DatatableToCSV(dt, path)
                         'DGVtoCSV(dgvTableDisplay, path)
-                        'ImportCSVtoMySQL(db, table, path)
-                        '   Write Columns to TXT File
-                        'Dim stream As System.IO.StreamWriter
-                        'stream = My.Computer.FileSystem.OpenTextFileWriter("Z:\EJ\MyPrograms\MoneyManager\CSVs\TableColumns.txt", True)
-                        'Dim columns As String = ""
-                        'For Each col As DataColumn In dt.Columns
-                        '    If dt.Columns.IndexOf(col) <> dt.Columns.Count Then
-                        '        columns &= Chr(34) & col.ColumnName & Chr(34) & ","
-                        '    Else
-                        '        columns &= Chr(34) & col.ColumnName & Chr(34)
-                        '    End If
-                        'Next
-                        'stream.WriteLineAsync(columns)
-                        'stream.Close()
+                        ImportCSVtoMySQL(db, table, path)
+                        ' Write columns to TXT File
+                        'ExportTableColumnsToCSV(dt)
                     End If
                 Next
             Next
