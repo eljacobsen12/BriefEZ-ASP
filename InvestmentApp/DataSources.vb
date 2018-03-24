@@ -1,10 +1,10 @@
 ﻿Module DataSources
-    Dim Sports As String() = {"NFL", "NBA", "NCAA FOOTBALL", "NCAA BASKETBALL"}
-    Dim YearsNCAAF As String() = {"2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004"}
+    Dim Sports As String() = {"NFL"} ',"NCAA BASKETBALL", "NCAA FOOTBALL", "NBA"}
+    Dim YearsNCAAFB As String() = {"2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004"}
     Dim YearsNCAAB As String() = {"2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002"}
     Dim YearsNBA As String() = {"2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002", "2001", "2000"}
     Dim YearsNFL As String() = {"2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002"}
-    Dim StatsNCAAF As String() = {"TOTAL YARDS OFF",
+    Dim StatsNCAAFB As String() = {"TOTAL YARDS OFF",
                                   "TOTAL YARDS DEF",
                                   "DOWNS",
                                   "PASSING YARDS OFF",
@@ -44,41 +44,41 @@
                                 "GIVE-TAKE"
                                 }
 
-    Dim NFLTeamTotalOffense As String() = {"Rk”, ”Team”, ”Yds”, ”Yds/G”, ”Pass”, ”PYds/G”, ”Rush”, ”RYds/G”, ”Pts”, ”Pts/G”, "Year"}
-    Dim NFLTeamDownsOff As String() = {"Rk”, ”Team”, ”FirstDowns_Total”, ”FirstDowns_Rush”, ”FirstDowns_Pass”, ”FirstDowns_Pen”, ”ThirdDowns_Made”, ”ThirdDowns_Att”, ”ThirdDowns_Pct”, ”FourthDowns_Made”, ”FourthDowns_Att”, ”FourthDowns_Pct”, ”Penalties_Total”, ”Penalties_Yds”, "Year"}
-    Dim NFLTeamPassingYardsOff As String() = {"Rk”, ”Team”, ”Kickoffs_Att”, ”Kickoffs_Yds”, ”Kickoffs_Avg”, ”Kickoffs_Lng”, ”Kickoffs_Td”, ”Punts_Att”, ”Punts_Yds”, ”Punts_Avg”, ”Punts_Lng”, ”Punts_Td”, ”Punts_Fc”, "Year"}
-    Dim NFLTeamRushingYardsOff As String() = {"Rk”, ”Team”, ”Att”, ”Yds”, ”Yds/A”, ”Long”, ”Td”, ”Yds/G”, ”Fum”, ”Fuml”, "Year"}
-    Dim NFLTeamReceivingYardsOff As String() = {"Rk”, ”Team”, ”Rec”, ”Yds”, ”Avg”, ”Long”, ”Td”, ”Yds/G”, ”Fum”, ”Fuml”, "Year"}
-    Dim NFLTeamReturningYardsOwn As String() = {"Rk”, ”Team”, ”Kickoffs_Att”, ”Kickoffs_Yds”, ”Kickoffs_Avg”, ”Kickoffs_Lng”, ”Kickoffs_Td”, ”Punts_Att”, ”Punts_Yds”, ”Punts_Avg”, ”Punts_Lng”, ”Punts_Td”, ”Punts_Fc”, "Year"}
-    Dim NFLTeamKickingOwn As String() = {"Rk”, ”Team”, ”FieldGoals_Fgm”, ”FieldGoals_Fga”, ”FieldGoals_Pct”, ”FieldGoals_Lng”, ”FieldGoals_1_19”, ”FieldGoals_20_29”, ”FieldGoals_30_39”, ”FieldGoals_40_49”, ”FieldGoals_50+”, ”ExtraPoints_Xpm”, ”ExtraPoints_Xpa”, ”ExtraPoints_Pct”, "Year"}
-    Dim NFLTeamPuntingOwn As String() = {"Rk”, ”Team”, ”Punts”, ”Yds”, ”Lng”, ”Avg”, ”Net”, ”Bp”, ”In20”, ”Tb”, ”Fc”, ”Ret”, ”Rety”, ”Avg1”, "Year"}
-    Dim NFLTeamDefenseOwn As String() = {"Rk”, ”Team”, ”Tackles_Solo”, ”Tackles_Ast”, ”Tackles_Total”, ”Sacks_Sack”, ”Sacks_Ydsl”, ”Interceptions_Pd”, ”Interceptions_Int”, ”Interceptions_Yds”, ”Interceptions_Long”, ”Interceptions_Td”, ”Fumbles_Ff”, ”Fumbles_Rec”, ”Fumbles_Td”, "Year"}
-    Dim NFLTeamGiveTake As String() = {"Rk”, ”Team”, ”Takeaway_Int”, ”Takeaway_Fum”, ”Takeaway_Total”, ”Giveaway_Int”, ”Giveaway_Fum”, ”Giveaway_Total”, ”TakeGiveDiff”, "Year"}
-    Dim NBATeamOffense As String() = {"Rk”, ”Team”, ”Pts”, ”Fgm”, ”Fga”, ”Fg%”, ”3Pm”, ”3Pa”, ”3P%”, ”Ftm”, ”Fta”, ”Ft%”, ”Pps”, ”Afg%”, "Year"}
-    Dim NBATeamDefense As String() = {"Rk”, ”Team”, ”Pts”, ”Fgm”, ”Fga”, ”Fg%”, ”3Pm”, ”3Pa”, ”3P%”, ”Ftm”, ”Fta”, ”Ft%”, ”Pps”, ”Fg%1”, "Year"}
-    Dim NBATeamDifferential As String() = {"Rk”, ”Team”, ”Pts”, ”Fgm”, ”Fga”, ”Fg%”, ”3Pm”, ”3Pa”, ”3P%”, ”Ftm”, ”Fta”, ”Ft%”, ”Pps”, ”Fg%1”, "Year"}
-    Dim NBATeamRebounds As String() = {"Rk”, ”Team”, ”ReboundPct_Off”, ”ReboundPct_Def”, ”ReboundPct_Tot”, ”Offensive_Own”, ”Offensive_Opp”, ”Defensive_Own”, ”Defensive_Opp”, ”Total_Own”, ”Total_Opp”, ”Total_Diff”, "Year"}
-    Dim NBATeamMiscellaneous As String() = {"Rk”, ”Team”, ”Assists_Own”, ”Assists_Opp”, ”Steals_Own”, ”Steals_Opp”, ”Blocks_Own”, ”Blocks_Opp”, ”Turnovers_Own”, ”Turnovers_Opp”, ”Turnovers_Diff”, ”Turnovers_A/To”, ”Tech”, "Year"}
-    Dim NCAAFTeamTotalYardsOff As String() = {"Rk”, ”Team”, ”Yds”, ”Yds/G”, ”Pass”, ”PYds/G”, ”Rush”, ”RYds/G”, ”Pts”, ”Pts/G”, "Year"}
-    Dim NCAAFTeamTotalYardsDef As String() = {"Rk”, ”Team”, ”Yds”, ”Yds/G”, ”Pass”, ”PYds/G”, ”Rush”, ”RYds/G”, ”Pts”, ”Pts/G”, "Year"}
-    Dim NCAAFTeamDowns As String() = {"Rk”, ”Team”, ”FirstDowns_Total”, ”FirstDowns_Rush”, ”FirstDowns_Pass”, ”FirstDowns_Pen”, ”ThirdDowns_Made”, ”ThirdDowns_Att”, ”ThirdDowns_Pct”, ”FourthDowns_Made”, ”FourthDowns_Att”, ”FourthDowns_Pct”, ”Penalties_Total”, ”Penalties_Yds”, "Year"}
-    Dim NCAAFTeamPassingYardsOff As String() = {"Rk”, ”Team”, ”Att”, ”Comp”, ”Pct”, ”Yds”, ”Yds/A”, ”Long”, ”Td”, ”Int”, ”Sack”, ”Ydsl”, ”Rat”, ”Yds/G”, "Year"}
-    Dim NCAAFTeamPassingYardsDef As String() = {"Rk”, ”Team”, ”Att”, ”Comp”, ”Pct”, ”Yds”, ”Yds/A”, ”Long”, ”Td”, ”Int”, ”Sack”, ”Ydsl”, ”Rat”, ”Yds/G”, "Year"}
-    Dim NCAAFTeamRushingYardsOff As String() = {"Rk”, ”Team”, ”Att”, ”Yds”, ”Yds/A”, ”Long”, ”Td”, ”Yds/G”, "Year"}
-    Dim NCAAFTeamRushingYardsDef As String() = {"Rk”, ”Team”, ”Att”, ”Yds”, ”Yds/A”, ”Long”, ”Td”, ”Yds/G”, "Year"}
-    Dim NCAAFTeamReceiving As String() = {"Rk”, ”Team”, ”Rec”, ”Yds”, ”Avg”, ”Long”, ”Td”, ”Yds/G”, "Year"}
-    Dim NCAAFTeamReturning As String() = {"Rk”, ”Team”, ”Kickoffs_Att”, ”Kickoffs_Yds”, ”Kickoffs_Avg”, ”Punts_Att”, ”Punts_Yds”, ”Punts_Avg”, ”Punts_Lng”, ”Punts_Td”, "Year"}
-    Dim NCAAFTeamKicking As String() = {"Rk”, ”Team”, ”FieldGoals_Fgm”, ”FieldGoals_Fga”, ”FieldGoals_Pct”, ”FieldGoals_Lng”, ”FieldGoals_1_19”, ”FieldGoals_20_29”, ”FieldGoals_30_39”, ”FieldGoals_40_49”, ”FieldGoals_50+”, ”ExtraPoints_Xpm”, ”ExtraPoints_Xpa”, ”ExtraPoints_Pct”, "Year"}
-    Dim NCAAFTeamPunting As String() = {"Rk”, ”Team”, ”Punts”, ”Yds”, ”Lng”, ”GrossAvg”, ”NetAvg”, ”Ret”, ”Rety”, ”AvgRety”, "Year"}
-    Dim NCAAFTeamDefense As String() = {"Rk”, ”Team”, ”Tackles_Solo”, ”Tackles_Ast”, ”Tackles_Total”, ”Sacks_Sack”, ”Sacks_Ydsl”, ”Interceptions_Pd”, ”Interceptions_Int”, ”Interceptions_Yds”, ”Interceptions_Long”, ”Interceptions_Td”, ”Fumbles_Rec”, "Year"}
-    Dim NCAABTeamScoring As String() = {"Rk”, ”Team”, ”Gp”, ”Pts”, ”Fgm_Fga”, ”Fg%”, ”3Pm_3Pa”, ”3P%”, ”Ftm_Fta”, ”Ft%”, "Year"}
-    Dim NCAABTeamRebounds As String() = {"Rk”, ”Team”, ”Gp”, ”Off”, ”Orpg”, ”Def”, ”Drpg”, ”Reb”, ”Rpg”, "Year"}
-    Dim NCAABTeamFieldGoals As String() = {"Rk”, ”Team”, ”Gp”, ”Ppg”, ”PerGame_Fgm”, ”PerGame_Fga”, ”Total_Fgm”, ”Total_Fga”, ”Fg%”, ”2Pm”, ”2Pa”, ”2P%”, ”Pps”, ”Adj_Fg%”, "Year"}
-    Dim NCAABTeamFreeThrows As String() = {"Rk”, ”Team”, ”Gp”, ”Ppg”, ”PerGame_Ftm”, ”PerGame_Fta”, ”Total_Ftm”, ”Total_Fta”, ”Ft%”, "Year"}
-    Dim NCAABTeam3Points As String() = {"Rk”, ”Team”, ”Gp”, ”Ppg”, ”PerGame_3Pm”, ”PerGame_3Pa”, ”Total_3Pm”, ”Total_3Pa”, ”3P%”, ”2Pm”, ”2Pa”, ”2P%”, ”Pps”, ”Adj_Fg%”, "Year"}
-    Dim NCAABTeamAssists As String() = {"Rk”, ”Team”, ”Gp”, ”Ast”, ”Apg”, ”To”, ”Topg”, ”Ast/To”, "Year"}
-    Dim NCAABTeamSteals As String() = {"Rk”, ”Team”, ”Gp”, ”Stl”, ”Stpg”, ”To”, ”Topg”, ”Pf”, ”St/To”, ”St/Pf”, "Year"}
-    Dim NCAABTeamBlocks As String() = {"Rk”, ”Team”, ”Gp”, ”Blk”, ”Pf”, ”Blkpg”, ”Blk/Pf”, "Year"}
+    Dim NFLTeamTotalOffense As String() = {"total_yards_off_rk", "total_yards_off_team", "total_yards_off_yds", "total_yards_off_yds_per_g", "total_yards_off_pass", "total_yards_off_p_yds_per_g", "total_yards_off_rush", "total_yards_off_r_yds_per_g", "total_yards_off_pts", "total_yards_off_pts_per_g", "total_yards_off_year"}
+    Dim NFLTeamDownsOff As String() = {"downs_off_rk", "downs_off_team", "downs_off_1_total", "downs_off_1_rush", "downs_off_1_pass", "downs_off_1_pen", "downs_off_2_made", "downs_off_2_att", "downs_off_2_pct", "downs_off_3_made", "downs_off_3_att", "downs_off_3_pct", "downs_off_4_total", "downs_off_4_yds", "downs_off_year"}
+    Dim NFLTeamPassingYardsOff As String() = {"passing_yards_off_rk", "passing_yards_off_team", "passing_yards_off_1_att", "passing_yards_off_1_yds", "passing_yards_off_1_avg", "passing_yards_off_1_lng", "passing_yards_off_1_td", "passing_yards_off_2_att", "passing_yards_off_2_yds", "passing_yards_off_2_avg", "passing_yards_off_2_lng", "passing_yards_off_2_td", "passing_yards_off_2_fc", "passing_yards_off_year"}
+    Dim NFLTeamRushingYardsOff As String() = {"rushing_yards_off_rk", "rushing_yards_off_team", "rushing_yards_off_att", "rushing_yards_off_yds", "rushing_yards_off_yds_per_a", "rushing_yards_off_long", "rushing_yards_off_td", "rushing_yards_off_yds_per_g", "rushing_yards_off_fum", "rushing_yards_off_fuml", "rushing_yards_off_year"}
+    Dim NFLTeamReceivingYardsOff As String() = {"receiving_off_rk", "receiving_off_team", "receiving_off_rec", "receiving_off_yds", "receiving_off_avg", "receiving_off_long", "receiving_off_td", "receiving_off_yds_per_g", "receiving_off_fum", "receiving_off_fuml", "receiving_off_year"}
+    Dim NFLTeamReturningYardsOwn As String() = {"returning_own_rk", "returning_own_team", "returning_own_1_att", "returning_own_1_yds", "returning_own_1_avg", "returning_own_1_lng", "returning_own_1_td", "returning_own_2_att", "returning_own_2_yds", "returning_own_2_avg", "returning_own_2_lng", "returning_own_2_td", "returning_own_2_fc", "returning_own_year"}
+    Dim NFLTeamKickingOwn As String() = {"kicking_own_rk", "kicking_own_team", "kicking_own_1_fgm", "kicking_own_1_fga", "kicking_own_1_pct", "kicking_own_1_lng", "kicking_own_1_1-19", "kicking_own_1_20-29", "kicking_own_1_30-39", "kicking_own_1_40-49", "kicking_own_1_50+", "kicking_own_2_xpm", "kicking_own_2_xpa", "kicking_own_2_pct", "kicking_own_year"}
+    Dim NFLTeamPuntingOwn As String() = {"punting_own_rk", "punting_own_team", "punting_own_punts", "punting_own_yds", "punting_own_lng", "punting_own_avg", "punting_own_net", "punting_own_bp", "punting_own_in20", "punting_own_tb", "punting_own_fc", "punting_own_ret", "punting_own_rety", "punting_own_avg1", "punting_own_year"}
+    Dim NFLTeamDefenseOwn As String() = {"defense_own_rk", "defense_own_team", "defense_own_1_solo", "defense_own_1_ast", "defense_own_1_total", "defense_own_2_sack", "defense_own_2_ydsl", "defense_own_3_pd", "defense_own_3_int", "defense_own_3_yds", "defense_own_3_long", "defense_own_3_td", "defense_own_4_ff", "defense_own_4_rec", "defense_own_4_td", "defense_own_year"}
+    Dim NFLTeamGiveTake As String() = {"give_take_rk", "give_take_team", "give_take_1_int", "give_take_1_fum", "give_take_1_total", "give_take_2_int", "give_take_2_fum", "give_take_2_total", "Column9", "give_take_year"}
+    Dim NBATeamOffense As String() = {"offense_rk", "offense_team", "offense_pts", "offense_fgm", "offense_fga", "offense_fg%", "offense_3pm", "offense_3pa", "offense_3p%", "offense_ftm", "offense_fta", "offense_ft%", "offense_pps", "offense_afg%", "offense_year"}
+    Dim NBATeamDefense As String() = {"defense_rk", "defense_team", "defense_pts", "defense_fgm", "defense_fga", "defense_fg%", "defense_3pm", "defense_3pa", "defense_3p%", "defense_ftm", "defense_fta", "defense_ft%", "defense_pps", "defense_fg%1", "defense_year"}
+    Dim NBATeamDifferential As String() = {"differential_rk", "differential_team", "differential_pts", "differential_fgm", "differential_fga", "differential_fg%", "differential_3pm", "differential_3pa", "differential_3p%", "differential_ftm", "differential_fta", "differential_ft%", "differential_pps", "differential_fg%1", "differential_year"}
+    Dim NBATeamRebounds As String() = {"rebounds_rk", "rebounds_team", "rebounds_1_off", "rebounds_1_def", "rebounds_1_tot", "rebounds_2_own", "rebounds_2_opp", "rebounds_3_own", "rebounds_3_opp", "rebounds_4_own", "rebounds_4_opp", "rebounds_4_diff", "rebounds_year"}
+    Dim NBATeamMiscellaneous As String() = {"miscellaneous_rk", "miscellaneous_team", "miscellaneous_1_own", "miscellaneous_1_opp", "miscellaneous_2_own", "miscellaneous_2_opp", "miscellaneous_3_own", "miscellaneous_3_opp", "miscellaneous_4_own", "miscellaneous_4_opp", "miscellaneous_4_diff", "miscellaneous_4_a/to", "miscellaneous_tech", "miscellaneous_year"}
+    Dim NCAAFBTeamTotalYardsOff As String() = {"total_yards_off_rk", "total_yards_off_team", "total_yards_off_yds", "total_yards_off_yds_per_g", "total_yards_off_pass", "total_yards_off_p_yds_per_g", "total_yards_off_rush", "total_yards_off_r_yds_per_g", "total_yards_off_pts", "total_yards_off_pts_per_g", "total_yards_off_year"}
+    Dim NCAAFBTeamTotalYardsDef As String() = {"total_yards_def_rk", "total_yards_def_team", "total_yards_def_yds", "total_yards_def_yds_per_g", "total_yards_def_pass", "total_yards_def_p_yds_per_g", "total_yards_def_rush", "total_yards_def_r_yds_per_g", "total_yards_def_pts", "total_yards_def_pts_per_g", "total_yards_def_year"}
+    Dim NCAAFBTeamDowns As String() = {"downs_rk", "downs_team", "downs_1_total", "downs_1_rush", "downs_1_pass", "downs_1_pen", "downs_2_made", "downs_2_att", "downs_2_pct", "downs_3_made", "downs_3_att", "downs_3_pct", "downs_4_total", "downs_4_yds", "downs_year"}
+    Dim NCAAFBTeamPassingYardsOff As String() = {"passing_yards_off_rk", "passing_yards_off_team", "passing_yards_off_att", "passing_yards_off_comp", "passing_yards_off_pct", "passing_yards_off_yds", "passing_yards_off_yds_per_a", "passing_yards_off_long", "passing_yards_off_td", "passing_yards_off_int", "passing_yards_off_sack", "passing_yards_off_ydsl", "passing_yards_off_rat", "passing_yards_off_yds_per_g", "passing_yards_off_year"}
+    Dim NCAAFBTeamPassingYardsDef As String() = {"passing_yards_def_rk", "passing_yards_def_team", "passing_yards_def_att", "passing_yards_def_comp", "passing_yards_def_pct", "passing_yards_def_yds", "passing_yards_def_yds_per_a", "passing_yards_def_long", "passing_yards_def_td", "passing_yards_def_int", "passing_yards_def_sack", "passing_yards_def_ydsl", "passing_yards_def_rat", "passing_yards_def_yds_per_g", "passing_yards_def_year"}
+    Dim NCAAFBTeamRushingYardsOff As String() = {"rushing_yards_off_rk", "rushing_yards_off_team", "rushing_yards_off_att", "rushing_yards_off_yds", "rushing_yards_off_yds_per_a", "rushing_yards_off_long", "rushing_yards_off_td", "rushing_yards_off_yds_per_g", "rushing_yards_off_year"}
+    Dim NCAAFBTeamRushingYardsDef As String() = {"rushing_yards_def_rk", "rushing_yards_def_team", "rushing_yards_def_att", "rushing_yards_def_yds", "rushing_yards_def_yds_per_a", "rushing_yards_def_long", "rushing_yards_def_td", "rushing_yards_def_yds_per_g", "rushing_yards_def_year"}
+    Dim NCAAFBTeamReceiving As String() = {"receiving_rk", "receiving_team", "receiving_rec", "receiving_yds", "receiving_avg", "receiving_long", "receiving_td", "receiving_yds_per_g", "receiving_year"}
+    Dim NCAAFBTeamReturning As String() = {"returning_rk", "returning_team", "returning_1_att", "returning_1_yds", "returning_1_avg", "returning_1_att1", "returning_1_yds1", "returning_2_avg", "returning_2_lng", "returning_2_td", "returning_year"}
+    Dim NCAAFBTeamKicking As String() = {"kicking_rk", "kicking_team", "kicking_1_fgm", "kicking_1_fga", "kicking_1_pct", "kicking_1_lng", "kicking_1_1-19", "kicking_1_20-29", "kicking_1_30-39", "kicking_1_40-49", "kicking_1_50+", "kicking_2_xpm", "kicking_2_xpa", "kicking_2_pct", "kicking_year"}
+    Dim NCAAFBTeamPunting As String() = {"punting_rk", "punting_team", "punting_punts", "punting_yds", "punting_lng", "punting_avg", "punting_net", "punting_ret", "punting_rety", "punting_avg1", "punting_year"}
+    Dim NCAAFBTeamDefense As String() = {"defense_rk", "defense_team", "defense_1_solo", "defense_1_ast", "defense_1_total", "defense_2_sack", "defense_2_ydsl", "defense_3_pd", "defense_3_int", "defense_3_yds", "defense_3_long", "defense_3_td", "defense_4_rec", "defense_year"}
+    Dim NCAABTeamScoring As String() = {"scoring_rk", "scoring_team", "scoring_gp", "scoring_pts", "scoring_fgm_fga", "scoring_fg%", "scoring_3pm_3pa", "scoring_3p%", "scoring_ftm_fta", "scoring_ft%", "scoring_year"}
+    Dim NCAABTeamRebounds As String() = {"rebounds_rk", "rebounds_team", "rebounds_gp", "rebounds_off", "rebounds_orpg", "rebounds_def", "rebounds_drpg", "rebounds_reb", "rebounds_rpg", "rebounds_year"}
+    Dim NCAABTeamFieldGoals As String() = {"field_goals_rk", "field_goals_team", "field_goals_gp", "field_goals_ppg", "field_goals_1_fgm", "field_goals_1_fga", "field_goals_2_fgm", "field_goals_2_fga", "field_goals_fg%", "field_goals_2pm", "field_goals_2pa", "field_goals_2p%", "field_goals_pps", "field_goals_4_fg%", "field_goals_year"}
+    Dim NCAABTeamFreeThrows As String() = {"free_throws_rk", "free_throws_team", "free_throws_gp", "free_throws_ppg", "free_throws_1_ftm", "free_throws_1_fta", "free_throws_2_ftm", "free_throws_2_fta", "free_throws_ft%", "free_throws_year"}
+    Dim NCAABTeam3Points As String() = {"3_points_rk", "3_points_team", "3_points_gp", "3_points_ppg", "3_points_1_3pm", "3_points_1_3pa", "3_points_2_3pm", "3_points_2_3pa", "3_points_3p%", "3_points_2pm", "3_points_2pa", "3_points_2p%", "3_points_pps", "3_points_4_fg%", "3_points_year"}
+    Dim NCAABTeamAssists As String() = {"assists_rk", "assists_team", "assists_gp", "assists_ast", "assists_apg", "assists_to", "assists_topg", "assists_ast_per_to", "assists_year"}
+    Dim NCAABTeamSteals As String() = {"steals_rk", "steals_team", "steals_gp", "steals_stl", "steals_stpg", "steals_to", "steals_topg", "steals_pf", "steals_st_per_to", "steals_st_per_pf", "steals_year"}
+    Dim NCAABTeamBlocks As String() = {"blocks_rk", "blocks_team", "blocks_gp", "blocks_blk", "blocks_pf", "blocks_blkpg", "blocks_blk_per_pf", "blocks_year"}
 
     Public Function GetDatasource(ByVal strDatasource As String)
         Select Case strDatasource
@@ -88,8 +88,8 @@
                 Return StatsNFL
             Case "StatsNBA"
                 Return StatsNBA
-            Case "StatsNCAAF"
-                Return StatsNCAAF
+            Case "StatsNCAAFB"
+                Return StatsNCAAFB
             Case "StatsNCAAB"
                 Return StatsNCAAB
             Case "YearsNFL"
@@ -98,8 +98,8 @@
                 Return YearsNBA
             Case "YearsNCAAB"
                 Return YearsNCAAB
-            Case "YearsNCAAF"
-                Return YearsNCAAF
+            Case "YearsNCAAFB"
+                Return YearsNCAAFB
             Case "NFL-TOTAL YARDS OFF"
                 Return NFLTeamTotalOffense
             Case "NFL-DOWNS OFF"
@@ -130,30 +130,30 @@
                 Return NBATeamRebounds
             Case "NBA-MISCELLANEOUS"
                 Return NBATeamMiscellaneous
-            Case "NCAAF-TOTAL YARDS OFF"
-                Return NCAAFTeamTotalYardsOff
-            Case "NCAAF-TOTAL YARDS DEF"
-                Return NCAAFTeamTotalYardsDef
-            Case "NCAAF-DOWNS"
-                Return NCAAFTeamDowns
-            Case "NCAAF-PASSING YARDS OFF"
-                Return NCAAFTeamPassingYardsOff
-            Case "NCAAF-PASSING YARDS DEF"
-                Return NCAAFTeamPassingYardsDef
-            Case "NCAAF-RUSHING YARDS OFF"
-                Return NCAAFTeamRushingYardsOff
-            Case "NCAAF-RUSHING YARDS DEF"
-                Return NCAAFTeamRushingYardsDef
-            Case "NCAAF-RECEIVING"
-                Return NCAAFTeamReceiving
-            Case "NCAAF-RETURNING"
-                Return NCAAFTeamReturning
-            Case "NCAAF-KICKING"
-                Return NCAAFTeamKicking
-            Case "NCAAF-PUNTING"
-                Return NCAAFTeamPunting
-            Case "NCAAF-DEFENSE"
-                Return NCAAFTeamDefense
+            Case "NCAAFB-TOTAL YARDS OFF"
+                Return NCAAFBTeamTotalYardsOff
+            Case "NCAAFB-TOTAL YARDS DEF"
+                Return NCAAFBTeamTotalYardsDef
+            Case "NCAAFB-DOWNS"
+                Return NCAAFBTeamDowns
+            Case "NCAAFB-PASSING YARDS OFF"
+                Return NCAAFBTeamPassingYardsOff
+            Case "NCAAFB-PASSING YARDS DEF"
+                Return NCAAFBTeamPassingYardsDef
+            Case "NCAAFB-RUSHING YARDS OFF"
+                Return NCAAFBTeamRushingYardsOff
+            Case "NCAAFB-RUSHING YARDS DEF"
+                Return NCAAFBTeamRushingYardsDef
+            Case "NCAAFB-RECEIVING"
+                Return NCAAFBTeamReceiving
+            Case "NCAAFB-RETURNING"
+                Return NCAAFBTeamReturning
+            Case "NCAAFB-KICKING"
+                Return NCAAFBTeamKicking
+            Case "NCAAFB-PUNTING"
+                Return NCAAFBTeamPunting
+            Case "NCAAFB-DEFENSE"
+                Return NCAAFBTeamDefense
             Case "NCAAB-SCORING"
                 Return NCAABTeamScoring
             Case "NCAAB-REBOUNDS"

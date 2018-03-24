@@ -18,6 +18,8 @@ Module Module1
         Dim strProper As String = StrConv(str, VbStrConv.Lowercase)
         strProper = strProper.Replace("/", "_per_")
         strProper = strProper.Replace(" ", "_")
+        strProper = strProper.Replace("%", "_pct")
+        strProper = strProper.Replace("+", "_plus")
         strProper = strProper.Replace("-", "_")
         Return strProper
     End Function
@@ -976,37 +978,39 @@ Module Module1
                     If i < value Then
                         If colHeaders(colspans.IndexOf(value)) <> GetProperString(TableName) & "_&nbsp;" Then
                             Try
-                                Table.Columns(i).ColumnName = (GetProperString(TableName) & "_" & colspans.IndexOf(value) & "_" & StatNodes(rowStart).ChildNodes(i).InnerText).ToString.ToLower
+                                Table.Columns(i).ColumnName = GetProperString(TableName & "_" & colspans.IndexOf(value) & "_" & StatNodes(rowStart).ChildNodes(i).InnerText).ToString.ToLower
                             Catch
-                                Table.Columns(i).ColumnName = (GetProperString(TableName) & "_" & colspans.IndexOf(value) & "_" & StatNodes(rowStart).ChildNodes(i).InnerText & "1").ToString.ToLower
+                                Table.Columns(i).ColumnName = GetProperString(TableName & "_" & colspans.IndexOf(value) & "_" & StatNodes(rowStart).ChildNodes(i).InnerText & "1").ToString.ToLower
                             End Try
                             Exit For
                         Else
-                            Table.Columns(i).ColumnName = (GetProperString(TableName) & "_" & StatNodes(rowStart).ChildNodes(i).InnerText).ToString.ToLower
+                            Table.Columns(i).ColumnName = GetProperString(TableName & "_" & StatNodes(rowStart).ChildNodes(i).InnerText).ToString.ToLower
                             Exit For
                         End If
                     End If
                 Next
             Else
                 Try
-                    Table.Columns(i).ColumnName = (GetProperString(TableName) & "_" & GetProperString(StatNodes(rowStart).ChildNodes(i).InnerText)).ToString.ToLower
+                    Table.Columns(i).ColumnName = GetProperString(TableName & "_" & StatNodes(rowStart).ChildNodes(i).InnerText).ToString.ToLower
                 Catch
-                    Table.Columns(i).ColumnName = (GetProperString(TableName) & "_" & GetProperString(StatNodes(rowStart).ChildNodes(i).InnerText & "1")).ToString.ToLower
+                    Table.Columns(i).ColumnName = GetProperString(TableName & "_" & StatNodes(rowStart).ChildNodes(i).InnerText & "1").ToString.ToLower
                 End Try
             End If
         Next
 
-        For i As Integer = 0 To StatNodes.Count - 1
+        For i As Integer = 1 To StatNodes.Count - 1
             If StatNodes(i).ChildNodes.Count = Table.Columns.Count Then
-                Table.Rows.Add()
-                Dim rowNum As Integer = Table.Rows.Count - 1
-                For x As Integer = 0 To colCount
-                    If Not StatNodes(i).ChildNodes(x).InnerText = "&nbsp;" Then
-                        Table.Rows(rowNum).Item(x) = (StatNodes(i).ChildNodes(x).InnerText).ToLower
-                    Else
-                        Table.Rows(rowNum).Item(x) = ""
-                    End If
-                Next
+                If StatNodes(i).FirstChild.InnerText <> "PER GAME" AndAlso StatNodes(i).FirstChild.InnerText <> "DATE" AndAlso StatNodes(i).FirstChild.InnerText <> "RK" Then     'Add data from nodes to rows
+                    Table.Rows.Add()
+                    Dim rowNum As Integer = Table.Rows.Count - 1
+                    For x As Integer = 0 To colCount
+                        If Not StatNodes(i).ChildNodes(x).InnerText = "&nbsp;" Then
+                            Table.Rows(rowNum).Item(x) = (StatNodes(i).ChildNodes(x).InnerText).ToLower
+                        Else
+                            Table.Rows(rowNum).Item(x) = ""
+                        End If
+                    Next
+                End If
             End If
         Next
         Return Table
@@ -1021,23 +1025,34 @@ Module Module1
     '           SQL FUNCTIONS
     '*************************************
 
-    ' Return MySQL String
+    ' Return MySQL String: Create Table
     Public Function sqlCreateTable(ByVal dbName As String, ByVal tableName As String)
-        Dim strSQL As String = "CREATE TABLE [IF NOT EXISTS] " & GetProperString(tableName) & " (id INT(6) NOT NULL AUTO_INCREMENT, "
+        Dim strSQL As String = "CREATE TABLE IF NOT EXISTS " & GetProperString(tableName) & " (id INT(6) NOT NULL, " '
         Dim cols As String() = GetDatasource(dbName.ToUpper & "-" & tableName)
         For Each str As String In cols
 
             If str = cols.Last Then
-                strSQL += GetProperString(tableName) & "_" & str.ToLower & " INT(6) DEFAULT NULL"
+                strSQL += GetProperString(str.ToLower) & " INT(6) DEFAULT NULL"
             Else
-                If str = "team" Then
+                If str.Contains("team") Then
                     strSQL += GetProperString(tableName) & "_team VARCHAR(30) DEFAULT NULL,"
                 Else
-                    strSQL += GetProperString(tableName) & "_" & str.ToLower & " INT(6) DEFAULT NULL,"
+                    strSQL += GetProperString(str.ToLower) & " INT(6) DEFAULT NULL,"
                 End If
             End If
         Next
         strSQL += ");"
+        Return strSQL
+    End Function
+
+    Public Function sqlCreateSelectTable(ByVal dbName As String, ByVal tableName As String, ByVal year As String)
+        Dim strSQL As String = ""
+        If tableName = "ALL" Then tableName = "*"
+        If year = "ALL" Then
+            strSQL = "SELECT * FROM " & GetProperString(dbName) & "." & GetProperString(tableName)
+        Else
+            strSQL = "SELECT * FROM " & GetProperString(dbName) & "." & GetProperString(tableName) & " WHERE CAST(" & GetProperString(tableName) & "_year AS UNSIGNED)" & "=" & year
+        End If
         Return strSQL
     End Function
 
@@ -1092,7 +1107,7 @@ Module Module1
     End Sub
 
     Public Sub ImportCSVtoMySQL(ByVal db As String, ByVal csvTableName As String, ByVal filepath As String)
-        Dim connStr As String = "server=192.168.0.13;user=EJadmin;password=Look@me3;database=" & db & ";port=3306"
+        Dim connStr As String = "server=EJPC1;user=EJadmin;password=Look@me3;database=" & db & ";port=3306"
         Dim conn As New MySqlConnection(connStr)
 
         Dim csvLine As String, cols() As String
@@ -1136,74 +1151,27 @@ Module Module1
         End Using
     End Sub
 
-    Private Function GetSQLString(ByVal db As String, ByVal dt As String)
-        ' Return the SQL Command String
-        ' "SELECT Name, Age, Profession FROM Career"
+    Public Function SelectTable(ByVal db As String, ByVal table As String, ByVal year As String)
+        Dim connStr As String = "server=EJPC1;user=EJadmin;password=Look@me3;database=" & GetProperString(db) & ";port=3306"
+        Dim conn As New MySqlConnection(connStr)
+        Dim dt As New System.Data.DataTable
+        Using dbcon As New MySqlConnection(connStr)
+            dbcon.Open()
 
-        Dim str As String = "CREATE TABLE " & "Table Name PROPER" & " (id INT(6) NOT NULL AUTO_INCREMENT,otherField TEXT NOT NULL,PRIMARY KEY (id));"
-
-        Select Case db
-            Case "ncaafb"
-                Select Case dt
-                    Case "teams"
-                        Return "SELECT ID, Team FROM Teams"
-                    Case "TEAM STATS - TOTAL YARDS OFF"
-                    Case "TEAM STATS - TOTAL YARDS DEF"
-                    Case "TEAM STATS - DOWNS"
-                    Case "TEAM STATS - PASSING YARDS OFF"
-                    Case "TEAM STATS - PASSING YARDS DEF"
-                    Case "TEAM STATS - RUSHING YARDS OFF"
-                    Case "TEAM STATS - RUSHING YARDS DEF"
-                    Case "TEAM STATS - RETURNING"
-                    Case "TEAM STATS - RECEIVING"
-                    Case "TEAM STATS - KICKING"
-                    Case "TEAM STATS - PUNTING"
-                    Case "TEAM STATS - DEFENSE"
-                End Select
-            Case "ncaab"
-                Select Case dt
-                    Case "teams"
-                        Return "SELECT ID, Team FROM Teams"
-                    Case "TEAM STATS - SCORING"
-                    Case "TEAM STATS - REBOUNDS"
-                    Case "TEAM STATS - FIELD GOALS"
-                    Case "TEAM STATS - FREE-THROWS"
-                    Case "TEAM STATS - 3-POINTS"
-                    Case "TEAM STATS - ASSISTS"
-                    Case "TEAM STATS - STEALS"
-                    Case "TEAM STATS - BLOCKS"
-                End Select
-
-            Case "nfl"
-                Select Case dt
-                    Case "teams"
-                        Return "SELECT ID, Team FROM Teams"
-                    Case "TEAM STATS - TOTAL YARDS OFF"
-                        Return ""
-                    Case "TEAM STATS - DOWNS OFF"
-                    Case "TEAM STATS - PASSING YARDS OFF"
-                    Case "TEAM STATS - RUSHING YARDS OFF"
-                    Case "TEAM STATS - RECEIVING OFF"
-                    Case "TEAM STATS - RETURNING OWN"
-                    Case "TEAM STATS - KICKING OWN"
-                    Case "TEAM STATS - PUNTING OWN"
-                    Case "TEAM STATS - DEFENSE OWN"
-                    Case "TEAM STATS - GIVE-TAKE"
-                End Select
-            Case "nba"
-                Select Case dt
-                    Case "teams"
-                        Return "SELECT ID, Team FROM Teams"
-                    Case "TEAM STATS - TOTAL YARDS OFF"
-                    Case "TEAM STATS - DOWNS OFF"
-                    Case "TEAM STATS - DIFFERENTIAL"
-                    Case "TEAM STATS - REBOUNDS"
-                    Case "TEAM STATS - MISCELLANEOUS"
-                End Select
-            Case "mlb"
-
-        End Select
-        Return Nothing
+            ' Create the Table and Columns
+            Dim createSql As String
+            Try
+                createSql = sqlCreateSelectTable(GetProperString(db), GetProperString(table), GetProperString(year))
+                Dim cmd As New MySqlCommand(createSql, dbcon)
+                Dim da As New MySqlDataAdapter(cmd)
+                da.Fill(dt)
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            Finally
+                conn.Close()
+            End Try
+        End Using
+        Return dt
     End Function
 
     Public Sub AddCols(ByRef DT As System.Data.DataTable, ByVal Year As Integer, ByRef DGV As DataGridView)

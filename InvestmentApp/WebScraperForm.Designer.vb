@@ -38,7 +38,7 @@ Partial Class WebScraperForm
         Me.btnToExcel = New System.Windows.Forms.Button()
         Me.cmbSelectTeam2 = New System.Windows.Forms.ComboBox()
         Me.lblSelectTeam2 = New System.Windows.Forms.Label()
-        Me.btnAddCols = New System.Windows.Forms.Button()
+        Me.btnPull = New System.Windows.Forms.Button()
         Me.txtFilename = New System.Windows.Forms.TextBox()
         Me.lblFilename = New System.Windows.Forms.Label()
         CType(Me.dgvTableDisplay, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -48,7 +48,7 @@ Partial Class WebScraperForm
         '
         Me.btnScrape.BackColor = System.Drawing.Color.Azure
         Me.btnScrape.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnScrape.Location = New System.Drawing.Point(549, 31)
+        Me.btnScrape.Location = New System.Drawing.Point(548, 120)
         Me.btnScrape.Name = "btnScrape"
         Me.btnScrape.Size = New System.Drawing.Size(152, 47)
         Me.btnScrape.TabIndex = 2
@@ -60,7 +60,7 @@ Partial Class WebScraperForm
         Me.btnExit.BackColor = System.Drawing.Color.Azure
         Me.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnExit.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnExit.Location = New System.Drawing.Point(549, 91)
+        Me.btnExit.Location = New System.Drawing.Point(548, 180)
         Me.btnExit.Name = "btnExit"
         Me.btnExit.Size = New System.Drawing.Size(152, 47)
         Me.btnExit.TabIndex = 3
@@ -203,17 +203,17 @@ Partial Class WebScraperForm
         Me.lblSelectTeam2.TabIndex = 19
         Me.lblSelectTeam2.Text = "TEAM2"
         '
-        'btnAddCols
+        'btnPull
         '
-        Me.btnAddCols.BackColor = System.Drawing.Color.Azure
-        Me.btnAddCols.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnAddCols.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAddCols.Location = New System.Drawing.Point(549, 149)
-        Me.btnAddCols.Name = "btnAddCols"
-        Me.btnAddCols.Size = New System.Drawing.Size(152, 47)
-        Me.btnAddCols.TabIndex = 21
-        Me.btnAddCols.Text = "Add Cols"
-        Me.btnAddCols.UseVisualStyleBackColor = False
+        Me.btnPull.BackColor = System.Drawing.Color.Azure
+        Me.btnPull.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnPull.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnPull.Location = New System.Drawing.Point(548, 59)
+        Me.btnPull.Name = "btnPull"
+        Me.btnPull.Size = New System.Drawing.Size(152, 47)
+        Me.btnPull.TabIndex = 21
+        Me.btnPull.Text = "Pull"
+        Me.btnPull.UseVisualStyleBackColor = False
         '
         'txtFilename
         '
@@ -234,7 +234,7 @@ Partial Class WebScraperForm
         '
         'WebScraperForm
         '
-        Me.AcceptButton = Me.btnScrape
+        Me.AcceptButton = Me.btnPull
         Me.AutoScaleDimensions = New System.Drawing.SizeF(12.0!, 25.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.PaleTurquoise
@@ -242,7 +242,7 @@ Partial Class WebScraperForm
         Me.ClientSize = New System.Drawing.Size(740, 774)
         Me.Controls.Add(Me.lblFilename)
         Me.Controls.Add(Me.txtFilename)
-        Me.Controls.Add(Me.btnAddCols)
+        Me.Controls.Add(Me.btnPull)
         Me.Controls.Add(Me.cmbSelectTeam2)
         Me.Controls.Add(Me.lblSelectTeam2)
         Me.Controls.Add(Me.btnToExcel)
@@ -284,7 +284,7 @@ Partial Class WebScraperForm
     Friend WithEvents btnToExcel As Button
     Friend WithEvents cmbSelectTeam2 As ComboBox
     Friend WithEvents lblSelectTeam2 As Label
-    Friend WithEvents btnAddCols As Button
+    Friend WithEvents btnPull As Button
     Friend WithEvents txtFilename As TextBox
     Friend WithEvents lblFilename As Label
 End Class

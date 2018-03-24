@@ -12,7 +12,7 @@ Public Class WebScraperForm
             Case "NCAA BASKETBALL"
                 cmbSelectSeason.DataSource = GetDatasource("YearsNCAAB")
             Case "NCAA FOOTBALL"
-                cmbSelectSeason.DataSource = GetDatasource("YearsNCAAF")
+                cmbSelectSeason.DataSource = GetDatasource("YearsNCAAFB")
             Case "NBA"
                 cmbSelectSeason.DataSource = GetDatasource("YearsNBA")
             Case "NFL"
@@ -27,7 +27,7 @@ Public Class WebScraperForm
             Case "NCAA BASKETBALL"
                 cmbSelectStat.DataSource = GetDatasource("StatsNCAAB")
             Case "NCAA FOOTBALL"
-                cmbSelectStat.DataSource = GetDatasource("StatsNCAAF")
+                cmbSelectStat.DataSource = GetDatasource("StatsNCAAFB")
             Case "NBA"
                 cmbSelectStat.DataSource = GetDatasource("StatsNBA")
             Case "NFL"
@@ -42,13 +42,13 @@ Public Class WebScraperForm
         If cmbSelectTeam1.Text <> Nothing Then
             Select Case cmbSelectSport.Text
                 Case "NFL"
-                    dgvTableDisplay.DataSource = ScrapeNFL(cmbSelectStat.Text)
+                    dgvTableDisplay.DataSource = ScrapeNFL(cmbSelectStat.Text, cmbSelectSeason.Text)
                 Case "NBA"
-                    dgvTableDisplay.DataSource = ScrapeNBA(cmbSelectStat.Text)
+                    dgvTableDisplay.DataSource = ScrapeNBA(cmbSelectStat.Text, cmbSelectSeason.Text)
                 Case "NCAA FOOTBALL"
-                    dgvTableDisplay.DataSource = ScrapeNCAAFootball(cmbSelectStat.Text)
+                    dgvTableDisplay.DataSource = ScrapeNCAAFootball(cmbSelectStat.Text, cmbSelectSeason.Text)
                 Case "NCAA BASKETBALL"
-                    dgvTableDisplay.DataSource = ScrapeNCAABasketball(cmbSelectStat.Text)
+                    dgvTableDisplay.DataSource = ScrapeNCAABasketball(cmbSelectStat.Text, cmbSelectSeason.Text)
             End Select
         End If
         dgvTableDisplay.AutoResizeColumns()
@@ -76,7 +76,7 @@ Public Class WebScraperForm
                     lstChildren.Add(children.Item(1).InnerText)
                 Next
             Case "NCAA FOOTBALL"
-                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAF", "http://www.espn.com/college-football/statistics/team/_/stat/total/sort/totalYards/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                Dim nodes As HtmlNodeCollection = ScrapeLeagueStats("NCAAFB", "http://www.espn.com/college-football/statistics/team/_/stat/total/sort/totalYards/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 Dim children As HtmlNodeCollection = Nothing
                 For i As Integer = 1 To nodes.Count - 1
                     children = nodes(i).ChildNodes
@@ -103,8 +103,7 @@ Public Class WebScraperForm
     End Function
 
 
-    Public Function ScrapeNCAABasketball(ByVal Tag As String, Optional ByVal Team As String = Nothing)
-        Dim year As String = cmbSelectSeason.Text
+    Public Function ScrapeNCAABasketball(ByVal Tag As String, ByVal year As String, Optional ByVal Team As String = Nothing)
         '******** GET TEAM ID *********
         Dim teamID As Integer
         Dim nodes As HtmlNodeCollection = Nothing
@@ -146,14 +145,13 @@ Public Class WebScraperForm
         End Select
         If nodes IsNot Nothing Then
             Return StatsToDataTable(nodes, GetProperString(Tag))
-            dgvTableDisplay.AutoResizeColumns()
         Else
             Return Nothing
         End If
+        dgvTableDisplay.AutoResizeColumns()
     End Function
 
-    Public Function ScrapeNCAAFootball(ByVal Tag As String, Optional ByVal Team As String = Nothing)
-        Dim year As String = cmbSelectSeason.Text
+    Public Function ScrapeNCAAFootball(ByVal Tag As String, ByVal Year As String, Optional ByVal Team As String = Nothing)
         '******** GET TEAM ID *********
         Dim teamID As Integer
         Dim nodes As HtmlNodeCollection = Nothing
@@ -210,10 +208,10 @@ Public Class WebScraperForm
         Else
             Return Nothing
         End If
+        dgvTableDisplay.AutoResizeColumns()
     End Function
 
-    Public Function ScrapeNBA(ByVal Tag As String, Optional ByVal Team As String = Nothing) 'Add Year as a variable
-        Dim year As String = cmbSelectSeason.Text
+    Public Function ScrapeNBA(ByVal Tag As String, ByVal Year As String, Optional ByVal Team As String = Nothing) 'Add Year as a variable
         Dim teamID As Integer = Nothing
         Dim nodes As HtmlNodeCollection = Nothing
         Select Case Tag
@@ -253,49 +251,48 @@ Public Class WebScraperForm
         dgvTableDisplay.AutoResizeColumns()
     End Function
 
-    Public Function ScrapeNFL(ByVal Tag As String, Optional ByVal Team As String = Nothing) As System.Data.DataTable
-        Dim year As String = cmbSelectSeason.Text
+    Public Function ScrapeNFL(ByVal Tag As String, ByVal Year As String, Optional ByVal Team As String = Nothing) As System.Data.DataTable
         Dim teamID As Integer = Nothing
         Dim nodes As HtmlNodeCollection = Nothing
         Select Case Tag
             Case "TEAM SCHEDULE"
-                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nfl/team/schedule/_/name/" & teamID.ToString & "/year/" & year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
+                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nfl/team/schedule/_/name/" & teamID.ToString & "/year/" & Year.ToString, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
             Case "TEAM STATS"
-                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nfl/team/stats/_/name/" & teamID.ToString & "/year/" & year.ToString & "/type/team", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
+                nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nfl/team/stats/_/name/" & teamID.ToString & "/year/" & Year.ToString & "/type/team", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
             Case "TEAM ROSTER"
                 nodes = ScrapeTeamStats(teamID, cmbSelectSeason.Text, "http://www.espn.com/nfl/team/roster/_/name/" & teamID.ToString & "/dallas-cowboys", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[4]/div[2]/div[1]/div[1]/table[1]/tr")
                 lblTableName.Text = nodes.First.InnerText   'Set Table Name
             Case "TOTAL YARDS OFF"
-                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/total/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/total/year/" & Year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Total Yards Offense"   'Set Table Name
             Case "DOWNS OFF"
-                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/downs/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/downs/year/" & Year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Downs Offense"   'Set Table Name
             Case "PASSING YARDS OFF"
-                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/returning/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/returning/year/" & Year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Passing Offense"   'Set Table Name
             Case "RUSHING YARDS OFF"
-                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/rushing/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/rushing/year/" & Year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Rushing Offense"   'Set Table Name
             Case "RECEIVING OFF"
-                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/receiving/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/receiving/year/" & Year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Receiving Offense"   'Set Table Name
             Case "RETURNING OWN"
-                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/returning/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/returning/year/" & Year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Returning Own"   'Set Table Name
             Case "KICKING OWN"
-                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/kicking/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/kicking/year/" & Year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Kicking Own"   'Set Table Name
             Case "PUNTING OWN"
-                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/punting/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/punting/year/" & Year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Punting Own"   'Set Table Name
             Case "DEFENSE OWN"
-                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/defense/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/defense/year/" & Year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Defense Own"   'Set Table Name
             Case "GIVE-TAKE"
-                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/givetake/year/" & year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
+                nodes = ScrapeLeagueStats("NFL", "http://www.espn.com/nfl/statistics/team/_/stat/givetake/year/" & Year.ToString & "/seasontype/2", "/html[1]/body[1]/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[2]/table[1]/tr")
                 lblTableName.Text = cmbSelectSeason.Text & " " & "NFL Football Give/Take"   'Set Table Name
         End Select
         If nodes IsNot Nothing Then
@@ -303,19 +300,29 @@ Public Class WebScraperForm
         Else
             Return Nothing
         End If
+        dgvTableDisplay.AutoResizeColumns()
     End Function
 
     '   League Stats: Create Nodes object of scraped data
     Public Function ScrapeLeagueStats(ByVal Sport As String, ByVal BaseURI As String, ByVal XPath As String)
         Dim doc As HtmlDocument = New HtmlWeb().Load(BaseURI)
         Dim nodes As HtmlNodeCollection = doc.DocumentNode.SelectNodes(XPath)
-        If Sport = "NCAAB" Then
+        ' Because sometime the page doesn't load first try??? 3/12/18
+        If nodes Is Nothing Then
+            doc = New HtmlWeb().Load(BaseURI)
+            nodes = doc.DocumentNode.SelectNodes(XPath)
+        End If
+
+        nodes = doc.DocumentNode.SelectNodes(XPath)
+            If Sport = "NCAAB" Then
             For i As Integer = 41 To 351
                 doc = New HtmlWeb().Load(BaseURI & "/count/" & i.ToString)  'Get raw HTML of page
                 Dim nodes2 As HtmlNodeCollection = doc.DocumentNode.SelectNodes(XPath)    'Get collection of table elements
-                For Each node As HtmlNode In nodes2
-                    nodes.Add(node)
-                Next
+                If nodes2 IsNot Nothing Then
+                    For Each node As HtmlNode In nodes2
+                        nodes.Add(node)
+                    Next
+                End If
                 i += 40
             Next
         End If
@@ -345,8 +352,9 @@ Public Class WebScraperForm
         End If
     End Sub
 
-    Private Sub btnAddCols_Click(sender As Object, e As EventArgs) Handles btnAddCols.Click
-        GetTeamIDs(dgvTableDisplay)
+    Private Sub btnAddCols_Click(sender As Object, e As EventArgs) Handles btnPull.Click
+        'GetTeamIDs(dgvTableDisplay)
+        dgvTableDisplay.DataSource = SelectTable(cmbSelectSport.Text, cmbSelectStat.Text, cmbSelectSeason.Text)
     End Sub
 
     Private Sub btnToExcel_Click(sender As Object, e As EventArgs) Handles btnToExcel.Click
@@ -360,7 +368,7 @@ Public Class WebScraperForm
             Case "ncaa_basketball"
                 db = "ncaab"
             Case "ncaa_football"
-                db = "ncaaf"
+                db = "ncaafb"
             Case "nba"
                 db = "nba"
             Case "nfl"
@@ -374,13 +382,17 @@ Public Class WebScraperForm
             Dim dt As DataTable
             Select Case db
                 Case "ncaab"
-                    dt = ScrapeNCAABasketball(table)
-                Case "ncaaf"
-                    dt = ScrapeNCAAFootball(table)
+                    dt = ScrapeNCAABasketball(table, year)
+                    If dt Is Nothing Then dt = ScrapeNCAABasketball(table, year)
+                Case "ncaafb"
+                    dt = ScrapeNCAAFootball(table, year)
+                    If dt Is Nothing Then dt = ScrapeNCAAFootball(table, year)
                 Case "nba"
-                    dt = ScrapeNBA(table)
+                    dt = ScrapeNBA(table, year)
+                    If dt Is Nothing Then dt = ScrapeNBA(table, year)
                 Case "nfl"
-                    dt = ScrapeNFL(table)
+                    dt = ScrapeNFL(table, year)
+                    If dt Is Nothing Then dt = ScrapeNFL(table, year)
             End Select
             Dim newColumn As New System.Data.DataColumn(GetProperString(table) & "_year", GetType(System.String))
             newColumn.DefaultValue = CInt(year)
@@ -392,7 +404,6 @@ Public Class WebScraperForm
     End Sub
 
     Private Sub btnUpdateDB_Click(sender As Object, e As EventArgs) Handles btnUpdateDB.Click
-        Dim dt As System.Data.DataTable = Nothing
         Dim db As String = Nothing
         Dim table As String = Nothing
         Dim year As String = Nothing
@@ -406,7 +417,7 @@ Public Class WebScraperForm
                 Case "ncaa_basketball"
                     db = "ncaab"
                 Case "ncaa_football"
-                    db = "ncaaf"
+                    db = "ncaafb"
                 Case "nfl"
                     db = "nfl"
                 Case "nba"
@@ -417,22 +428,23 @@ Public Class WebScraperForm
                     If db <> Nothing AndAlso table <> Nothing AndAlso year <> Nothing Then
                         Dim filename As String = year & "_" & db & "_" & GetProperString(table)
                         Dim path As String = "Z:\EJ\MyPrograms\MoneyManager\CSVs\" & db & "\" & filename & ".txt"
+                        Dim dt As DataTable = Nothing
                         Select Case db
                             Case "ncaab"
-                                dt = ScrapeNCAABasketball(table)
-                            Case "ncaaf"
-                                dt = ScrapeNCAAFootball(table)
+                                dt = ScrapeNCAABasketball(table, year)
+                            Case "ncaafb"
+                                dt = ScrapeNCAAFootball(table, year)
                             Case "nfl"
-                                dt = ScrapeNFL(table)
+                                dt = ScrapeNFL(table, year)
                             Case "nba"
-                                dt = ScrapeNBA(table)
+                                dt = ScrapeNBA(table, year)
                         End Select
                         Dim newColumn As New System.Data.DataColumn(GetProperString(table) & "_year", GetType(System.String))     'Add Year Column to DataTable
                         newColumn.DefaultValue = CInt(year)
                         dt.Columns.Add(newColumn)
-                        'DatatableToCSV(dt, path)
+                        DatatableToCSV(dt, path)
                         'DGVtoCSV(dgvTableDisplay, path)
-                        ImportCSVtoMySQL(db, table, path)
+                        'ImportCSVtoMySQL(db, table, path)
                         ' Write columns to TXT File
                         'ExportTableColumnsToCSV(dt)
                     End If
