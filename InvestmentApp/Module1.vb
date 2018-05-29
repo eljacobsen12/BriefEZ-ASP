@@ -1151,8 +1151,19 @@ Module Module1
         End Using
     End Sub
 
-    Public Function SelectTable(ByVal db As String, ByVal table As String, ByVal year As String)
-        Dim connStr As String = "server=EJPC1;user=EJadmin;password=Look@me3;database=" & GetProperString(db) & ";port=3306"
+    Public Function SelectTable(ByVal db As String, ByVal table As String, ByVal year As String) As Data.DataTable
+        Dim dbProper As String = Nothing
+        Select Case db
+            Case "NCAA BASKETBALL"
+                dbProper = "ncaab"
+            Case "NCAA FOOTBALL"
+                dbProper = "ncaafb"
+            Case "NBA"
+                dbProper = "nba"
+            Case "NFL"
+                dbProper = "nfl"
+        End Select
+        Dim connStr As String = "server=EJPC1;user=EJadmin;password=Look@me3;database=" & dbProper & ";port=3306"
         Dim conn As New MySqlConnection(connStr)
         Dim dt As New System.Data.DataTable
         Using dbcon As New MySqlConnection(connStr)
@@ -1161,7 +1172,7 @@ Module Module1
             ' Create the Table and Columns
             Dim createSql As String
             Try
-                createSql = sqlCreateSelectTable(GetProperString(db), GetProperString(table), GetProperString(year))
+                createSql = sqlCreateSelectTable(dbProper, GetProperString(table), GetProperString(year))
                 Dim cmd As New MySqlCommand(createSql, dbcon)
                 Dim da As New MySqlDataAdapter(cmd)
                 da.Fill(dt)
