@@ -35,10 +35,7 @@ Public Class WebScraperForm
         End Select
     End Sub
 
-    Private Sub btnExtract_Click(sender As Object, e As EventArgs) Handles btnScrape.Click
-        'Try
-        '    dgvTableDisplay.Rows.Clear()
-        'Finally
+    Private Sub btnScrape_Click(sender As Object, e As EventArgs) Handles btnScrape.Click
         If cmbSelectTeam1.Text <> Nothing Then
             Select Case cmbSelectSport.Text
                 Case "NFL"
@@ -58,7 +55,6 @@ Public Class WebScraperForm
             End Select
         End If
         dgvTableDisplay.AutoResizeColumns()
-        'End Try
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
@@ -367,6 +363,7 @@ Public Class WebScraperForm
             custDV.RowFilter = cmbSelectStat.Text.ToLower & "_team='" & cmbSelectTeam1.Text.ToLower & "' OR " & cmbSelectStat.Text.ToLower & "_team='" & cmbSelectTeam2.Text.ToLower & "'"
             dgvTableDisplay.DataSource = custDV
         End If
+        dgvTableDisplay.AutoSize = True
     End Sub
 
     Private Sub btnToExcel_Click(sender As Object, e As EventArgs) Handles btnToExcel.Click
@@ -444,21 +441,34 @@ Public Class WebScraperForm
                         Select Case db
                             Case "ncaab"
                                 dt = ScrapeNCAABasketball(table, year)
+                                If dt Is Nothing Then dt = ScrapeNCAABasketball(table, year)
                             Case "ncaafb"
                                 dt = ScrapeNCAAFootball(table, year)
+                                If dt Is Nothing Then dt = ScrapeNCAAFootball(table, year)
                             Case "nfl"
                                 dt = ScrapeNFL(table, year)
+                                If dt Is Nothing Then dt = ScrapeNFL(table, year)
                             Case "nba"
                                 dt = ScrapeNBA(table, year)
+                                If dt Is Nothing Then dt = ScrapeNBA(table, year)
                         End Select
-                        Dim newColumn As New System.Data.DataColumn(GetProperString(table) & "_year", GetType(System.String))     'Add Year Column to DataTable
-                        newColumn.DefaultValue = CInt(year)
-                        dt.Columns.Add(newColumn)
-                        'DatatableToCSV(dt, path)
-                        'DGVtoCSV(dgvTableDisplay, path)
-                        ImportCSVtoMySQL(db, table, path)
-                        ' Write columns to TXT File
-                        'ExportTableColumnsToCSV(dt)
+                        If dt Is Nothing Then
+                            Dim strFile As String = "Z:\EJ\MyPrograms\MoneyManager\CSVs\MissingTables.txt"
+                            If System.IO.File.Exists(strFile) = True Then
+                                Dim objWriter As New System.IO.StreamWriter(strFile)
+                                objWriter.Write(db & "," & table & "," & year & "," & DateAndTime.Now)
+                                objWriter.Close()
+                            End If
+                        Else
+                            Dim newColumn As New System.Data.DataColumn(GetProperString(table) & "_year", GetType(System.String))     'Add Year Column to DataTable
+                            newColumn.DefaultValue = CInt(year)
+                            dt.Columns.Add(newColumn)
+                            DatatableToCSV(dt, path)
+                            'DGVtoCSV(dgvTableDisplay, path)
+                            ImportCSVtoMySQL(db, table, path)
+                            ' Write columns to TXT File
+                            'ExportTableColumnsToCSV(dt)
+                        End If
                     End If
                 Next
             Next

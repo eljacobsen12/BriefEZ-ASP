@@ -1256,7 +1256,24 @@ Module Module1
         DGV.DataSource = titles
     End Sub
 
-    Public Sub UploadTablesToDB()
+    Public Sub FillTeamID(teamCount As Integer)
+        ' Get DataTable
+        Dim N As Long, i As Long, x As Long, y As Long, usedRowsCount As Long
+        Dim xl As New Microsoft.Office.Interop.Excel.Application
+        Dim sheet As New Microsoft.Office.Interop.Excel.Worksheet
+        Dim path As String = "" ' Get path to teams csv.
+        xl.Workbooks.Open("")
+        sheet = xl.Workbooks("Sheet1")
+        sheet.Range("B3").Value = ""
+        usedRowsCount = sheet.UsedRange.Rows.Count
 
+        N = sheet.Range(usedRowsCount, "A").End(XlDirection.xlUp).Row
+        For i = 2 To N
+            If sheet.Range(i, "A").Value = "" Then
+                x = sheet.Range((i - 1), "A").Value
+                If x = teamCount Then y = 1
+            End If
+        Next i
     End Sub
+
 End Module

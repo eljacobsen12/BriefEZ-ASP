@@ -1,5 +1,5 @@
 ﻿Module DataSources
-    Dim Sports As String() = {"NCAA BASKETBALL", "NCAA FOOTBALL", "NBA"} ', "NFL"}
+    Dim Sports As String() = {"NFL"} ', "NCAA BASKETBALL", "NCAA FOOTBALL", "NBA"}
     Dim YearsNCAAFB As String() = {"2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004"}
     Dim YearsNCAAB As String() = {"2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002"}
     Dim YearsNBA As String() = {"2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002", "2001", "2000"}
