@@ -41,6 +41,7 @@ Partial Class WebScraperForm
         Me.btnPull = New System.Windows.Forms.Button()
         Me.txtFilename = New System.Windows.Forms.TextBox()
         Me.lblFilename = New System.Windows.Forms.Label()
+        Me.btnExportTable = New System.Windows.Forms.Button()
         CType(Me.dgvTableDisplay, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -48,7 +49,7 @@ Partial Class WebScraperForm
         '
         Me.btnScrape.BackColor = System.Drawing.Color.Azure
         Me.btnScrape.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnScrape.Location = New System.Drawing.Point(548, 120)
+        Me.btnScrape.Location = New System.Drawing.Point(545, 69)
         Me.btnScrape.Name = "btnScrape"
         Me.btnScrape.Size = New System.Drawing.Size(152, 47)
         Me.btnScrape.TabIndex = 2
@@ -60,7 +61,7 @@ Partial Class WebScraperForm
         Me.btnExit.BackColor = System.Drawing.Color.Azure
         Me.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnExit.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnExit.Location = New System.Drawing.Point(548, 180)
+        Me.btnExit.Location = New System.Drawing.Point(545, 186)
         Me.btnExit.Name = "btnExit"
         Me.btnExit.Size = New System.Drawing.Size(152, 47)
         Me.btnExit.TabIndex = 3
@@ -73,7 +74,7 @@ Partial Class WebScraperForm
         Me.lblSelectSport.Font = New System.Drawing.Font("Modern No. 20", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSelectSport.Location = New System.Drawing.Point(29, 8)
         Me.lblSelectSport.Name = "lblSelectSport"
-        Me.lblSelectSport.Size = New System.Drawing.Size(88, 25)
+        Me.lblSelectSport.Size = New System.Drawing.Size(107, 31)
         Me.lblSelectSport.TabIndex = 7
         Me.lblSelectSport.Text = "SPORT"
         '
@@ -91,7 +92,7 @@ Partial Class WebScraperForm
         Me.lblTableName.Font = New System.Drawing.Font("Modern No. 20", 20.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTableName.Location = New System.Drawing.Point(200, 239)
         Me.lblTableName.Name = "lblTableName"
-        Me.lblTableName.Size = New System.Drawing.Size(0, 29)
+        Me.lblTableName.Size = New System.Drawing.Size(0, 35)
         Me.lblTableName.TabIndex = 9
         '
         'cmbSelectSport
@@ -101,7 +102,7 @@ Partial Class WebScraperForm
         Me.cmbSelectSport.Items.AddRange(New Object() {"NFL", "NBA", "NCAA BASKETBALL", "NCAA FOOTBALL"})
         Me.cmbSelectSport.Location = New System.Drawing.Point(157, 7)
         Me.cmbSelectSport.Name = "cmbSelectSport"
-        Me.cmbSelectSport.Size = New System.Drawing.Size(350, 28)
+        Me.cmbSelectSport.Size = New System.Drawing.Size(350, 33)
         Me.cmbSelectSport.TabIndex = 10
         '
         'cmbSelectStat
@@ -110,7 +111,7 @@ Partial Class WebScraperForm
         Me.cmbSelectStat.FormattingEnabled = True
         Me.cmbSelectStat.Location = New System.Drawing.Point(157, 163)
         Me.cmbSelectStat.Name = "cmbSelectStat"
-        Me.cmbSelectStat.Size = New System.Drawing.Size(350, 28)
+        Me.cmbSelectStat.Size = New System.Drawing.Size(350, 33)
         Me.cmbSelectStat.TabIndex = 12
         '
         'lblSelectStat
@@ -119,7 +120,7 @@ Partial Class WebScraperForm
         Me.lblSelectStat.Font = New System.Drawing.Font("Modern No. 20", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSelectStat.Location = New System.Drawing.Point(45, 164)
         Me.lblSelectStat.Name = "lblSelectStat"
-        Me.lblSelectStat.Size = New System.Drawing.Size(72, 25)
+        Me.lblSelectStat.Size = New System.Drawing.Size(87, 31)
         Me.lblSelectStat.TabIndex = 11
         Me.lblSelectStat.Text = "STAT"
         '
@@ -129,7 +130,7 @@ Partial Class WebScraperForm
         Me.cmbSelectSeason.FormattingEnabled = True
         Me.cmbSelectSeason.Location = New System.Drawing.Point(157, 46)
         Me.cmbSelectSeason.Name = "cmbSelectSeason"
-        Me.cmbSelectSeason.Size = New System.Drawing.Size(350, 28)
+        Me.cmbSelectSeason.Size = New System.Drawing.Size(350, 33)
         Me.cmbSelectSeason.TabIndex = 14
         '
         'lblSelectSeason
@@ -138,7 +139,7 @@ Partial Class WebScraperForm
         Me.lblSelectSeason.Font = New System.Drawing.Font("Modern No. 20", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSelectSeason.Location = New System.Drawing.Point(13, 48)
         Me.lblSelectSeason.Name = "lblSelectSeason"
-        Me.lblSelectSeason.Size = New System.Drawing.Size(104, 25)
+        Me.lblSelectSeason.Size = New System.Drawing.Size(128, 31)
         Me.lblSelectSeason.TabIndex = 13
         Me.lblSelectSeason.Text = "SEASON"
         '
@@ -148,7 +149,7 @@ Partial Class WebScraperForm
         Me.cmbSelectTeam1.FormattingEnabled = True
         Me.cmbSelectTeam1.Location = New System.Drawing.Point(157, 85)
         Me.cmbSelectTeam1.Name = "cmbSelectTeam1"
-        Me.cmbSelectTeam1.Size = New System.Drawing.Size(350, 28)
+        Me.cmbSelectTeam1.Size = New System.Drawing.Size(350, 33)
         Me.cmbSelectTeam1.TabIndex = 16
         '
         'lblSelectTeam1
@@ -157,7 +158,7 @@ Partial Class WebScraperForm
         Me.lblSelectTeam1.Font = New System.Drawing.Font("Modern No. 20", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSelectTeam1.Location = New System.Drawing.Point(27, 85)
         Me.lblSelectTeam1.Name = "lblSelectTeam1"
-        Me.lblSelectTeam1.Size = New System.Drawing.Size(93, 25)
+        Me.lblSelectTeam1.Size = New System.Drawing.Size(114, 31)
         Me.lblSelectTeam1.TabIndex = 15
         Me.lblSelectTeam1.Text = "TEAM1"
         '
@@ -190,7 +191,7 @@ Partial Class WebScraperForm
         Me.cmbSelectTeam2.FormattingEnabled = True
         Me.cmbSelectTeam2.Location = New System.Drawing.Point(157, 124)
         Me.cmbSelectTeam2.Name = "cmbSelectTeam2"
-        Me.cmbSelectTeam2.Size = New System.Drawing.Size(350, 28)
+        Me.cmbSelectTeam2.Size = New System.Drawing.Size(350, 33)
         Me.cmbSelectTeam2.TabIndex = 20
         '
         'lblSelectTeam2
@@ -199,7 +200,7 @@ Partial Class WebScraperForm
         Me.lblSelectTeam2.Font = New System.Drawing.Font("Modern No. 20", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSelectTeam2.Location = New System.Drawing.Point(27, 124)
         Me.lblSelectTeam2.Name = "lblSelectTeam2"
-        Me.lblSelectTeam2.Size = New System.Drawing.Size(93, 25)
+        Me.lblSelectTeam2.Size = New System.Drawing.Size(114, 31)
         Me.lblSelectTeam2.TabIndex = 19
         Me.lblSelectTeam2.Text = "TEAM2"
         '
@@ -208,7 +209,7 @@ Partial Class WebScraperForm
         Me.btnPull.BackColor = System.Drawing.Color.Azure
         Me.btnPull.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnPull.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnPull.Location = New System.Drawing.Point(548, 59)
+        Me.btnPull.Location = New System.Drawing.Point(545, 12)
         Me.btnPull.Name = "btnPull"
         Me.btnPull.Size = New System.Drawing.Size(152, 47)
         Me.btnPull.TabIndex = 21
@@ -219,7 +220,7 @@ Partial Class WebScraperForm
         '
         Me.txtFilename.Location = New System.Drawing.Point(193, 203)
         Me.txtFilename.Name = "txtFilename"
-        Me.txtFilename.Size = New System.Drawing.Size(314, 26)
+        Me.txtFilename.Size = New System.Drawing.Size(314, 30)
         Me.txtFilename.TabIndex = 22
         '
         'lblFilename
@@ -228,18 +229,31 @@ Partial Class WebScraperForm
         Me.lblFilename.Font = New System.Drawing.Font("Modern No. 20", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblFilename.Location = New System.Drawing.Point(12, 203)
         Me.lblFilename.Name = "lblFilename"
-        Me.lblFilename.Size = New System.Drawing.Size(142, 25)
+        Me.lblFilename.Size = New System.Drawing.Size(175, 31)
         Me.lblFilename.TabIndex = 23
         Me.lblFilename.Text = "FILENAME"
+        '
+        'btnExportTable
+        '
+        Me.btnExportTable.BackColor = System.Drawing.Color.Azure
+        Me.btnExportTable.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnExportTable.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnExportTable.Location = New System.Drawing.Point(545, 127)
+        Me.btnExportTable.Name = "btnExportTable"
+        Me.btnExportTable.Size = New System.Drawing.Size(152, 47)
+        Me.btnExportTable.TabIndex = 24
+        Me.btnExportTable.Text = "Export"
+        Me.btnExportTable.UseVisualStyleBackColor = False
         '
         'WebScraperForm
         '
         Me.AcceptButton = Me.btnPull
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(12.0!, 25.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.PaleTurquoise
         Me.CancelButton = Me.btnExit
         Me.ClientSize = New System.Drawing.Size(740, 774)
+        Me.Controls.Add(Me.btnExportTable)
         Me.Controls.Add(Me.lblFilename)
         Me.Controls.Add(Me.txtFilename)
         Me.Controls.Add(Me.btnPull)
@@ -287,4 +301,5 @@ Partial Class WebScraperForm
     Friend WithEvents btnPull As Button
     Friend WithEvents txtFilename As TextBox
     Friend WithEvents lblFilename As Label
+    Friend WithEvents btnExportTable As Button
 End Class

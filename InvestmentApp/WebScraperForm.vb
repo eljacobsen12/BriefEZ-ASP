@@ -463,8 +463,12 @@ Public Class WebScraperForm
                             Dim newColumn As New System.Data.DataColumn(GetProperString(table) & "_year", GetType(System.String))     'Add Year Column to DataTable
                             newColumn.DefaultValue = CInt(year)
                             dt.Columns.Add(newColumn)
-                            DatatableToCSV(dt, path)
+                            'DatatableToCSV(dt, path)
                             'DGVtoCSV(dgvTableDisplay, path)
+                            ' Test path
+                            If Not Directory.Exists(path) Then
+                                DatatableToCSV(dt, path)
+                            End If
                             ImportCSVtoMySQL(db, table, path)
                             ' Write columns to TXT File
                             'ExportTableColumnsToCSV(dt)
@@ -476,7 +480,61 @@ Public Class WebScraperForm
         file.Close()
     End Sub
 
-    Private Sub cmbSelectSport_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbSelectSport.SelectedIndexChanged
+    ' Export Table to Database
+    Private Sub btnExportTable_Click(sender As Object, e As EventArgs) Handles btnExportTable.Click
+        Dim db As String = Nothing
+        Dim table As String = cmbSelectStat.Text
+        Dim year As String = cmbSelectSeason.Text
+        Dim count As Integer = 0
+        Dim file As System.IO.StreamWriter = Nothing
+        file = My.Computer.FileSystem.OpenTextFileWriter("Z:\EJ\MyPrograms\MoneyManager\Columns.txt", True)
 
+        Select Case GetProperString(cmbSelectSport.Text)
+            Case "ncaa_basketball"
+                db = "ncaab"
+            Case "ncaa_football"
+                db = "ncaafb"
+            Case "nfl"
+                db = "nfl"
+            Case "nba"
+                db = "nba"
+        End Select
+        If db <> Nothing AndAlso table <> Nothing AndAlso year <> Nothing Then
+                Dim filename As String = year & "_" & db & "_" & GetProperString(table)
+                Dim path As String = "Z:\EJ\MyPrograms\MoneyManager\CSVs\" & db & "\" & filename & ".txt"
+                Dim dt As DataTable = Nothing
+                Select Case db
+                    Case "ncaab"
+                        dt = ScrapeNCAABasketball(table, year)
+                        If dt Is Nothing Then dt = ScrapeNCAABasketball(table, year)
+                    Case "ncaafb"
+                        dt = ScrapeNCAAFootball(table, year)
+                        If dt Is Nothing Then dt = ScrapeNCAAFootball(table, year)
+                    Case "nfl"
+                        dt = ScrapeNFL(table, year)
+                        If dt Is Nothing Then dt = ScrapeNFL(table, year)
+                    Case "nba"
+                        dt = ScrapeNBA(table, year)
+                        If dt Is Nothing Then dt = ScrapeNBA(table, year)
+                End Select
+                If dt Is Nothing Then
+                    Dim strFile As String = "Z:\EJ\MyPrograms\MoneyManager\CSVs\MissingTables.txt"
+                    If System.IO.File.Exists(strFile) = True Then
+                        Dim objWriter As New System.IO.StreamWriter(strFile)
+                        objWriter.Write(db & "," & table & "," & year & "," & DateAndTime.Now)
+                        objWriter.Close()
+                    End If
+                Else
+                Dim newColumn As New System.Data.DataColumn(GetProperString(table) & "_year", GetType(System.String))     'Add Year Column to DataTable
+                newColumn.DefaultValue = CInt(year)
+                dt.Columns.Add(newColumn)
+                'DatatableToCSV(dt, path)
+                'DGVtoCSV(dgvTableDisplay, path)
+                ImportCSVtoMySQL(db, table, path)
+                ' Write columns to TXT File
+                'ExportTableColumnsToCSV(dt)
+            End If
+            End If
+        file.Close()
     End Sub
 End Class
