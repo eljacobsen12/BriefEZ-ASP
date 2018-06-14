@@ -1,23 +1,27 @@
 ﻿Module DataSources
-    Dim Sports As String() = {"NFL"} ', "NCAA BASKETBALL", "NCAA FOOTBALL", "NBA"}
+    Dim Sports As String() = {"MLB"} ', "NBA", "NFL", "NCAA BASKETBALL", "NCAA FOOTBALL"}
     Dim YearsNCAAFB As String() = {"2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004"}
     Dim YearsNCAAB As String() = {"2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002"}
     Dim YearsNBA As String() = {"2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002", "2001", "2000"}
     Dim YearsNFL As String() = {"2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002"}
-    Dim StatsNCAAFB As String() = {"TOTAL YARDS OFF",
-                                  "TOTAL YARDS DEF",
-                                  "DOWNS",
-                                  "PASSING YARDS OFF",
-                                  "PASSING YARDS DEF",
-                                  "RUSHING YARDS OFF",
-                                  "RUSHING YARDS DEF",
-                                  "RECEIVING",
-                                  "RETURNING",
-                                  "KICKING",
-                                  "PUNTING",
-                                  "DEFENSE"
+    Dim YearsMLB As String() = {"2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002", "2001", "2000"}
+
+    Dim StatsNCAAFB As String() = {'"TEAM SCHEDULE",
+                                   "TOTAL YARDS OFF",
+                                   "TOTAL YARDS DEF",
+                                   "DOWNS",
+                                   "PASSING YARDS OFF",
+                                   "PASSING YARDS DEF",
+                                   "RUSHING YARDS OFF",
+                                   "RUSHING YARDS DEF",
+                                   "RECEIVING",
+                                   "RETURNING",
+                                   "KICKING",
+                                   "PUNTING",
+                                   "DEFENSE"
                                   }
-    Dim StatsNCAAB As String() = {"SCORING",
+    Dim StatsNCAAB As String() = {'"TEAM SCHEDULE",
+                                  "SCORING",
                                   "REBOUNDS",
                                   "FIELD GOALS",
                                   "FREE-THROWS",
@@ -26,13 +30,15 @@
                                   "STEALS",
                                   "BLOCKS"
                                  }
-    Dim StatsNBA As String() = {"OFFENSE",
+    Dim StatsNBA As String() = {'"TEAM SCHEDULE",
+                                "OFFENSE",
                                 "DEFENSE",
                                 "DIFFERENTIAL",
                                 "REBOUNDS",
                                 "MISCELLANEOUS"
                                 }
-    Dim StatsNFL As String() = {"TOTAL YARDS OFF",
+    Dim StatsNFL As String() = {'"TEAM SCHEDULE",
+                                "TOTAL YARDS OFF",
                                 "DOWNS OFF",
                                 "PASSING YARDS OFF",
                                 "RUSHING YARDS OFF",
@@ -43,6 +49,10 @@
                                 "DEFENSE OWN",
                                 "GIVE-TAKE"
                                 }
+    Dim StatsMLB As String() = {'"TEAM SCHEDULE",
+                                 "BATTING",
+                                 "PITCHING",
+                                 "FIELDING"}
 
     Dim NFLTeamTotalOffense As String() = {"total_yards_off_rk", "total_yards_off_team", "total_yards_off_yds", "total_yards_off_yds_per_g", "total_yards_off_pass", "total_yards_off_p_yds_per_g", "total_yards_off_rush", "total_yards_off_r_yds_per_g", "total_yards_off_pts", "total_yards_off_pts_per_g", "total_yards_off_year"}
     Dim NFLTeamDownsOff As String() = {"downs_off_rk", "downs_off_team", "downs_off_1_total", "downs_off_1_rush", "downs_off_1_pass", "downs_off_1_pen", "downs_off_2_made", "downs_off_2_att", "downs_off_2_pct", "downs_off_3_made", "downs_off_3_att", "downs_off_3_pct", "downs_off_4_total", "downs_off_4_yds", "downs_off_year"}
@@ -79,6 +89,9 @@
     Dim NCAABTeamAssists As String() = {"assists_rk", "assists_team", "assists_gp", "assists_ast", "assists_apg", "assists_to", "assists_topg", "assists_ast_per_to", "assists_year"}
     Dim NCAABTeamSteals As String() = {"steals_rk", "steals_team", "steals_gp", "steals_stl", "steals_stpg", "steals_to", "steals_topg", "steals_pf", "steals_st_per_to", "steals_st_per_pf", "steals_year"}
     Dim NCAABTeamBlocks As String() = {"blocks_rk", "blocks_team", "blocks_gp", "blocks_blk", "blocks_pf", "blocks_blkpg", "blocks_blk_per_pf", "blocks_year"}
+    Dim MLBTeamBatting As String() = {"batting_rk", "batting_team", "batting_gp", "batting_ab", "batting_r", "batting_h", "batting_2b", "batting_3b", "batting_hr", "batting_tb", "batting_rbi", "batting_avg", "batting_obp", "batting_slg", "batting_ops"}
+    Dim MLBTeamPitching As String() = {"pitching_rk", "pitching_team", "pitching_w", "pitching_l", "pitching_era", "pitching_sv", "pitching_cg", "pitching_sho", "pitching_ip", "pitching_os", "pitching_er", "pitching_r", "pitching_bb", "pitching_so", "pitching_baa"}
+    Dim MLBTeamFielding As String() = {"fielding_rk", "fielding_team", "fielding_gp", "fielding_e", "fielding_fpct", "fielding_a", "fielding_po", "fielding_tc"}
 
     Public Function GetDatasource(ByVal strDatasource As String)
         Select Case strDatasource
@@ -92,6 +105,8 @@
                 Return StatsNCAAFB
             Case "StatsNCAAB"
                 Return StatsNCAAB
+            Case "StatsMLB"
+                Return StatsMLB
             Case "YearsNFL"
                 Return YearsNFL
             Case "YearsNBA"
@@ -100,6 +115,8 @@
                 Return YearsNCAAB
             Case "YearsNCAAFB"
                 Return YearsNCAAFB
+            Case "YearsMLB"
+                Return YearsMLB
             Case "NFL-TOTAL YARDS OFF"
                 Return NFLTeamTotalOffense
             Case "NFL-DOWNS OFF"
@@ -170,6 +187,12 @@
                 Return NCAABTeamSteals
             Case "NCAAB-BLOCKS"
                 Return NCAABTeamBlocks
+            Case "MLB-BATTING"
+                Return MLBTeamBatting
+            Case "MLB-PITCHING"
+                Return MLBTeamPitching
+            Case "MLB-FIELDING"
+                Return MLBTeamFielding
             Case Else
                 Return Nothing
         End Select

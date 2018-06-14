@@ -92,6 +92,7 @@
     <Compile Include="MarchMadnessForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="modSQL.vb" />
     <Compile Include="Module1.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

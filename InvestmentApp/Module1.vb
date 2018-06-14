@@ -532,7 +532,7 @@ Module Module1
         Dim columns As String = ""
         For Each col As DataColumn In dt.Columns
             If dt.Columns.IndexOf(col) <> dt.Columns.Count Then
-                columns &= Chr(34) & col.ColumnName & Chr(34) & ","
+                columns &= Chr(34) & col.ColumnName & Chr(34) & ";"
             Else
                 columns &= Chr(34) & col.ColumnName & Chr(34)
             End If
@@ -549,9 +549,9 @@ Module Module1
                    Where Not row.IsNewRow
                    Select Array.ConvertAll(row.Cells.Cast(Of DataGridViewCell).ToArray, Function(c) If(c.Value IsNot Nothing, c.Value.ToString, ""))
         Using sw As New IO.StreamWriter(path)
-            sw.WriteLine(String.Join(",", headers))
+            sw.WriteLine(String.Join(";", headers))
             For Each r In rows
-                sw.WriteLine(String.Join(",", r))
+                sw.WriteLine(String.Join(";", r))
             Next
             sw.Flush()
         End Using
@@ -565,9 +565,9 @@ Module Module1
                    Where Not row.RowState = DataRowState.Detached
                    Select Array.ConvertAll(row.ItemArray.Cast(Of String).ToArray, Function(c) If(c IsNot Nothing, c.ToString, ""))
         Using sw As New IO.StreamWriter(path)
-            sw.WriteLine(String.Join(",", headers))
+            sw.WriteLine(String.Join(";", headers))
             For Each r In rows
-                sw.WriteLine(String.Join(",", r))
+                sw.WriteLine(String.Join(";", r))
             Next
             sw.Flush()
         End Using
@@ -725,125 +725,6 @@ Module Module1
         End Try
     End Function
 
-    Public Function getDBconnection(ByVal db As String)
-        Dim dbConnectionString As String = Nothing
-        Select Case db
-            Case "ncaafb"
-                dbConnectionString = "Server=EJPC1;Uid=EJadmin;Pwd=Look@me3times;Database=ncaafb;"
-            Case "ncaab"
-                dbConnectionString = "Server=EJPC1;Uid=EJadmin;Pwd=Look@me3times;Database=ncaab;"
-            Case "nfl"
-                dbConnectionString = "Server=EJPC1;Uid=EJadmin;Pwd=Look@me3times;Database=nfl;"
-            Case "nba"
-                dbConnectionString = "Server=EJPC1;Uid=EJadmin;Pwd=Look@me3times;Database=nba;"
-        End Select
-        Return dbConnectionString
-    End Function
-
-    Public Function getDBcommand(ByVal db As String, ByVal tbl As String)
-        Dim dbCommandString As String = Nothing
-        Select Case db
-            Case "ncaafb"
-                Select Case tbl
-                    Case "ncaafbconference"
-                        dbCommandString = "INSERT INTO ncaafbconference ('"
-                    Case "ncaafbstat-defense"
-
-                    Case "ncaafbstat-downs"
-                    Case "ncaafbstat-kicking"
-                    Case "ncaafbstat-passingdef"
-                    Case "ncaafbstat-passingoff"
-                    Case "ncaafbstat-punting"
-                    Case "ncaafbstat-receiving"
-                    Case "ncaafbstat-returning"
-                    Case "ncaafbstat-rushingdef"
-                    Case "ncaafbstat-rushingoff"
-                    Case "ncaafbstat-totalyardsdef"
-                    Case "ncaafbstat-totalyardsoff"
-                    Case "ncaafburl"
-
-                End Select
-            Case "ncaab"
-                Select Case tbl
-                    Case "marchmadnessmatchup"
-                    Case "marchmadnessseeding"
-                    Case "matchup"
-                    Case "ncaabconference"
-                    Case "ncaabstat-3point"
-                    Case "ncaabstat-assists"
-                    Case "ncaabstat-blocks"
-                    Case "ncaabstat-fieldgoals"
-                    Case "ncaabstat-freethrows"
-                    Case "ncaabstat-rebounds"
-                    Case "ncaabstat-scoring"
-                    Case "ncaabstat-scoringpg"
-                    Case "ncaabstat-steals"
-                    Case "ncaabteam"
-                    Case "ncaaburl"
-
-                End Select
-            Case "nfl"
-                Select Case tbl
-                    Case "nflconference"
-                    Case "nflstat-defdowns"
-                    Case "nflstat-defenseopp"
-                    Case "nflstat-defenseown"
-                    Case "nflstat-give/take"
-                    Case "nflstat-kickingopp"
-                    Case "nflstat-kickingown"
-                    Case "nflstat-offdowns"
-                    Case "nflstat-passingdef"
-                    Case "nflstat-passingoff"
-                    Case "nflstat-puntingopp"
-                    Case "nflstat-puntingown"
-                    Case "nflstat-receivingdef"
-                    Case "nflstat-receivingoff"
-                    Case "nflstat-returnsopp"
-                    Case "nflstat-returnsown"
-                    Case "nflstat-rushingdef"
-                    Case "nflstat-rushingoff"
-                    Case "nflstat-totaldef"
-                    Case "nflstat-totaloff"
-                    Case "nflteam"
-                    Case "nflurl"
-
-                End Select
-            Case "nba"
-                Select Case tbl
-                    Case "nbaconference"
-                    Case "nbastat-defense"
-                    Case "nbastat-differential"
-                    Case "nbastat-miscellaneous"
-                    Case "nbastat-rebounds"
-                    Case "nbastat-scoring"
-                    Case "nbateam"
-                    Case "nbaurl"
-
-                End Select
-                dbCommandString = "Server=EJPC1;Uid=EJadmin;Pwd=Look@me3times;Database=nba;"
-        End Select
-        Return dbCommandString
-    End Function
-
-    'Get the connection string from a Config file
-    Private Function GetConnectionString(ByVal DBName As String) As String
-        ' To avoid storing the connection string in your code, 
-        ' you can retrieve it from a configuration file. 
-        Select Case DBName
-            Case "ncaafb"
-                Return "server=192.168.0.26; user id=root; password=Look@me3times; database=ncaafb"
-            Case "ncaab"
-                Return "server=192.168.0.26; user id=root; password=Look@me3times; database=ncaab"
-            Case "nfl"
-                Return "server=192.168.0.26; user id=root; password=Look@me3times; database=nfl"
-            Case "nba"
-                Return "server=192.168.0.26; user id=root; password=Look@me3times; database=nba"
-            Case "mlb"
-                Return "server=192.168.0.26; user id=root; password=Look@me3times; database=mlb"
-            Case Else
-                Return Nothing
-        End Select
-    End Function
 
     'Checks if URL is valid
     Public Function UrlIsValid(ByVal url As String) As Boolean
@@ -867,16 +748,6 @@ Module Module1
             url = "http://" & url
         End If
         Return url
-    End Function
-
-    Private Function getColumnMappings(ByVal db As String, ByVal table As String)
-        Dim lstColMaps As New List(Of IColumnMappingCollection)
-        Dim ColMappings As IColumnMappingCollection = Nothing
-
-        'lstColMaps.
-
-        ColMappings.Add("", "")
-        Return ColMappings
     End Function
 
     ' DataGridView to DataTable
@@ -1021,170 +892,6 @@ Module Module1
 
     End Sub
 
-    '*************************************
-    '           SQL FUNCTIONS
-    '*************************************
-
-    ' Return MySQL String: Create Table
-    Public Function sqlCreateTable(ByVal dbName As String, ByVal tableName As String)
-        Dim strSQL As String = "CREATE TABLE IF NOT EXISTS " & GetProperString(tableName) & " (id INT(6) NOT NULL, " '
-        Dim cols As String() = GetDatasource(dbName.ToUpper & "-" & tableName)
-        For Each str As String In cols
-
-            If str = cols.Last Then
-                strSQL += GetProperString(str.ToLower) & " INT(6) DEFAULT NULL"
-            Else
-                If str.Contains("team") Then
-                    strSQL += GetProperString(tableName) & "_team VARCHAR(30) DEFAULT NULL,"
-                Else
-                    strSQL += GetProperString(str.ToLower) & " INT(6) DEFAULT NULL,"
-                End If
-            End If
-        Next
-        strSQL += ");"
-        Return strSQL
-    End Function
-
-    Public Function sqlCreateSelectTable(ByVal dbName As String, ByVal tableName As String, ByVal year As String)
-        Dim strSQL As String = ""
-        If tableName = "ALL" Then tableName = "*"
-        If year = "ALL" Then
-            strSQL = "SELECT * FROM " & GetProperString(dbName) & "." & GetProperString(tableName)
-        Else
-            strSQL = "SELECT * FROM " & GetProperString(dbName) & "." & GetProperString(tableName) & " WHERE CAST(" & GetProperString(tableName) & "_year AS UNSIGNED)" & "=" & year
-        End If
-        Return strSQL
-    End Function
-
-    ' Insert DataTable into Database Table
-    Public Sub insertDataTable(ByVal ToDB As String, ByVal ToTable As String, ByVal FromTable As DataTable)
-        Dim strConnection As String = GetConnectionString(ToDB)        'Function needs to be completed
-
-        ' Open a connection to the MMMDB
-        Using sourceConnection As SqlConnection = New SqlConnection(strConnection)
-            sourceConnection.Open()
-
-            ' Perform an intial count on the destination table
-            Dim commandRowCount As New SqlCommand("SELECT COUNT(*) FROM <insertDB>;", sourceConnection)
-            Dim countStart As Long = System.Convert.ToInt32(commandRowCount.ExecuteScalar())
-
-            ' Get data from the source table as a SqlDataReader
-            Dim commandSourceData As SqlCommand = New SqlCommand("SELECT <columns>, <columns> FROM <table>;", sourceConnection)
-            Dim reader As SqlDataReader = commandSourceData.ExecuteReader
-
-            ' Set up the bulk copy object
-            Using bulkCopy As SqlBulkCopy = New SqlBulkCopy(strConnection)
-                bulkCopy.DestinationTableName = ToTable
-
-                Dim colMappings As IColumnMappingCollection = getColumnMappings(vbNull, vbNull) 'FIX THIS!!!
-
-                ' Set up the column mappings by name.
-                Dim mapID As New SqlBulkCopyColumnMapping("", "")
-                bulkCopy.ColumnMappings.Add(mapID)
-
-                Dim mapName As New SqlBulkCopyColumnMapping("", "")
-                bulkCopy.ColumnMappings.Add(mapName)
-
-                Dim mapNumber As New SqlBulkCopyColumnMapping("", "")
-                bulkCopy.ColumnMappings.Add(mapNumber)
-
-                ' Write from the source to the destination
-                Try
-                    bulkCopy.WriteToServer(reader)
-                Catch ex As Exception
-                    MsgBox(ex.Message)
-                Finally
-                    ' Close the SqlDataReader. The SqlBulkCopy object is automatically closed at the end of the Using block.
-                    reader.Close()
-                End Try
-            End Using
-
-            ' Perform a final count on the destination table to see how many rows were added.
-            Dim countEnd As Long = System.Convert.ToInt32(commandRowCount.ExecuteScalar())
-            MsgBox("Ending row count = {0}", countEnd)
-            MsgBox("{0} rows were added.", countEnd - countStart)
-        End Using
-    End Sub
-
-    Public Sub ImportCSVtoMySQL(ByVal db As String, ByVal csvTableName As String, ByVal filepath As String)
-        Dim connStr As String = "server=EJPC1;user=EJadmin;password=Look@me3;database=" & db & ";port=3306"
-        Dim conn As New MySqlConnection(connStr)
-
-        Dim csvLine As String, cols() As String
-        Dim sr As New StreamReader(filepath)
-
-        csvLine = sr.ReadLine()
-        sr.Close()
-        cols = Split(csvLine, ",")
-
-        Dim rows As Int32 = 0
-        Using dbcon As New MySqlConnection(connStr)
-            dbcon.Open()
-
-            ' Create the Table and Columns
-            Dim createSql As String
-            Try
-                createSql = sqlCreateTable(db, csvTableName)
-                Dim cmd As New MySqlCommand(createSql, dbcon)
-                cmd.ExecuteNonQuery()
-                cmd.Dispose()
-            Catch ex As Exception
-                MsgBox(ex.Message)
-            Finally
-                conn.Close()
-            End Try
-
-            Dim bulk = New MySqlBulkLoader(dbcon)
-
-            bulk.TableName = GetProperString(csvTableName)
-            bulk.FieldTerminator = ","
-            bulk.LineTerminator = "\r\n"    ' == CR/LF
-            bulk.FileName = filepath         ' full file path name to CSV 
-            bulk.NumberOfLinesToSkip = 1    ' has a header (default)
-
-            bulk.Columns.Clear()
-            For Each s In cols
-                s = s.Replace("/", "_per_")
-                bulk.Columns.Add(s)         ' specify col order in file
-            Next
-            rows = bulk.Load()
-        End Using
-    End Sub
-
-    Public Function SelectTable(ByVal db As String, ByVal table As String, ByVal year As String) As Data.DataTable
-        Dim dbProper As String = Nothing
-        Select Case db
-            Case "NCAA BASKETBALL"
-                dbProper = "ncaab"
-            Case "NCAA FOOTBALL"
-                dbProper = "ncaafb"
-            Case "NBA"
-                dbProper = "nba"
-            Case "NFL"
-                dbProper = "nfl"
-        End Select
-        Dim connStr As String = "server=EJPC1;user=EJadmin;password=Look@me3;database=" & dbProper & ";port=3306"
-        Dim conn As New MySqlConnection(connStr)
-        Dim dt As New System.Data.DataTable
-        Using dbcon As New MySqlConnection(connStr)
-            dbcon.Open()
-
-            ' Create the Table and Columns
-            Dim createSql As String
-            Try
-                createSql = sqlCreateSelectTable(dbProper, GetProperString(table), GetProperString(year))
-                Dim cmd As New MySqlCommand(createSql, dbcon)
-                Dim da As New MySqlDataAdapter(cmd)
-                da.Fill(dt)
-            Catch ex As Exception
-                MsgBox(ex.Message)
-            Finally
-                conn.Close()
-            End Try
-        End Using
-        Return dt
-    End Function
-
     Public Sub AddCols(ByRef DT As System.Data.DataTable, ByVal Year As Integer, ByRef DGV As DataGridView)
 
         ' Add StatID Column
@@ -1209,7 +916,6 @@ Module Module1
         DT.Columns.Add(dcTeamID)
 
         'POPULATE TEAM ID COLUMN
-
 
     End Sub
 
